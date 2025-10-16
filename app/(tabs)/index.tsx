@@ -1,69 +1,58 @@
+import ArticleCarousel from "@/components/article-carousel";
+import PopularProductsCarousel from "@/components/popular-products-carousel";
+import ProductCard, { Product } from "@/components/product-card";
+import SearchBar from "@/components/search-bar";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
   Dimensions,
   Image,
   Pressable,
   ScrollView,
   Text,
-  TextInput,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width: screenWidth } = Dimensions.get("window");
 
-// Quick Links slider content
-const quickLinks = [
-  {
-    id: 1,
-    title: "Meet Vint Street",
-    subtitle: "What, who, where, why, and how",
-    image: require("@/assets/images/homepage_slider/1.jpg"),
-  },
-  {
-    id: 2,
-    title: "Buying, Selling & Re-Listing",
-    subtitle: "Learn how it all works",
-    image: require("@/assets/images/homepage_slider/2.jpg"),
-  },
-  {
-    id: 4,
-    title: "Get Informed",
-    subtitle: "See the best fits. Add yours.",
-    image: require("@/assets/images/homepage_slider/4.jpg"),
-  },
-  {
-    id: 5,
-    title: "Our Community",
-    subtitle: "Join the discussion",
-    image: require("@/assets/images/homepage_slider/5.jpg"),
-  },
-  {
-    id: 6,
-    title: "Help Centre",
-    subtitle: "Problem? Solved!",
-    image: require("@/assets/images/homepage_slider/6.jpg"),
-  },
-];
-
 // Mock data for products
 const trendingProducts = [
   {
     id: 1,
-    name: "Game & Watch Gallery Advance...",
-    brand: "Nintendo",
-    price: "£175.00",
-    image: require("@/assets/images/hero-banner.jpg"),
+    name: "Lee Jeans Green - 14",
+    brand: "Lee Jeans",
+    price: "£27.00",
+    images: [
+      require("@/assets/images/hero-banner.jpg"),
+      require("@/assets/images/homepage_slider/1.jpg"),
+      require("@/assets/images/homepage_slider/2.jpg"),
+    ],
     likes: 0,
   },
   {
     id: 2,
-    name: "Zelda Game & Watch - Boxed wi...",
-    brand: "Nintendo",
+    name: "Armani Jeans, Straight Leg Jeans",
+    brand: "Armani Jeans",
     price: "£1,125.00",
-    image: require("@/assets/images/hero-banner.jpg"),
+    images: [
+      require("@/assets/images/hero-banner.jpg"),
+      require("@/assets/images/homepage_slider/4.jpg"),
+      require("@/assets/images/homepage_slider/5.jpg"),
+    ],
+    likes: 0,
+  },
+  {
+    id: 3,
+    name: "Victoria Beckham Skinny Jeans",
+    brand: "Victoria Beckham",
+    price: "£1,125.00",
+    images: [
+      require("@/assets/images/hero-banner.jpg"),
+      require("@/assets/images/homepage_slider/3.jpg"),
+      require("@/assets/images/homepage_slider/6.jpg"),
+    ],
     likes: 0,
   },
 ];
@@ -109,13 +98,90 @@ const indieItems = [
   },
 ];
 
+// Recently viewed mock data (replace with provider/API when available)
+const recentlyViewedProducts: Product[] = [
+  {
+    id: 7,
+    name: "Love Moschino Long-Sleeve Shirt...",
+    brand: "Love Moschino",
+    price: "£75.00",
+    image: require("@/assets/images/hero-banner.jpg"),
+    likes: 0,
+    size: "XS",
+    protectionFee: "£5.40",
+  },
+];
+
 const brands = [
-  { name: "Levi's", image: require("@/assets/images/splash_logo.png") },
-  { name: "Adidas", image: require("@/assets/images/splash_logo.png") },
-  { name: "H&M", image: require("@/assets/images/splash_logo.png") },
-  { name: "Nike", image: require("@/assets/images/splash_logo.png") },
-  { name: "Zara", image: require("@/assets/images/splash_logo.png") },
-  { name: "Gucci", image: require("@/assets/images/splash_logo.png") },
+  {
+    name: "Levi's",
+    image:
+      "https://www.citypng.com/public/uploads/preview/levis-black-logo-hd-png-70175169470713089bqxrjlb3.png",
+  },
+  {
+    name: "Adidas",
+    image:
+      "https://1000logos.net/wp-content/uploads/2019/06/Adidas-Logo-1991.jpg",
+  },
+  {
+    name: "H&M",
+    image: "https://1000logos.net/wp-content/uploads/2017/02/H-Logo-1999.png",
+  },
+  {
+    name: "Nike",
+    image:
+      "https://static.vecteezy.com/system/resources/previews/010/994/412/original/nike-logo-black-with-name-clothes-design-icon-abstract-football-illustration-with-white-background-free-vector.jpg",
+  },
+  {
+    name: "Zara",
+    image:
+      "https://1000logos.net/wp-content/uploads/2017/05/Zara-Logo-2008.png",
+  },
+  {
+    name: "Gucci",
+    image:
+      "https://1000logos.net/wp-content/uploads/2017/03/Gucci-Logo-2015.png",
+  },
+];
+
+// Top Categories content
+const topCategories = [
+  {
+    title: "Caps",
+    image: require("@/assets/images/cat_caps.png"),
+  },
+  {
+    title: "Denim",
+    image: require("@/assets/images/cat_denim.png"),
+  },
+  {
+    title: "Vinyl",
+    image: require("@/assets/images/cat_vinyl.png"),
+  },
+  {
+    title: "Football Shirts",
+    image: require("@/assets/images/cat_football_shirts.png"),
+  },
+  {
+    title: "Gaming",
+    image: require("@/assets/images/cat_gaming.png"),
+  },
+  {
+    title: "Levi's",
+    image: require("@/assets/images/cat_levis.png"),
+  },
+  {
+    title: "Nike",
+    image: require("@/assets/images/cat_nike.png"),
+  },
+  {
+    title: "Tees",
+    image: require("@/assets/images/cat_tees.png"),
+  },
+  {
+    title: "Y2K",
+    image: require("@/assets/images/cat_y2k.png"),
+  },
 ];
 
 const eras = [
@@ -123,151 +189,30 @@ const eras = [
     name: "70s",
     decade: "1970s",
     color: "#E91E63",
-    image: require("@/assets/images/hero-banner.jpg"),
+    image: require("@/assets/images/70s.jpg"),
   },
   {
     name: "80s",
     decade: "1980s",
     color: "#9C27B0",
-    image: require("@/assets/images/hero-banner.jpg"),
+    image: require("@/assets/images/80s.jpg"),
   },
   {
     name: "90s",
     decade: "1990s",
     color: "#2196F3",
-    image: require("@/assets/images/hero-banner.jpg"),
+    image: require("@/assets/images/90s.jpg"),
   },
   {
     name: "00s",
     decade: "2000s",
     color: "#4CAF50",
-    image: require("@/assets/images/hero-banner.jpg"),
+    image: require("@/assets/images/00s.jpg"),
   },
 ];
 
-interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  price: string;
-  image: any;
-  likes: number;
-  size?: string;
-  protectionFee?: string;
-}
+// Product interface is now imported from ProductCard component
 
-const ProductCard = ({
-  product,
-  showSize = false,
-  showProtectionFee = false,
-}: {
-  product: Product;
-  showSize?: boolean;
-  showProtectionFee?: boolean;
-}) => (
-  <View
-    style={{
-      width: screenWidth * 0.45,
-      marginRight: 12,
-      backgroundColor: "#fff",
-      borderRadius: 8,
-      overflow: "hidden",
-    }}
-  >
-    <View style={{ position: "relative" }}>
-      <Image
-        source={product.image}
-        style={{
-          width: "100%",
-          height: 200,
-          resizeMode: "cover",
-        }}
-      />
-      <View
-        style={{
-          position: "absolute",
-          bottom: 8,
-          right: 8,
-          backgroundColor: "rgba(0,0,0,0.6)",
-          borderRadius: 12,
-          paddingHorizontal: 6,
-          paddingVertical: 2,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Feather name="heart" size={12} color="white" />
-        <Text style={{ color: "white", fontSize: 10, marginLeft: 2 }}>
-          {product.likes}
-        </Text>
-      </View>
-    </View>
-    <View style={{ padding: 12 }}>
-      <Text
-        style={{
-          fontSize: 12,
-          fontFamily: "Poppins-Regular",
-          marginBottom: 4,
-        }}
-        numberOfLines={2}
-      >
-        {product.name}
-      </Text>
-      <Text
-        style={{
-          fontSize: 12,
-          fontFamily: "Poppins-Regular",
-          color: "#666",
-          marginBottom: 4,
-        }}
-      >
-        {product.brand}
-      </Text>
-      {showSize && (
-        <Text
-          style={{
-            fontSize: 12,
-            fontFamily: "Poppins-Regular",
-            color: "#666",
-            marginBottom: 4,
-          }}
-        >
-          {product.size}
-        </Text>
-      )}
-      <Text
-        style={{
-          fontSize: 14,
-          fontFamily: "Poppins-SemiBold",
-          marginBottom: 2,
-        }}
-      >
-        {product.price}
-      </Text>
-      {showProtectionFee && (
-        <Text
-          style={{
-            fontSize: 10,
-            fontFamily: "Poppins-Regular",
-            color: "#666",
-          }}
-        >
-          ({product.protectionFee} Protection Fee)
-        </Text>
-      )}
-      <Text
-        style={{
-          fontSize: 10,
-          fontFamily: "Poppins-Regular",
-          color: "#666",
-          marginTop: 2,
-        }}
-      >
-        (Official Vint Street Product)
-      </Text>
-    </View>
-  </View>
-);
 
 interface Brand {
   name: string;
@@ -277,8 +222,8 @@ interface Brand {
 const BrandCard = ({ brand }: { brand: Brand }) => (
   <View
     style={{
-      width: screenWidth / 3 - 16,
-      height: (screenWidth / 3 - 16) * (3 / 4),
+      width: screenWidth / 3,
+      height: (screenWidth / 3) * (3 / 4),
       backgroundColor: "#fff",
       borderRadius: 8,
       marginRight: 8,
@@ -287,11 +232,10 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
       borderColor: "#e0e0e0",
       alignItems: "center",
       justifyContent: "center",
-      padding: 12,
     }}
   >
     <Image
-      source={brand.image}
+      source={{ uri: brand.image }}
       style={{
         width: "80%",
         height: "60%",
@@ -310,129 +254,13 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
   </View>
 );
 
-interface Era {
-  name: string;
-  decade: string;
-  color: string;
-  image: any;
-}
-
-const EraCard = ({ era }: { era: Era }) => (
-  <Pressable
-    style={{
-      flex: 1,
-      height: 120,
-      margin: 6,
-      borderRadius: 8,
-      overflow: "hidden",
-      position: "relative",
-    }}
-  >
-    <Image
-      source={era.image}
-      style={{
-        width: "100%",
-        height: "100%",
-        resizeMode: "cover",
-      }}
-    />
-    <View
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: era.color,
-        opacity: 0.7,
-      }}
-    />
-    <View
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 20,
-          fontFamily: "Poppins-Bold",
-          color: "white",
-          textShadowColor: "rgba(0,0,0,0.5)",
-          textShadowOffset: { width: 1, height: 1 },
-          textShadowRadius: 2,
-        }}
-      >
-        {era.name}
-      </Text>
-      <Text
-        style={{
-          fontSize: 14,
-          fontFamily: "Poppins-Regular",
-          color: "white",
-          textShadowColor: "rgba(0,0,0,0.5)",
-          textShadowOffset: { width: 1, height: 1 },
-          textShadowRadius: 2,
-        }}
-      >
-        {era.decade}
-      </Text>
-    </View>
-  </Pressable>
-);
-
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Search Bar */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#151515",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#4a4a4a",
-            borderRadius: 8,
-            paddingHorizontal: 12,
-            marginRight: 32,
-          }}
-        >
-          <Feather name="search" size={20} color="#fff" />
-          <TextInput
-            placeholder="Search..."
-            placeholderTextColor="#b0b0b0"
-            style={{
-              flex: 1,
-              marginLeft: 8,
-              fontFamily: "Poppins-Regular",
-              fontSize: 14,
-            }}
-          />
-        </View>
-        <Pressable
-          style={
-            {
-              // padding: 8,
-            }
-          }
-        >
-          <Feather name="shopping-bag" size={20} color="#fff" />
-        </Pressable>
-      </View>
-
+      <SearchBar
+        onShoppingCartPress={() => {}}
+      />
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 8 }}
         showsVerticalScrollIndicator={false}
@@ -473,13 +301,20 @@ export default function HomeScreen() {
             style={{
               fontSize: 12,
               fontFamily: "Poppins-Bold",
-              color: "#000",
+              color: "black",
               marginBottom: 12,
             }}
           >
             QUICK LINKS
           </Text>
-          <CarouselQuickLinks />
+          <ArticleCarousel />
+        </View>
+
+        <View style={{ marginBottom: 24 }}>
+          <PopularProductsCarousel
+            title="TRENDING NOW"
+            items={trendingProducts}
+          />
         </View>
 
         {/* RECENTLY ADDS */}
@@ -513,10 +348,7 @@ export default function HomeScreen() {
               </Text>
             </Pressable>
           </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {recentlyAddedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -535,98 +367,88 @@ export default function HomeScreen() {
           >
             TOP CATEGORIES
           </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            <View
-              style={{
-                width: screenWidth * 0.6,
-                height: 200,
-                marginRight: 12,
-                borderRadius: 8,
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <Image
-                source={require("@/assets/images/hero-banner.jpg")}
-                style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-              />
-              <View
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: 16,
-                  backgroundColor: "rgba(0,0,0,0.7)",
-                }}
-              >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {topCategories.map((cat) => {
+              const cardWidth = screenWidth / 2;
+              const cardHeight = cardWidth * (9 / 16);
+              return (
                 <View
+                  key={cat.title}
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    width: cardWidth,
+                    height: cardHeight,
+                    marginRight: 8,
+                    borderRadius: 8,
+                    overflow: "hidden",
+                    position: "relative",
+                    borderWidth: 1,
+                    borderColor: "rgba(128,128,128,0.2)",
                   }}
                 >
-                  <Text
+                  <Image
+                    source={cat.image}
                     style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins-Bold",
-                      color: "white",
+                      width: "100%",
+                      height: "100%",
+                      resizeMode: "cover",
+                    }}
+                  />
+                  {/* 3-step gradient overlay */}
+                  <View
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      backgroundColor: "transparent",
                     }}
                   >
-                    Caps
-                  </Text>
-                  <Feather name="arrow-right" size={16} color="white" />
-                </View>
-              </View>
-            </View>
-            <View
-              style={{
-                width: screenWidth * 0.6,
-                height: 200,
-                marginRight: 12,
-                borderRadius: 8,
-                overflow: "hidden",
-                position: "relative",
-              }}
-            >
-              <Image
-                source={require("@/assets/images/hero-banner.jpg")}
-                style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-              />
-              <View
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: 16,
-                  backgroundColor: "rgba(0,0,0,0.7)",
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
+                    <LinearGradient
+                      colors={[
+                        "rgba(0,0,0,0.9)",
+                        "rgba(0,0,0,0.5)",
+                        "rgba(0,0,0,0)",
+                      ]}
+                      start={{ x: 0, y: 1 }}
+                      end={{ x: 0, y: 0 }}
+                      locations={[0.0, 0.5, 0.8]}
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                      }}
+                    />
+                  </View>
+                  {/* Title with arrow */}
+                  <View
                     style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins-Bold",
-                      color: "white",
+                      position: "absolute",
+                      left: 12,
+                      right: 12,
+                      bottom: 12,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    Denim
-                  </Text>
-                  <Feather name="arrow-right" size={16} color="white" />
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontFamily: "Poppins-Bold",
+                        color: "white",
+                      }}
+                      numberOfLines={1}
+                    >
+                      {cat.title}
+                    </Text>
+                    <Feather name="chevron-right" size={16} color="white" />
+                  </View>
                 </View>
-              </View>
-            </View>
+              );
+            })}
           </ScrollView>
         </View>
 
@@ -642,15 +464,86 @@ export default function HomeScreen() {
           >
             EXPLORE THE ERAS
           </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-            }}
-          >
-            {eras.map((era, index) => (
-              <EraCard key={era.name} era={era} />
-            ))}
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            {eras.map((era, idx) => {
+              const cardWidth = screenWidth / 2 - (16 + 12) / 2;
+              const cardHeight = cardWidth * (7 / 16);
+              const isLeft = idx % 2 === 0;
+              return (
+                <View
+                  key={era.name}
+                  style={{
+                    width: cardWidth,
+                    height: cardHeight,
+                    marginRight: isLeft ? 12 : 0,
+                    marginBottom: 12,
+                    borderRadius: 8,
+                    overflow: "hidden",
+                    shadowColor: era.color,
+                    shadowOpacity: 0.3,
+                    shadowRadius: 4,
+                    shadowOffset: { width: 0, height: 2 },
+                    elevation: 2,
+                  }}
+                >
+                  <Image
+                    source={era.image}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      resizeMode: "cover",
+                    }}
+                  />
+                  <View
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      backgroundColor: era.color,
+                      opacity: 0.5,
+                    }}
+                  />
+                  <View
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontFamily: "Poppins-Bold",
+                        color: "white",
+                        textShadowColor: "rgba(0,0,0,0.5)",
+                        textShadowOffset: { width: 1, height: 1 },
+                        textShadowRadius: 2,
+                      }}
+                    >
+                      {era.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontFamily: "Poppins-Regular",
+                        color: "white",
+                        textShadowColor: "rgba(0,0,0,0.5)",
+                        textShadowOffset: { width: 1, height: 1 },
+                        textShadowRadius: 2,
+                      }}
+                    >
+                      {era.decade}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
           </View>
         </View>
 
@@ -666,16 +559,44 @@ export default function HomeScreen() {
           >
             Brands you may like
           </Text>
-          <View
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {Array.from({ length: Math.ceil(brands.length / 2) }).map(
+              (_, colIndex) => {
+                const first = brands[colIndex * 2];
+                const second = brands[colIndex * 2 + 1];
+                return (
+                  <View key={colIndex}>
+                    {first && <BrandCard brand={first} />}
+                    {second && <BrandCard brand={second} />}
+                  </View>
+                );
+              }
+            )}
+          </ScrollView>
+        </View>
+
+        {/* Recently Viewed Section */}
+        <View style={{ marginBottom: 24 }}>
+          <Text
             style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
+              fontSize: 12,
+              fontFamily: "Poppins-Bold",
+              color: "#000",
+              marginBottom: 12,
             }}
           >
-            {brands.map((brand, index) => (
-              <BrandCard key={brand.name} brand={brand} />
+            RECENTLY VIEWED
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {recentlyViewedProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                showSize={true}
+                showProtectionFee={true}
+              />
             ))}
-          </View>
+          </ScrollView>
         </View>
 
         {/* Indie Items Section */}
@@ -709,10 +630,7 @@ export default function HomeScreen() {
               </Text>
             </Pressable>
           </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {indieItems.map((product) => (
               <ProductCard
                 key={product.id}
@@ -724,144 +642,8 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* Trending Now Section */}
-        <View style={{ marginBottom: 24 }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#000",
-              marginBottom: 12,
-            }}
-          >
-            TRENDING NOW
-          </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            {trendingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Bottom padding for navigation */}
         <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function CarouselQuickLinks() {
-  const scrollRef = useRef<ScrollView | null>(null);
-  const [index, setIndex] = useState(0);
-
-  const onScroll = (event: any) => {
-    const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const viewWidth = event.nativeEvent.layoutMeasurement.width;
-    const current = Math.round(contentOffsetX / viewWidth);
-    if (current !== index) setIndex(current);
-  };
-
-  return (
-    <View style={{ alignItems: "center" }}>
-      <View
-        style={{
-          width: screenWidth - 16,
-          aspectRatio: 16 / 7,
-          position: "relative",
-          borderRadius: 12,
-          overflow: "hidden",
-        }}
-      >
-        <ScrollView
-          ref={scrollRef}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={onScroll}
-          scrollEventThrottle={16}
-          style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }}
-        >
-          {quickLinks.map((item) => (
-            <View key={item.id} style={{ width: screenWidth - 16 }}>
-              <Pressable
-                style={{
-                  width: "100%",
-                  aspectRatio: 16 / 7,
-                  position: "relative",
-                }}
-              >
-                <Image
-                  source={item.image}
-                  style={{ width: "100%", height: "100%", resizeMode: "cover" }}
-                />
-                <LinearGradient
-                  colors={["rgba(0,0,0,0.0)", "rgba(0,0,0,0.7)"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1 }}
-                  style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0 }}
-                />
-                <View
-                  style={{
-                    position: "absolute",
-                    left: 16,
-                    right: 16,
-                    bottom: 24,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontFamily: "Poppins-Bold",
-                      color: "white",
-                      marginBottom: 12,
-                    }}
-                  >
-                    {item.title}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: "Poppins-Regular",
-                      color: "#ffffff",
-                      opacity: 0.95,
-                    }}
-                  >
-                    {item.subtitle}
-                  </Text>
-                </View>
-              </Pressable>
-            </View>
-          ))}
-        </ScrollView>
-        <View
-          pointerEvents="none"
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 12,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {quickLinks.map((_, i) => (
-            <View
-              key={i}
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: 3,
-                marginHorizontal: 3,
-                backgroundColor: i === index ? "#ffffff" : "rgba(255,255,255,0.5)",
-              }}
-            />
-          ))}
-        </View>
-      </View>
-    </View>
   );
 }
