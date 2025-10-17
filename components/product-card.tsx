@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     resizeMode: 'cover',
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    borderRadius: 8,
   },
   likeButton: {
     position: 'absolute',
