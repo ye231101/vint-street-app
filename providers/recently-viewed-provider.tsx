@@ -3,9 +3,9 @@
  * Tracks and manages recently viewed products
  */
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { VintStreetListing } from '@/api/types/product.types';
-import { setSecureValue, getSecureValue, removeSecureValue } from '@/utils/secure-storage';
+import { getSecureValue, removeSecureValue, setSecureValue } from '@/utils/storage';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 interface RecentlyViewedContextType {
   items: VintStreetListing[];

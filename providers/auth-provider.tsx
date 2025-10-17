@@ -1,15 +1,14 @@
+import type { AuthUser } from "@/api";
+import { authService } from "@/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { handleAuthStateChange, initializeAuth, loginUser, logoutUser, registerUser, resetPassword as resetPasswordAction } from "@/store/slices/authSlice";
+import { removeSecureValue, setSecureValue } from "@/utils/storage";
 import { router } from "expo-router";
 import React, {
   createContext,
   useContext,
-  useEffect,
-  useState
+  useEffect
 } from "react";
-import { authService } from "@/api";
-import type { AuthUser } from "@/api";
-import { setSecureValue, getSecureValue, removeSecureValue } from "@/utils/secure-storage";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { initializeAuth, loginUser, registerUser, resetPassword as resetPasswordAction, logoutUser, handleAuthStateChange } from "@/store/slices/authSlice";
 
 type User = AuthUser;
 

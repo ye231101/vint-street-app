@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { authService } from '@/api';
 import type { AuthUser } from '@/api';
-import { setSecureValue, getSecureValue, removeSecureValue } from '@/utils/secure-storage';
+import { authService } from '@/api';
+import { getSecureValue, removeSecureValue, setSecureValue } from '@/utils/storage';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const KEY_TOKEN = "TOKEN";
 const KEY_USER_DATA = "USER_DATA";
