@@ -6,15 +6,10 @@ import React, {
   useEffect,
   useState
 } from "react";
+import { authService } from "@/api";
+import type { AuthUser } from "@/api";
 
-type User = {
-  id: string;
-  username: string;
-  email?: string;
-  firstName?: string;
-  lastName?: string;
-  shopName?: string;
-};
+type User = AuthUser;
 
 type RegisterData = {
   firstName?: string;
@@ -35,13 +30,13 @@ type AuthContextProps = {
   user: User | null;
   loading: boolean;
   error?: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   register: (
     username: string,
     email: string,
     password: string,
     data: RegisterData
-  ) => Promise<void>;
+  ) => Promise<{ requiresVerification: boolean } | undefined>;
   resetPassword: (email: string) => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -74,44 +69,101 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const checkAuthStatus = async () => {
       setLoading(true);
       try {
-        const token = await getValueFor(KEY_TOKEN);
-        setIsAuthenticated(!!token);
-
-        if (token) {
-          router.replace("/(tabs)");
+        // Check for existing session with Supabase
+        const { session, error } = await authService.getSession();
+        
+        if (session && !error) {
+          const { user: currentUser } = await authService.getCurrentUser();
+          if (currentUser) {
+            setUser(currentUser);
+            setIsAuthenticated(true);
+            await setValueFor(KEY_TOKEN, session.access_token);
+            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+            router.replace("/(tabs)");
+          } else {
+            setIsAuthenticated(false);
+            router.replace("/(auth)");
+          }
         } else {
+          setIsAuthenticated(false);
           router.replace("/(auth)");
         }
       } catch (e) {
         setIsAuthenticated(false);
+        router.replace("/(auth)");
       } finally {
         setLoading(false);
       }
     };
+    
     checkAuthStatus();
-  }, [isAuthenticated]);
 
-  const login = async (username: string, password: string) => {
+    // Listen to auth state changes (handles email confirmation links)
+    const { data: authListener } = authService.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth event:', event, 'Session:', !!session);
+        
+        if (event === 'SIGNED_IN' && session) {
+          const { user: currentUser } = await authService.getCurrentUser();
+          if (currentUser) {
+            setUser(currentUser);
+            setIsAuthenticated(true);
+            await setValueFor(KEY_TOKEN, session.access_token);
+            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+            
+            // Auto-redirect to main app after email confirmation
+            router.replace("/(tabs)");
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setIsAuthenticated(false);
+          await removeValueFor(KEY_TOKEN);
+          await removeValueFor(KEY_USER_DATA);
+        } else if (event === 'USER_UPDATED' && session) {
+          // Handle email confirmation
+          const { user: currentUser } = await authService.getCurrentUser();
+          if (currentUser) {
+            setUser(currentUser);
+            setIsAuthenticated(true);
+            await setValueFor(KEY_TOKEN, session.access_token);
+            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+          }
+        }
+      }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
+
+  const login = async (email: string, password: string) => {
     if (loading) return;
     setLoading(true);
     setError(null);
     try {
-      if (username.trim().length === 0 || password.trim().length < 6) {
-        setError("Invalid username or password");
+      if (email.trim().length === 0 || password.trim().length < 6) {
+        setError("Invalid email or password");
         return;
       }
 
-      const mockUser: User = {
-        id: "1",
-        username,
-        email: `${username}@example.com`,
-      };
-      await setValueFor(KEY_USER_DATA, JSON.stringify(mockUser));
-      await setValueFor(KEY_TOKEN, "mock-token");
-      setUser(mockUser);
+      // Sign in with email and password using Supabase
+      const { user: authUser, session, error: authError } = await authService.signIn({
+        email,
+        password,
+      });
+
+      if (authError || !authUser || !session) {
+        setError(authError || "Login failed");
+        return;
+      }
+
+      await setValueFor(KEY_USER_DATA, JSON.stringify(authUser));
+      await setValueFor(KEY_TOKEN, session.access_token);
+      setUser(authUser);
       setIsAuthenticated(true);
     } catch (e) {
-      setError("Login failed");
+      setError(e instanceof Error ? e.message : "Login failed");
     } finally {
       setLoading(false);
     }
@@ -135,20 +187,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setError("Invalid registration data");
         return;
       }
-      const mockUser: User = {
-        id: "1",
-        username,
+
+      const { user: authUser, session, error: authError } = await authService.signUp({
         email,
+        password,
+        username,
+        full_name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
         firstName: data.firstName,
         lastName: data.lastName,
         shopName: data.shopName,
-      };
-      await setValueFor(KEY_USER_DATA, JSON.stringify(mockUser));
-      await setValueFor(KEY_TOKEN, "mock-token");
-      setUser(mockUser);
-      setIsAuthenticated(true);
+        address1: data.address1,
+        address2: data.address2,
+        city: data.city,
+        postcode: data.postcode,
+        country: data.country,
+        state: data.state,
+        phone: data.phone,
+        termsAccepted: data.termsAccepted,
+      });
+
+      if (authError || !authUser) {
+        setError(authError || "Registration failed");
+        return;
+      }
+
+      // Check if email confirmation is required (no session means confirmation needed)
+      if (session) {
+        // Auto-confirmed - sign in immediately
+        await setValueFor(KEY_USER_DATA, JSON.stringify(authUser));
+        await setValueFor(KEY_TOKEN, session.access_token);
+        setUser(authUser);
+        setIsAuthenticated(true);
+        return { requiresVerification: false };
+      } else {
+        // Email confirmation required - redirect to OTP screen
+        return { requiresVerification: true };
+      }
     } catch (e) {
-      setError("Registration failed");
+      setError(e instanceof Error ? e.message : "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -158,13 +234,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (loading) return;
     setLoading(true);
     setError(null);
+    
     try {
       if (email.trim().length === 0) {
         setError("Email is required");
         return;
       }
+
+      const { error: resetError, success } = await authService.resetPassword(email);
+
+      if (resetError || !success) {
+        setError(resetError || "Failed to send reset email");
+        return;
+      }
+
+      setError(null);
     } catch (e) {
-      setError("Failed to send reset email");
+      setError(e instanceof Error ? e.message : "Failed to send reset email");
     } finally {
       setLoading(false);
     }
@@ -173,11 +259,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     if (loading) return;
     setLoading(true);
+    setError(null);
+    
     try {
+      // Sign out from Supabase (ends session on server)
+      const { error: signOutError } = await authService.signOut();
+      
+      if (signOutError) {
+        console.error("Supabase sign out error:", signOutError);
+        setError(signOutError);
+        // Continue with local cleanup even if server signout fails
+      }
+
+      // Clear local storage
+      await removeValueFor(KEY_TOKEN);
+      await removeValueFor(KEY_USER_DATA);
+      
+      // Clear auth state
+      setUser(null);
+      setIsAuthenticated(false);
+      
+      // Navigate to login screen
+      router.replace("/(auth)");
+    } catch (e) {
+      console.error("Logout error:", e);
+      setError(e instanceof Error ? e.message : "Logout failed");
+      
+      // Still clear local data even if there's an error
       await removeValueFor(KEY_TOKEN);
       await removeValueFor(KEY_USER_DATA);
       setUser(null);
       setIsAuthenticated(false);
+      router.replace("/(auth)");
     } finally {
       setLoading(false);
     }
