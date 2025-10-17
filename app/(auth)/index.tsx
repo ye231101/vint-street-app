@@ -15,12 +15,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function IndexScreen() {
   const router = useRouter();
   const { login, loading, error } = useAuth();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
 
   const onSubmit = async () => {
-    await login(username, password);
+    await login(email, password);
   };
 
   return (
@@ -93,14 +93,15 @@ export default function IndexScreen() {
                 }}
               >
                 <Text style={{ marginRight: 8 }}>
-                  <Feather name="user" size={24} color="black" />
+                  <Feather name="mail" size={24} color="black" />
                 </Text>
                 <TextInput
-                  placeholder="Username"
-                  value={username}
-                  onChangeText={setUsername}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  keyboardType="email-address"
                   style={{
                     flex: 1,
                     fontFamily: "Poppins-Regular",

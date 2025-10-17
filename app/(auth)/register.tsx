@@ -136,7 +136,7 @@ export default function RegisterScreen() {
     }
 
     if (validateForm()) {
-      await register(
+      const result = await register(
         formData.username,
         formData.email,
         formData.password,
@@ -155,7 +155,16 @@ export default function RegisterScreen() {
         }
       );
 
-      if (error) {
+      // If registration requires email verification, navigate to check-email screen
+      if (result?.requiresVerification) {
+        router.replace({
+          pathname: "/(auth)/check-email",
+          params: { 
+            email: formData.email,
+            password: formData.password, // Pass password so we can auto-login after confirmation
+          },
+        });
+      } else if (error) {
         Alert.alert("Registration Failed", error);
       }
     }

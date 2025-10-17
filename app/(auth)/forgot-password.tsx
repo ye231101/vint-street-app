@@ -37,8 +37,8 @@ export default function ForgotPasswordScreen() {
     setEmailError(undefined);
     await resetPassword(email);
 
-    if (error) {
-      Alert.alert("Reset Failed", error);
+    if (!error) {
+      setIsSuccess(true);
     }
   };
 
@@ -83,10 +83,35 @@ export default function ForgotPasswordScreen() {
                   textAlign: "center",
                   color: "#666",
                   lineHeight: 24,
+                  marginBottom: 8,
+                }}
+              >
+                We've sent a password reset link to:
+              </Text>
+              
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontFamily: "Poppins-SemiBold",
+                  textAlign: "center",
+                  color: "#000",
+                  marginBottom: 24,
+                }}
+              >
+                {email}
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: "Poppins-Regular",
+                  textAlign: "center",
+                  color: "#666",
+                  lineHeight: 20,
                   marginBottom: 32,
                 }}
               >
-                If this email is registered, you will receive a password reset link shortly. Please check your inbox and spam folder.
+                Please check your inbox and spam folder. Click the link in the email to reset your password.
               </Text>
 
               {/* Return to Login Button */}
