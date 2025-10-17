@@ -3,13 +3,12 @@ import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  Alert,
   Image,
   Pressable,
   ScrollView,
   Text,
   TextInput,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -56,8 +55,12 @@ export default function ForgotPasswordScreen() {
           contentContainerStyle={{ flexGrow: 1, padding: 24 }}
           showsVerticalScrollIndicator={false}
         >
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View style={{ width: "100%", maxWidth: 520, alignItems: "center" }}>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <View
+              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
+            >
               {/* Success Icon */}
               <View style={{ marginBottom: 24 }}>
                 <Feather name="check-circle" size={80} color="#4CAF50" />
@@ -88,7 +91,7 @@ export default function ForgotPasswordScreen() {
               >
                 We've sent a password reset link to:
               </Text>
-              
+
               <Text
                 style={{
                   fontSize: 17,
@@ -111,7 +114,8 @@ export default function ForgotPasswordScreen() {
                   marginBottom: 32,
                 }}
               >
-                Please check your inbox and spam folder. Click the link in the email to reset your password.
+                Please check your inbox and spam folder. Click the link in the
+                email to reset your password.
               </Text>
 
               {/* Return to Login Button */}
@@ -152,13 +156,15 @@ export default function ForgotPasswordScreen() {
       >
         <View style={{ flex: 1 }}>
           {/* Header */}
-          <View style={{ 
-            flexDirection: "row", 
-            alignItems: "center", 
-            marginBottom: 20,
-            width: "100%",
-            paddingTop: 10,
-          }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginBottom: 20,
+              width: "100%",
+              paddingTop: 10,
+            }}
+          >
             <Pressable onPress={() => router.back()} hitSlop={8}>
               <Feather name="arrow-left" size={24} color="black" />
             </Pressable>
@@ -175,8 +181,12 @@ export default function ForgotPasswordScreen() {
             </Text>
           </View>
 
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View style={{ width: "100%", maxWidth: 520, alignItems: "center" }}>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <View
+              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
+            >
               {/* Logo */}
               <View style={{ alignItems: "center", marginBottom: 30 }}>
                 <Image
@@ -197,85 +207,88 @@ export default function ForgotPasswordScreen() {
                 Forgot your password?
               </Text>
 
-            {/* Description */}
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                textAlign: "center",
-                color: "#666",
-                lineHeight: 24,
-                marginBottom: 32,
-              }}
-            >
-              Enter your email address and we'll send you instructions to reset your password.
-            </Text>
-
-            {/* Error message */}
-            {error && (
-              <View
+              {/* Description */}
+              <Text
                 style={{
-                  backgroundColor: "#ffe5e5",
-                  borderColor: "#ff9c9c",
-                  borderWidth: 1,
-                  padding: 10,
-                  borderRadius: 8,
-                  marginBottom: 16,
-                  width: "100%",
-                }}
-              >
-                <Text
-                  style={{ fontFamily: "Poppins-Regular", color: "#b00020" }}
-                >
-                  {error}
-                </Text>
-              </View>
-            )}
-
-            {/* Email Input Field */}
-            <View style={{ width: "100%", marginBottom: 24 }}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  borderColor: emailError ? "#ff6b6b" : "#e0e0e0",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 12,
-                  height: 52,
-                  backgroundColor: "#fff",
-                }}
-              >
-                <Text style={{ marginRight: 8 }}>
-                  <Feather name="mail" size={24} color="black" />
-                </Text>
-                <TextInput
-                  placeholder="Email"
-                  value={email}
-                  onChangeText={handleEmailChange}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  style={{
-                    flex: 1,
-                    fontFamily: "Poppins-Regular",
-                    fontSize: 16,
-                    height: 52,
-                    textAlignVertical: "center",
-                  }}
-                />
-              </View>
-              {emailError && (
-                <Text style={{ 
-                  color: "#ff6b6b", 
-                  fontSize: 12, 
-                  marginTop: 4,
+                  fontSize: 16,
                   fontFamily: "Poppins-Regular",
-                }}>
-                  {emailError}
-                </Text>
+                  textAlign: "center",
+                  color: "#666",
+                  lineHeight: 24,
+                  marginBottom: 32,
+                }}
+              >
+                Enter your email address and we'll send you instructions to
+                reset your password.
+              </Text>
+
+              {/* Error message */}
+              {error && (
+                <View
+                  style={{
+                    backgroundColor: "#ffe5e5",
+                    borderColor: "#ff9c9c",
+                    borderWidth: 1,
+                    padding: 10,
+                    borderRadius: 8,
+                    marginBottom: 16,
+                    width: "100%",
+                  }}
+                >
+                  <Text
+                    style={{ fontFamily: "Poppins-Regular", color: "#b00020" }}
+                  >
+                    {error}
+                  </Text>
+                </View>
               )}
-            </View>
+
+              {/* Email Input Field */}
+              <View style={{ width: "100%", marginBottom: 24 }}>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    borderColor: emailError ? "#ff6b6b" : "#e0e0e0",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: 12,
+                    height: 52,
+                    backgroundColor: "#fff",
+                  }}
+                >
+                  <Text style={{ marginRight: 8 }}>
+                    <Feather name="mail" size={24} color="black" />
+                  </Text>
+                  <TextInput
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={{
+                      flex: 1,
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 16,
+                      height: 52,
+                      textAlignVertical: "center",
+                    }}
+                  />
+                </View>
+                {emailError && (
+                  <Text
+                    style={{
+                      color: "#ff6b6b",
+                      fontSize: 12,
+                      marginTop: 4,
+                      fontFamily: "Poppins-Regular",
+                    }}
+                  >
+                    {emailError}
+                  </Text>
+                )}
+              </View>
 
               {/* Reset Password Button */}
               <Pressable

@@ -1,14 +1,14 @@
-import { supabase } from '../config/supabase';
+import { supabase } from "../config/supabase";
 import {
   AuthResponse,
-  SignUpData,
-  SignInData,
   PasswordResetResponse,
+  ResendOTPResponse,
+  SignInData,
+  SignUpData,
   VerifyOTPData,
   VerifyOTPResponse,
-  ResendOTPResponse,
   mapSupabaseUserToAuthUser,
-} from '../types/auth.types';
+} from "../types/auth.types";
 
 /**
  * Auth Service
@@ -29,7 +29,7 @@ class AuthService {
         password,
         options: {
           data: {
-            username: username || email.split('@')[0],
+            username: username || email.split("@")[0],
             full_name,
             ...additionalData,
           },
@@ -53,7 +53,7 @@ class AuthService {
       return {
         user: null,
         session: null,
-        error: error instanceof Error ? error.message : 'Sign up failed',
+        error: error instanceof Error ? error.message : "Sign up failed",
       };
     }
   }
@@ -89,7 +89,7 @@ class AuthService {
       return {
         user: null,
         session: null,
-        error: error instanceof Error ? error.message : 'Sign in failed',
+        error: error instanceof Error ? error.message : "Sign in failed",
       };
     }
   }
@@ -109,7 +109,7 @@ class AuthService {
       return { error: null };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Sign out failed',
+        error: error instanceof Error ? error.message : "Sign out failed",
       };
     }
   }
@@ -137,7 +137,7 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Password reset failed',
+        error: error instanceof Error ? error.message : "Password reset failed",
         success: false,
       };
     }
@@ -159,7 +159,7 @@ class AuthService {
     } catch (error) {
       return {
         session: null,
-        error: error instanceof Error ? error.message : 'Failed to get session',
+        error: error instanceof Error ? error.message : "Failed to get session",
       };
     }
   }
@@ -183,7 +183,7 @@ class AuthService {
     } catch (error) {
       return {
         user: null,
-        error: error instanceof Error ? error.message : 'Failed to get user',
+        error: error instanceof Error ? error.message : "Failed to get user",
       };
     }
   }
@@ -220,7 +220,8 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'OTP verification failed',
+        error:
+          error instanceof Error ? error.message : "OTP verification failed",
         success: false,
         session: null,
         user: null,
@@ -234,7 +235,10 @@ class AuthService {
    * @param type - Type of OTP (signup, email, etc.)
    * @returns ResendOTPResponse
    */
-  async resendOTP(email: string, type: 'signup' | 'email' = 'signup'): Promise<ResendOTPResponse> {
+  async resendOTP(
+    email: string,
+    type: "signup" | "email" = "signup"
+  ): Promise<ResendOTPResponse> {
     try {
       const { error } = await supabase.auth.resend({
         type,
@@ -254,7 +258,7 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Failed to resend OTP',
+        error: error instanceof Error ? error.message : "Failed to resend OTP",
         success: false,
       };
     }
@@ -272,4 +276,3 @@ class AuthService {
 
 export const authService = new AuthService();
 export default authService;
-

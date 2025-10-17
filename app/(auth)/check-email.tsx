@@ -1,23 +1,16 @@
-import Feather from "@expo/vector-icons/Feather";
-import { useRouter, useLocalSearchParams } from "expo-router";
-import React, { useState, useEffect } from "react";
-import {
-  Alert,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { authService } from "@/api";
+import Feather from "@expo/vector-icons/Feather";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CheckEmailScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const email = params.email as string;
   const password = params.password as string; // We'll pass this from registration
-  
+
   const [resendLoading, setResendLoading] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -40,12 +33,12 @@ export default function CheckEmailScreen() {
 
         // First, try to get existing session
         const { session: existingSession } = await authService.getSession();
-        
+
         if (existingSession) {
           // Session exists! User is confirmed
           clearInterval(interval);
           setIsConfirmed(true);
-          
+
           // Auto redirect after 1 second
           setTimeout(() => router.replace("/(tabs)"), 1000);
           return;
@@ -105,9 +98,11 @@ export default function CheckEmailScreen() {
         Alert.alert("Error", error || "Failed to resend confirmation email");
         return;
       }
-
     } catch (e) {
-      Alert.alert("Error", e instanceof Error ? e.message : "Failed to resend email");
+      Alert.alert(
+        "Error",
+        e instanceof Error ? e.message : "Failed to resend email"
+      );
     } finally {
       setResendLoading(false);
     }
@@ -147,8 +142,12 @@ export default function CheckEmailScreen() {
             </Text>
           </View>
 
-          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <View style={{ width: "100%", maxWidth: 520, alignItems: "center" }}>
+          <View
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <View
+              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
+            >
               {/* Logo */}
               <View style={{ alignItems: "center", marginBottom: 30 }}>
                 <Image
@@ -229,7 +228,8 @@ export default function CheckEmailScreen() {
                     lineHeight: 22,
                   }}
                 >
-                  Click the link in the email to confirm your account and get started.
+                  Click the link in the email to confirm your account and get
+                  started.
                 </Text>
               </View>
 
@@ -370,7 +370,8 @@ export default function CheckEmailScreen() {
                       lineHeight: 20,
                     }}
                   >
-                    After clicking the link, return to this screen and you'll be automatically signed in
+                    After clicking the link, return to this screen and you'll be
+                    automatically signed in
                   </Text>
                 </View>
               </View>
@@ -405,7 +406,8 @@ export default function CheckEmailScreen() {
                     lineHeight: 18,
                   }}
                 >
-                  Click the link in your email, then come back to this app. We'll automatically detect your confirmation and sign you in!
+                  Click the link in your email, then come back to this app.
+                  We'll automatically detect your confirmation and sign you in!
                 </Text>
               </View>
 
@@ -453,4 +455,3 @@ export default function CheckEmailScreen() {
     </SafeAreaView>
   );
 }
-

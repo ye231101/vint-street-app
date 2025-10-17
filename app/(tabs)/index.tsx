@@ -1,7 +1,9 @@
+import { typesenseService } from "@/api/services";
 import ArticleCarousel from "@/components/article-carousel";
 import PopularProductsCarousel from "@/components/popular-products-carousel";
-import ProductCard, { Product } from "@/components/product-card";
+import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
+import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -13,12 +15,9 @@ import {
   Pressable,
   ScrollView,
   Text,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { typesenseService } from "@/api/services";
-import { VintStreetListing } from "@/api/types/product.types";
-import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -61,8 +60,6 @@ const trendingProducts = [
     likes: 0,
   },
 ];
-
-
 
 const brands = [
   {
@@ -204,10 +201,15 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { items: recentlyViewedItems, isInitialized: recentlyViewedInitialized } = useRecentlyViewed();
+  const {
+    items: recentlyViewedItems,
+    isInitialized: recentlyViewedInitialized,
+  } = useRecentlyViewed();
   const [trendingProductsData, setTrendingProductsData] = useState<any[]>([]);
   const [isLoadingTrending, setIsLoadingTrending] = useState(true);
-  const [recentlyAddedProductsData, setRecentlyAddedProductsData] = useState<any[]>([]);
+  const [recentlyAddedProductsData, setRecentlyAddedProductsData] = useState<
+    any[]
+  >([]);
   const [isLoadingRecentlyAdded, setIsLoadingRecentlyAdded] = useState(true);
   const [indieItemsData, setIndieItemsData] = useState<any[]>([]);
   const [isLoadingIndieItems, setIsLoadingIndieItems] = useState(true);
@@ -223,30 +225,33 @@ export default function HomeScreen() {
     try {
       setIsLoadingTrending(true);
       const response = await typesenseService.getPopularProducts(30);
-      
+
       // Convert Typesense results to carousel format
       const products = response.hits.map((hit) => {
-        const listing = typesenseService.convertToVintStreetListing(hit.document);
-        
+        const listing = typesenseService.convertToVintStreetListing(
+          hit.document
+        );
+
         // Use thumbnail URLs for better performance, fallback to full images
-        const imageUrls = listing.thumbnailImageUrls.length > 0 
-          ? listing.thumbnailImageUrls 
-          : listing.fullImageUrls;
-        
+        const imageUrls =
+          listing.thumbnailImageUrls.length > 0
+            ? listing.thumbnailImageUrls
+            : listing.fullImageUrls;
+
         return {
           id: listing.id,
           name: listing.name,
-          brand: listing.brand || 'No Brand',
+          brand: listing.brand || "No Brand",
           price: `£${listing.price.toFixed(2)}`,
-          images: imageUrls.map(url => ({ uri: url })),
+          images: imageUrls.map((url) => ({ uri: url })),
           likes: listing.favoritesCount,
         };
       });
-      
+
       setTrendingProductsData(products);
       console.log(`Loaded ${products.length} trending products`);
     } catch (error) {
-      console.error('Error fetching trending products:', error);
+      console.error("Error fetching trending products:", error);
       // Keep empty array on error, carousel will show nothing
       setTrendingProductsData([]);
     } finally {
@@ -258,32 +263,35 @@ export default function HomeScreen() {
     try {
       setIsLoadingRecentlyAdded(true);
       const response = await typesenseService.getRecentlyAddedProducts(10);
-      
+
       // Convert Typesense results to product card format
       const products = response.hits.map((hit) => {
-        const listing = typesenseService.convertToVintStreetListing(hit.document);
-        
+        const listing = typesenseService.convertToVintStreetListing(
+          hit.document
+        );
+
         // Use thumbnail URLs for better performance, fallback to full images
-        const imageUrl = listing.thumbnailImageUrls.length > 0 
-          ? listing.thumbnailImageUrls[0] 
-          : listing.fullImageUrls.length > 0 
+        const imageUrl =
+          listing.thumbnailImageUrls.length > 0
+            ? listing.thumbnailImageUrls[0]
+            : listing.fullImageUrls.length > 0
             ? listing.fullImageUrls[0]
             : null;
-        
+
         return {
           id: listing.id,
           name: listing.name,
-          brand: listing.brand || 'No Brand',
+          brand: listing.brand || "No Brand",
           price: `£${listing.price.toFixed(2)}`,
           image: imageUrl ? { uri: imageUrl } : undefined,
           likes: listing.favoritesCount,
         };
       });
-      
+
       setRecentlyAddedProductsData(products);
       console.log(`Loaded ${products.length} recently added products`);
     } catch (error) {
-      console.error('Error fetching recently added products:', error);
+      console.error("Error fetching recently added products:", error);
       // Keep empty array on error
       setRecentlyAddedProductsData([]);
     } finally {
@@ -296,36 +304,41 @@ export default function HomeScreen() {
       setIsLoadingIndieItems(true);
       // Fetch indie items - products where vendor_id is NOT 42 (matching Flutter)
       const response = await typesenseService.search({
-        query: '*',
-        queryBy: 'name,description,short_description,brand,categories,category_slugs',
-        filterBy: 'vendor_id:!=42',
+        query: "*",
+        queryBy:
+          "name,description,short_description,brand,categories,category_slugs",
+        filterBy: "vendor_id:!=42",
         perPage: 10,
         page: 1,
       });
-      
+
       // Convert Typesense results to product card format with additional fields
       const products = response.hits.map((hit) => {
-        const listing = typesenseService.convertToVintStreetListing(hit.document);
-        
+        const listing = typesenseService.convertToVintStreetListing(
+          hit.document
+        );
+
         // Use thumbnail URLs for better performance, fallback to full images
-        const imageUrl = listing.thumbnailImageUrls.length > 0 
-          ? listing.thumbnailImageUrls[0] 
-          : listing.fullImageUrls.length > 0 
+        const imageUrl =
+          listing.thumbnailImageUrls.length > 0
+            ? listing.thumbnailImageUrls[0]
+            : listing.fullImageUrls.length > 0
             ? listing.fullImageUrls[0]
             : null;
-        
+
         // Get first available size
-        const size = listing.attributes.pa_size && listing.attributes.pa_size.length > 0 
-          ? listing.attributes.pa_size[0] 
-          : undefined;
-        
+        const size =
+          listing.attributes.pa_size && listing.attributes.pa_size.length > 0
+            ? listing.attributes.pa_size[0]
+            : undefined;
+
         // Calculate protection fee (example: 7.2% of price, matching typical marketplace fees)
         const protectionFee = (listing.price * 0.072).toFixed(2);
-        
+
         return {
           id: listing.id,
           name: listing.name,
-          brand: listing.brand || 'No Brand',
+          brand: listing.brand || "No Brand",
           price: `£${listing.price.toFixed(2)}`,
           image: imageUrl ? { uri: imageUrl } : undefined,
           likes: listing.favoritesCount,
@@ -333,11 +346,11 @@ export default function HomeScreen() {
           protectionFee: `£${protectionFee}`,
         };
       });
-      
+
       setIndieItemsData(products);
       console.log(`Loaded ${products.length} indie items`);
     } catch (error) {
-      console.error('Error fetching indie items:', error);
+      console.error("Error fetching indie items:", error);
       // Keep empty array on error
       setIndieItemsData([]);
     } finally {
@@ -350,15 +363,15 @@ export default function HomeScreen() {
   };
 
   const handleCategoryPress = (categoryName: string) => {
-    router.push(`/(tabs)/discovery?category=${encodeURIComponent(categoryName)}`);
+    router.push(
+      `/(tabs)/discovery?category=${encodeURIComponent(categoryName)}`
+    );
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Search Bar */}
-      <SearchBar
-        onShoppingCartPress={() => {}}
-      />
+      <SearchBar />
       <ScrollView
         style={{ flex: 1, paddingHorizontal: 8 }}
         showsVerticalScrollIndicator={false}
@@ -421,7 +434,7 @@ export default function HomeScreen() {
               >
                 TRENDING NOW
               </Text>
-              <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+              <View style={{ paddingVertical: 40, alignItems: "center" }}>
                 <ActivityIndicator size="large" color="#000" />
               </View>
             </View>
@@ -448,7 +461,7 @@ export default function HomeScreen() {
                   fontSize: 12,
                   fontFamily: "Poppins-Regular",
                   color: "#666",
-                  textAlign: 'center',
+                  textAlign: "center",
                   paddingVertical: 20,
                 }}
               >
@@ -490,15 +503,15 @@ export default function HomeScreen() {
             </Pressable>
           </View>
           {isLoadingRecentlyAdded ? (
-            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+            <View style={{ paddingVertical: 40, alignItems: "center" }}>
               <ActivityIndicator size="large" color="#000" />
             </View>
           ) : recentlyAddedProductsData.length > 0 ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {recentlyAddedProductsData.map((product) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
+                <ProductCard
+                  key={product.id}
+                  product={product}
                   onPress={() => handleProductPress(product.id)}
                 />
               ))}
@@ -509,7 +522,7 @@ export default function HomeScreen() {
                 fontSize: 12,
                 fontFamily: "Poppins-Regular",
                 color: "#666",
-                textAlign: 'center',
+                textAlign: "center",
                 paddingVertical: 20,
               }}
             >
@@ -763,22 +776,25 @@ export default function HomeScreen() {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {recentlyViewedItems.map((listing) => {
                 // Convert listing to product card format
-                const imageUrl = listing.thumbnailImageUrls.length > 0 
-                  ? listing.thumbnailImageUrls[0] 
-                  : listing.fullImageUrls.length > 0 
+                const imageUrl =
+                  listing.thumbnailImageUrls.length > 0
+                    ? listing.thumbnailImageUrls[0]
+                    : listing.fullImageUrls.length > 0
                     ? listing.fullImageUrls[0]
                     : null;
-                
-                const size = listing.attributes.pa_size && listing.attributes.pa_size.length > 0 
-                  ? listing.attributes.pa_size[0] 
-                  : undefined;
-                
+
+                const size =
+                  listing.attributes.pa_size &&
+                  listing.attributes.pa_size.length > 0
+                    ? listing.attributes.pa_size[0]
+                    : undefined;
+
                 const protectionFee = (listing.price * 0.072).toFixed(2);
-                
+
                 const product = {
                   id: listing.id,
                   name: listing.name,
-                  brand: listing.brand || 'No Brand',
+                  brand: listing.brand || "No Brand",
                   price: `£${listing.price.toFixed(2)}`,
                   image: imageUrl ? { uri: imageUrl } : undefined,
                   likes: listing.favoritesCount,
@@ -832,7 +848,7 @@ export default function HomeScreen() {
             </Pressable>
           </View>
           {isLoadingIndieItems ? (
-            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+            <View style={{ paddingVertical: 40, alignItems: "center" }}>
               <ActivityIndicator size="large" color="#000" />
             </View>
           ) : indieItemsData.length > 0 ? (
@@ -853,7 +869,7 @@ export default function HomeScreen() {
                 fontSize: 12,
                 fontFamily: "Poppins-Regular",
                 color: "#666",
-                textAlign: 'center',
+                textAlign: "center",
                 paddingVertical: 20,
               }}
             >

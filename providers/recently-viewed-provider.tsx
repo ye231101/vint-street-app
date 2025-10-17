@@ -3,9 +3,19 @@
  * Tracks and manages recently viewed products
  */
 
-import { VintStreetListing } from '@/api/types/product.types';
-import { getSecureValue, removeSecureValue, setSecureValue } from '@/utils/storage';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { VintStreetListing } from "@/api/types/product.types";
+import {
+  getSecureValue,
+  removeSecureValue,
+  setSecureValue,
+} from "@/utils/storage";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface RecentlyViewedContextType {
   items: VintStreetListing[];
@@ -15,12 +25,18 @@ interface RecentlyViewedContextType {
   removeProduct: (productId: number) => Promise<void>;
 }
 
-const RecentlyViewedContext = createContext<RecentlyViewedContextType | undefined>(undefined);
+const RecentlyViewedContext = createContext<
+  RecentlyViewedContextType | undefined
+>(undefined);
 
-const STORAGE_KEY = 'recently_viewed_products';
+const STORAGE_KEY = "recently_viewed_products";
 const MAX_ITEMS = 50; // Maximum number of items to store
 
-export function RecentlyViewedProvider({ children }: { children: React.ReactNode }) {
+export function RecentlyViewedProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [items, setItems] = useState<VintStreetListing[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -44,7 +60,7 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
       }
       setIsInitialized(true);
     } catch (error) {
-      console.error('Error loading recently viewed products:', error);
+      console.error("Error loading recently viewed products:", error);
       setIsInitialized(true);
     }
   };
@@ -53,7 +69,7 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
     try {
       await setSecureValue(STORAGE_KEY, JSON.stringify(products));
     } catch (error) {
-      console.error('Error saving recently viewed products:', error);
+      console.error("Error saving recently viewed products:", error);
     }
   };
 
@@ -61,16 +77,16 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
     setItems((prevItems) => {
       // Remove the product if it already exists (to move it to the front)
       const filtered = prevItems.filter((item) => item.id !== product.id);
-      
+
       // Add the new product at the beginning
       const newItems = [product, ...filtered];
-      
+
       // Limit to MAX_ITEMS
       const limited = newItems.slice(0, MAX_ITEMS);
-      
+
       // Save to storage
       saveToStorage(limited);
-      
+
       return limited;
     });
   }, []);
@@ -88,7 +104,7 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
     try {
       await removeSecureValue(STORAGE_KEY);
     } catch (error) {
-      console.error('Error clearing recently viewed products:', error);
+      console.error("Error clearing recently viewed products:", error);
     }
   }, []);
 
@@ -110,8 +126,9 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
 export function useRecentlyViewed() {
   const context = useContext(RecentlyViewedContext);
   if (context === undefined) {
-    throw new Error('useRecentlyViewed must be used within a RecentlyViewedProvider');
+    throw new Error(
+      "useRecentlyViewed must be used within a RecentlyViewedProvider"
+    );
   }
   return context;
 }
-

@@ -136,9 +136,9 @@ export default function IndexScreen() {
                   secureTextEntry={secure}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  style={{ 
-                    flex: 1, 
-                    fontFamily: "Poppins-Regular", 
+                  style={{
+                    flex: 1,
+                    fontFamily: "Poppins-Regular",
                     fontSize: 16,
                     height: 52,
                     textAlignVertical: "center",

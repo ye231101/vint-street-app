@@ -4,20 +4,19 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export interface Database {
   public: {
     Tables: {
       // Define your database tables here as you create them
-      [key: string]: any
-    }
+      [key: string]: any;
+    };
     Views: {
-      [key: string]: any
-    }
+      [key: string]: any;
+    };
     Functions: {
-      [key: string]: any
-    }
-  }
+      [key: string]: any;
+    };
+  };
 }
-

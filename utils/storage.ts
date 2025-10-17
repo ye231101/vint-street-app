@@ -3,14 +3,17 @@
  * Shared functions for storage operations using @react-native-async-storage/async-storage
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /**
  * Set a value in storage
  * @param key - The key to store the value under
  * @param value - The value to store
  */
-export async function setSecureValue(key: string, value: string): Promise<void> {
+export async function setSecureValue(
+  key: string,
+  value: string
+): Promise<void> {
   await AsyncStorage.setItem(key, value);
 }
 

@@ -8,7 +8,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -67,8 +67,12 @@ export default function SellerDashboardScreen() {
   const [error, setError] = useState<string | null>(null);
   const [reportsData, setReportsData] = useState<ReportsData | null>(null);
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
-  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(null);
-  const [topSellingProducts, setTopSellingProducts] = useState<TopSellingProduct[]>([]);
+  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(
+    null
+  );
+  const [topSellingProducts, setTopSellingProducts] = useState<
+    TopSellingProduct[]
+  >([]);
   const [selectedPeriod, setSelectedPeriod] = useState("week");
 
   const periodOptions = [
@@ -85,15 +89,15 @@ export default function SellerDashboardScreen() {
   const loadDashboardData = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock data - replace with actual data fetching
       const mockReportsData: ReportsData = {
         summary: {
-          totalSales: 1250.50,
+          totalSales: 1250.5,
           formattedTotalSales: "£1,250.50",
           totalOrders: 15,
           pageviews: 1250,
@@ -105,7 +109,7 @@ export default function SellerDashboardScreen() {
           pendingOrders: 2,
           cancelledOrders: 1,
           refundedOrders: 0,
-        }
+        },
       };
 
       const mockRecentOrders: RecentOrder[] = [
@@ -115,16 +119,16 @@ export default function SellerDashboardScreen() {
           status: "processing",
           total: 89.99,
           formattedTotal: "£89.99",
-          dateCreated: "2024-01-15T10:30:00Z"
+          dateCreated: "2024-01-15T10:30:00Z",
         },
         {
-          id: "2", 
+          id: "2",
           number: "#1002",
           status: "completed",
-          total: 125.50,
+          total: 125.5,
           formattedTotal: "£125.50",
-          dateCreated: "2024-01-14T14:20:00Z"
-        }
+          dateCreated: "2024-01-14T14:20:00Z",
+        },
       ];
 
       const mockSellerSettings: SellerSettings = {
@@ -134,14 +138,14 @@ export default function SellerDashboardScreen() {
         email: "john@vintagestreet.com",
         phone: "+1234567890",
         address: {
-          fullAddress: "123 Vintage Lane, London, UK"
+          fullAddress: "123 Vintage Lane, London, UK",
         },
         gravatar: "",
         trusted: true,
         rating: {
           rating: 4.8,
-          count: 127
-        }
+          count: 127,
+        },
       };
 
       const mockTopProducts: TopSellingProduct[] = [
@@ -149,16 +153,16 @@ export default function SellerDashboardScreen() {
           id: "1",
           title: "Vintage Nike Air Max",
           soldQty: 25,
-          formattedSoldQty: "25"
+          formattedSoldQty: "25",
         },
         {
           id: "2",
           title: "Retro Adidas Jacket",
           soldQty: 18,
-          formattedSoldQty: "18"
-        }
+          formattedSoldQty: "18",
+        },
       ];
-      
+
       setReportsData(mockReportsData);
       setRecentOrders(mockRecentOrders);
       setSellerSettings(mockSellerSettings);
@@ -181,7 +185,7 @@ export default function SellerDashboardScreen() {
   };
 
   const navigateToEditProduct = (productId: string) => {
-    router.push(`/sell/edit/${productId}`);
+    // router.push(`/sell/edit/${productId}`);
   };
 
   const StatsCard = ({
@@ -228,13 +232,17 @@ export default function SellerDashboardScreen() {
 
     const summary = reportsData.summary;
     const statusItems = [
-      { label: "Processing", count: summary.processingOrders, color: "#007AFF" },
+      {
+        label: "Processing",
+        count: summary.processingOrders,
+        color: "#007AFF",
+      },
       { label: "Completed", count: summary.completedOrders, color: "#34C759" },
       { label: "On Hold", count: summary.onHoldOrders, color: "#FF9500" },
       { label: "Pending", count: summary.pendingOrders, color: "#FFCC00" },
       { label: "Cancelled", count: summary.cancelledOrders, color: "#FF3B30" },
       { label: "Refunded", count: summary.refundedOrders, color: "#AF52DE" },
-    ].filter(item => item.count > 0);
+    ].filter((item) => item.count > 0);
 
     if (statusItems.length === 0) {
       return (
@@ -294,7 +302,7 @@ export default function SellerDashboardScreen() {
             {summary.totalOrders} Total
           </Text>
         </View>
-        
+
         {statusItems.map((item, index) => (
           <View
             key={index}
@@ -375,7 +383,7 @@ export default function SellerDashboardScreen() {
                 {index + 1}
               </Text>
             </View>
-            
+
             <View style={{ flex: 1 }}>
               <Text
                 style={{
@@ -397,7 +405,7 @@ export default function SellerDashboardScreen() {
                 Sold: {product.formattedSoldQty}
               </Text>
             </View>
-            
+
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 onPress={() => navigateToEditProduct(product.id)}
@@ -528,7 +536,7 @@ export default function SellerDashboardScreen() {
           >
             <Feather name="shopping-bag" color="#fff" size={25} />
           </View>
-          
+
           <View style={{ flex: 1 }}>
             <Text
               style={{
@@ -550,7 +558,7 @@ export default function SellerDashboardScreen() {
               {sellerSettings.firstName} {sellerSettings.lastName}
             </Text>
           </View>
-          
+
           {sellerSettings.trusted && (
             <View style={{ alignItems: "center" }}>
               <Feather name="check-circle" color="#34C759" size={20} />
@@ -567,7 +575,7 @@ export default function SellerDashboardScreen() {
             </View>
           )}
         </View>
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -575,7 +583,13 @@ export default function SellerDashboardScreen() {
           }}
         >
           <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
               <Feather name="mail" color="#999" size={16} />
               <Text
                 style={{
@@ -599,9 +613,15 @@ export default function SellerDashboardScreen() {
               {sellerSettings.email}
             </Text>
           </View>
-          
+
           <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
               <Feather name="phone" color="#999" size={16} />
               <Text
                 style={{
@@ -626,8 +646,14 @@ export default function SellerDashboardScreen() {
             </Text>
           </View>
         </View>
-        
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 8,
+          }}
+        >
           <Feather name="map-pin" color="#999" size={16} />
           <Text
             style={{
@@ -651,7 +677,7 @@ export default function SellerDashboardScreen() {
         >
           {sellerSettings.address.fullAddress || "Not provided"}
         </Text>
-        
+
         {sellerSettings.rating.count > 0 && (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Feather name="star" color="#999" size={16} />
@@ -673,7 +699,8 @@ export default function SellerDashboardScreen() {
                 marginLeft: 8,
               }}
             >
-              {sellerSettings.rating.rating} ({sellerSettings.rating.count} reviews)
+              {sellerSettings.rating.rating} ({sellerSettings.rating.count}{" "}
+              reviews)
             </Text>
           </View>
         )}
@@ -685,7 +712,7 @@ export default function SellerDashboardScreen() {
     if (!reportsData?.summary) return null;
 
     const summary = reportsData.summary;
-    
+
     return (
       <View
         style={{
@@ -721,7 +748,7 @@ export default function SellerDashboardScreen() {
               {summary.formattedTotalSales}
             </Text>
           </View>
-          
+
           <View
             style={{
               flexDirection: "row",
@@ -748,7 +775,7 @@ export default function SellerDashboardScreen() {
               {summary.formattedSellerBalance}
             </Text>
           </View>
-          
+
           <View
             style={{
               flexDirection: "row",
@@ -776,7 +803,7 @@ export default function SellerDashboardScreen() {
             </Text>
           </View>
         </View>
-        
+
         <View
           style={{
             height: 1,
@@ -784,7 +811,7 @@ export default function SellerDashboardScreen() {
             marginVertical: 12,
           }}
         />
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -991,7 +1018,7 @@ export default function SellerDashboardScreen() {
             Alert.alert(
               "Select Period",
               "Choose a time period",
-              periodOptions.map(option => ({
+              periodOptions.map((option) => ({
                 text: option.label,
                 onPress: () => changePeriod(option.value),
               }))
@@ -1059,7 +1086,7 @@ export default function SellerDashboardScreen() {
                   fontFamily: "Poppins-Bold",
                 }}
               >
-                {periodOptions.find(p => p.value === selectedPeriod)?.label}
+                {periodOptions.find((p) => p.value === selectedPeriod)?.label}
               </Text>
             </View>
           </View>
@@ -1081,7 +1108,7 @@ export default function SellerDashboardScreen() {
               value={reportsData?.summary?.totalOrders?.toString() || "0"}
             />
           </View>
-          
+
           <View
             style={{
               flexDirection: "row",
@@ -1170,7 +1197,10 @@ export default function SellerDashboardScreen() {
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    Alert.alert("Edit Profile", "This would navigate to profile editing");
+                    Alert.alert(
+                      "Edit Profile",
+                      "This would navigate to profile editing"
+                    );
                   }}
                 >
                   <Text

@@ -10,7 +10,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -18,16 +18,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Basket, BasketItem, Vendor } from "@/providers/basket-provider";
 
 export default function BasketScreen() {
-  const { basket, isLoading, error, removeFromBasket, updateQuantity, clearBasket } = useBasket();
+  const {
+    basket,
+    isLoading,
+    error,
+    removeFromBasket,
+    updateQuantity,
+    clearBasket,
+  } = useBasket();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
 
   // Basket data is managed by the provider
 
-
   const refreshBasket = async () => {
     if (isRefreshing) return;
-    
+
     setIsRefreshing(true);
     try {
       // Basket data is managed by the provider, no need to reload
@@ -53,7 +59,12 @@ export default function BasketScreen() {
     router.push("/checkout");
   };
 
-  const VendorItemsSection = ({ vendor, items, onQuantityChanged, onRemove }: {
+  const VendorItemsSection = ({
+    vendor,
+    items,
+    onQuantityChanged,
+    onRemove,
+  }: {
     vendor: Vendor;
     items: BasketItem[];
     onQuantityChanged: (item: BasketItem, quantity: number) => void;
@@ -100,7 +111,7 @@ export default function BasketScreen() {
             color: "#666",
           }}
         >
-          {vendor.itemCount} item{vendor.itemCount !== 1 ? 's' : ''}
+          {vendor.itemCount} item{vendor.itemCount !== 1 ? "s" : ""}
         </Text>
       </View>
 
@@ -203,7 +214,7 @@ export default function BasketScreen() {
               >
                 <Feather name="minus" color="#333" size={16} />
               </TouchableOpacity>
-              
+
               <Text
                 style={{
                   fontSize: 16,
@@ -216,7 +227,7 @@ export default function BasketScreen() {
               >
                 {item.quantity}
               </Text>
-              
+
               <TouchableOpacity
                 onPress={() => onQuantityChanged(item, item.quantity + 1)}
                 style={{
@@ -232,7 +243,7 @@ export default function BasketScreen() {
               </TouchableOpacity>
             </View>
           </View>
-          
+
           {index < items.length - 1 && (
             <View
               style={{
@@ -279,7 +290,7 @@ export default function BasketScreen() {
             £0.00
           </Text>
         </View>
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -306,7 +317,7 @@ export default function BasketScreen() {
             £0.00
           </Text>
         </View>
-        
+
         <View
           style={{
             height: 1,
@@ -314,7 +325,7 @@ export default function BasketScreen() {
             marginVertical: 8,
           }}
         />
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -341,7 +352,7 @@ export default function BasketScreen() {
             £0.00
           </Text>
         </View>
-        
+
         <TouchableOpacity
           style={{
             backgroundColor: "#000",
@@ -400,7 +411,7 @@ export default function BasketScreen() {
           {basket.formattedSubtotal}
         </Text>
       </View>
-      
+
       <View
         style={{
           flexDirection: "row",
@@ -424,10 +435,10 @@ export default function BasketScreen() {
             color: "#333",
           }}
         >
-                {basket.formattedTotalProtectionFee}
+          {basket.formattedTotalProtectionFee}
         </Text>
       </View>
-      
+
       <View
         style={{
           height: 1,
@@ -435,7 +446,7 @@ export default function BasketScreen() {
           marginVertical: 12,
         }}
       />
-      
+
       <View
         style={{
           flexDirection: "row",
@@ -750,7 +761,9 @@ export default function BasketScreen() {
                 key={vendorId}
                 vendor={basket.vendors[vendorId]}
                 items={basket.vendorItems[vendorId] || []}
-                onQuantityChanged={(item, quantity) => handleUpdateQuantity(item.id, quantity)}
+                onQuantityChanged={(item, quantity) =>
+                  handleUpdateQuantity(item.id, quantity)
+                }
                 onRemove={(item) => handleRemoveItem(item.id)}
               />
             ))}

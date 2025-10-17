@@ -55,10 +55,10 @@ export default function CheckoutScreen() {
   const [subtotal, setSubtotal] = useState(0);
   const [protectionFee, setProtectionFee] = useState(0);
   const [total, setTotal] = useState(0);
-  
+
   // Step completion tracking
   const [stepCompleted, setStepCompleted] = useState([false, false, false]);
-  
+
   // Form states
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: "",
@@ -72,7 +72,7 @@ export default function CheckoutScreen() {
     postcode: "",
     country: "United Kingdom",
   });
-  
+
   const [billingAddress, setBillingAddress] = useState<BillingAddress>({
     firstName: "",
     lastName: "",
@@ -85,7 +85,7 @@ export default function CheckoutScreen() {
     postcode: "",
     country: "United Kingdom",
   });
-  
+
   const [isBillingDifferent, setIsBillingDifferent] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardDetails, setCardDetails] = useState({
@@ -107,7 +107,7 @@ export default function CheckoutScreen() {
 
   const loadCheckoutData = async () => {
     setIsLoading(true);
-    
+
     try {
       // Mock data - replace with actual data fetching
       const mockItems: CheckoutItem[] = [
@@ -115,17 +115,17 @@ export default function CheckoutScreen() {
           id: "1",
           name: "D&G 2003 Bomber Jacket, Black - XXL",
           brand: "D&G",
-          price: 999.00,
+          price: 999.0,
           quantity: 1,
           image: "https://via.placeholder.com/50x50/000000/FFFFFF?text=D&G",
-          lineTotal: 999.00,
-        }
+          lineTotal: 999.0,
+        },
       ];
-      
-      const mockSubtotal = 999.00;
+
+      const mockSubtotal = 999.0;
       const mockProtectionFee = 71.93;
       const mockTotal = 1070.93;
-      
+
       setCheckoutItems(mockItems);
       setSubtotal(mockSubtotal);
       setProtectionFee(mockProtectionFee);
@@ -138,7 +138,7 @@ export default function CheckoutScreen() {
   };
 
   const updateStepCompletion = () => {
-    const shippingComplete = 
+    const shippingComplete =
       shippingAddress.firstName.trim() !== "" &&
       shippingAddress.lastName.trim() !== "" &&
       shippingAddress.email.trim() !== "" &&
@@ -147,17 +147,17 @@ export default function CheckoutScreen() {
       shippingAddress.city.trim() !== "" &&
       shippingAddress.postcode.trim() !== "";
 
-    const billingComplete = isBillingDifferent ? 
-      (billingAddress.firstName.trim() !== "" &&
-       billingAddress.lastName.trim() !== "" &&
-       billingAddress.email.trim() !== "" &&
-       billingAddress.phone.trim() !== "" &&
-       billingAddress.address1.trim() !== "" &&
-       billingAddress.city.trim() !== "" &&
-       billingAddress.postcode.trim() !== "") :
-      shippingComplete;
+    const billingComplete = isBillingDifferent
+      ? billingAddress.firstName.trim() !== "" &&
+        billingAddress.lastName.trim() !== "" &&
+        billingAddress.email.trim() !== "" &&
+        billingAddress.phone.trim() !== "" &&
+        billingAddress.address1.trim() !== "" &&
+        billingAddress.city.trim() !== "" &&
+        billingAddress.postcode.trim() !== ""
+      : shippingComplete;
 
-    const paymentComplete = 
+    const paymentComplete =
       cardDetails.cardholderName.trim() !== "" &&
       cardDetails.cardNumber.trim() !== "" &&
       cardDetails.expiryDate.trim() !== "" &&
@@ -167,20 +167,24 @@ export default function CheckoutScreen() {
   };
 
   const canProceedToCheckout = () => {
-    return stepCompleted.every(step => step);
+    return stepCompleted.every((step) => step);
   };
 
   const getValidationMessage = () => {
     const missingFields = [];
-    
+
     if (!stepCompleted[0]) missingFields.push("Shipping address");
     if (!stepCompleted[1]) missingFields.push("Billing details");
     if (!stepCompleted[2]) missingFields.push("Payment method");
-    
+
     if (missingFields.length === 0) return "All fields are complete!";
-    if (missingFields.length === 1) return `Please complete: ${missingFields[0]}`;
-    if (missingFields.length === 2) return `Please complete: ${missingFields[0]} and ${missingFields[1]}`;
-    return `Please complete: ${missingFields.slice(0, -1).join(", ")}, and ${missingFields[missingFields.length - 1]}`;
+    if (missingFields.length === 1)
+      return `Please complete: ${missingFields[0]}`;
+    if (missingFields.length === 2)
+      return `Please complete: ${missingFields[0]} and ${missingFields[1]}`;
+    return `Please complete: ${missingFields.slice(0, -1).join(", ")}, and ${
+      missingFields[missingFields.length - 1]
+    }`;
   };
 
   const processCheckout = () => {
@@ -188,8 +192,11 @@ export default function CheckoutScreen() {
       Alert.alert("Complete Required Fields", getValidationMessage());
       return;
     }
-    
-    Alert.alert("Checkout", "This would process the payment and create the order");
+
+    Alert.alert(
+      "Checkout",
+      "This would process the payment and create the order"
+    );
   };
 
   const OrderSummaryCard = () => (
@@ -235,7 +242,7 @@ export default function CheckoutScreen() {
             color: "#666",
           }}
         >
-          {checkoutItems.length} item{checkoutItems.length !== 1 ? 's' : ''}
+          {checkoutItems.length} item{checkoutItems.length !== 1 ? "s" : ""}
         </Text>
       </View>
 
@@ -258,7 +265,7 @@ export default function CheckoutScreen() {
               marginRight: 12,
             }}
           />
-          
+
           <View style={{ flex: 1 }}>
             <Text
               style={{
@@ -291,7 +298,7 @@ export default function CheckoutScreen() {
               Qty: {item.quantity}
             </Text>
           </View>
-          
+
           <Text
             style={{
               fontSize: 14,
@@ -339,7 +346,7 @@ export default function CheckoutScreen() {
             £{subtotal.toFixed(2)}
           </Text>
         </View>
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -366,7 +373,7 @@ export default function CheckoutScreen() {
             £{protectionFee.toFixed(2)}
           </Text>
         </View>
-        
+
         <View
           style={{
             height: 1,
@@ -374,7 +381,7 @@ export default function CheckoutScreen() {
             marginVertical: 8,
           }}
         />
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -405,10 +412,10 @@ export default function CheckoutScreen() {
   );
 
   const ProgressIndicator = () => {
-    const completedSteps = stepCompleted.filter(step => step).length;
+    const completedSteps = stepCompleted.filter((step) => step).length;
     const totalSteps = stepCompleted.length;
     const progress = completedSteps / totalSteps;
-    
+
     return (
       <View
         style={{
@@ -452,7 +459,7 @@ export default function CheckoutScreen() {
             {completedSteps} of {totalSteps} completed
           </Text>
         </View>
-        
+
         <View
           style={{
             height: 8,
@@ -470,7 +477,7 @@ export default function CheckoutScreen() {
             }}
           />
         </View>
-        
+
         <Text
           style={{
             fontSize: 12,
@@ -478,10 +485,9 @@ export default function CheckoutScreen() {
             color: progress === 1 ? "#34C759" : "#666",
           }}
         >
-          {progress === 1 
+          {progress === 1
             ? "All steps completed! You can now place your order."
-            : "Complete all steps to place your order."
-          }
+            : "Complete all steps to place your order."}
         </Text>
       </View>
     );
@@ -527,11 +533,11 @@ export default function CheckoutScreen() {
         }}
       >
         {icon && (
-          <Feather 
-            name={icon as any} 
-            color="#666" 
-            size={16} 
-            style={{ marginRight: 8 }} 
+          <Feather
+            name={icon as any}
+            color="#666"
+            size={16}
+            style={{ marginRight: 8 }}
           />
         )}
         <TextInput
@@ -592,7 +598,7 @@ export default function CheckoutScreen() {
             <Feather name="map-pin" color="#666" size={20} />
           )}
         </View>
-        
+
         <Text
           style={{
             fontSize: 16,
@@ -603,7 +609,7 @@ export default function CheckoutScreen() {
         >
           Shipping Address
         </Text>
-        
+
         {stepCompleted[0] && (
           <View
             style={{
@@ -635,7 +641,7 @@ export default function CheckoutScreen() {
           placeholder="Search for your address..."
           icon="search"
         />
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -646,7 +652,9 @@ export default function CheckoutScreen() {
             <FormField
               label="First Name"
               value={shippingAddress.firstName}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, firstName: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, firstName: text })
+              }
               placeholder="First Name"
               icon="user"
               required
@@ -656,13 +664,15 @@ export default function CheckoutScreen() {
             <FormField
               label="Last Name"
               value={shippingAddress.lastName}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, lastName: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, lastName: text })
+              }
               placeholder="Last Name"
               required
             />
           </View>
         </View>
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -673,7 +683,9 @@ export default function CheckoutScreen() {
             <FormField
               label="Email"
               value={shippingAddress.email}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, email: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, email: text })
+              }
               placeholder="Email"
               keyboardType="email-address"
               icon="mail"
@@ -684,7 +696,9 @@ export default function CheckoutScreen() {
             <FormField
               label="Phone"
               value={shippingAddress.phone}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, phone: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, phone: text })
+              }
               placeholder="Phone"
               keyboardType="numeric"
               icon="phone"
@@ -692,32 +706,38 @@ export default function CheckoutScreen() {
             />
           </View>
         </View>
-        
+
         <FormField
           label="Address Line 1"
           value={shippingAddress.address1}
-          onChangeText={(text) => setShippingAddress({...shippingAddress, address1: text})}
+          onChangeText={(text) =>
+            setShippingAddress({ ...shippingAddress, address1: text })
+          }
           placeholder="Address Line 1"
           icon="home"
           required
         />
-        
+
         <FormField
           label="Address Line 2 (Optional)"
           value={shippingAddress.address2 || ""}
-          onChangeText={(text) => setShippingAddress({...shippingAddress, address2: text})}
+          onChangeText={(text) =>
+            setShippingAddress({ ...shippingAddress, address2: text })
+          }
           placeholder="Address Line 2 (Optional)"
           icon="home"
         />
-        
+
         <FormField
           label="City"
           value={shippingAddress.city}
-          onChangeText={(text) => setShippingAddress({...shippingAddress, city: text})}
+          onChangeText={(text) =>
+            setShippingAddress({ ...shippingAddress, city: text })
+          }
           placeholder="City"
           required
         />
-        
+
         <View
           style={{
             flexDirection: "row",
@@ -728,7 +748,9 @@ export default function CheckoutScreen() {
             <FormField
               label="State/Country"
               value={shippingAddress.state}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, state: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, state: text })
+              }
               placeholder="State/Country"
             />
           </View>
@@ -736,7 +758,9 @@ export default function CheckoutScreen() {
             <FormField
               label="Postcode"
               value={shippingAddress.postcode}
-              onChangeText={(text) => setShippingAddress({...shippingAddress, postcode: text})}
+              onChangeText={(text) =>
+                setShippingAddress({ ...shippingAddress, postcode: text })
+              }
               placeholder="Postcode"
               required
             />
@@ -786,7 +810,7 @@ export default function CheckoutScreen() {
             <Feather name="home" color="#666" size={20} />
           )}
         </View>
-        
+
         <Text
           style={{
             fontSize: 16,
@@ -797,7 +821,7 @@ export default function CheckoutScreen() {
         >
           Billing Details
         </Text>
-        
+
         {stepCompleted[1] && (
           <View
             style={{
@@ -848,7 +872,7 @@ export default function CheckoutScreen() {
             thumbColor={isBillingDifferent ? "#fff" : "#fff"}
           />
         </View>
-        
+
         <Text
           style={{
             fontSize: 14,
@@ -859,7 +883,7 @@ export default function CheckoutScreen() {
         >
           Billing address will be the same as shipping address
         </Text>
-        
+
         {isBillingDifferent && (
           <>
             <Text
@@ -872,7 +896,7 @@ export default function CheckoutScreen() {
             >
               Billing Address
             </Text>
-            
+
             <View
               style={{
                 flexDirection: "row",
@@ -883,7 +907,9 @@ export default function CheckoutScreen() {
                 <FormField
                   label="First Name"
                   value={billingAddress.firstName}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, firstName: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, firstName: text })
+                  }
                   placeholder="First Name"
                   icon="user"
                   required
@@ -893,13 +919,15 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Last Name"
                   value={billingAddress.lastName}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, lastName: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, lastName: text })
+                  }
                   placeholder="Last Name"
                   required
                 />
               </View>
             </View>
-            
+
             <View
               style={{
                 flexDirection: "row",
@@ -910,7 +938,9 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Email"
                   value={billingAddress.email}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, email: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, email: text })
+                  }
                   placeholder="Email"
                   keyboardType="email-address"
                   icon="mail"
@@ -921,7 +951,9 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Phone"
                   value={billingAddress.phone}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, phone: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, phone: text })
+                  }
                   placeholder="Phone"
                   keyboardType="numeric"
                   icon="phone"
@@ -929,32 +961,38 @@ export default function CheckoutScreen() {
                 />
               </View>
             </View>
-            
+
             <FormField
               label="Address Line 1"
               value={billingAddress.address1}
-              onChangeText={(text) => setBillingAddress({...billingAddress, address1: text})}
+              onChangeText={(text) =>
+                setBillingAddress({ ...billingAddress, address1: text })
+              }
               placeholder="Address Line 1"
               icon="home"
               required
             />
-            
+
             <FormField
               label="Address Line 2 (Optional)"
               value={billingAddress.address2 || ""}
-              onChangeText={(text) => setBillingAddress({...billingAddress, address2: text})}
+              onChangeText={(text) =>
+                setBillingAddress({ ...billingAddress, address2: text })
+              }
               placeholder="Address Line 2 (Optional)"
               icon="home"
             />
-            
+
             <FormField
               label="City"
               value={billingAddress.city}
-              onChangeText={(text) => setBillingAddress({...billingAddress, city: text})}
+              onChangeText={(text) =>
+                setBillingAddress({ ...billingAddress, city: text })
+              }
               placeholder="City"
               required
             />
-            
+
             <View
               style={{
                 flexDirection: "row",
@@ -965,7 +1003,9 @@ export default function CheckoutScreen() {
                 <FormField
                   label="State/Country"
                   value={billingAddress.state}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, state: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, state: text })
+                  }
                   placeholder="State/Country"
                 />
               </View>
@@ -973,7 +1013,9 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Postcode"
                   value={billingAddress.postcode}
-                  onChangeText={(text) => setBillingAddress({...billingAddress, postcode: text})}
+                  onChangeText={(text) =>
+                    setBillingAddress({ ...billingAddress, postcode: text })
+                  }
                   placeholder="Postcode"
                   required
                 />
@@ -981,7 +1023,7 @@ export default function CheckoutScreen() {
             </View>
           </>
         )}
-        
+
         <View
           style={{
             backgroundColor: "#e3f2fd",
@@ -1001,7 +1043,8 @@ export default function CheckoutScreen() {
               flex: 1,
             }}
           >
-            Your billing information is securely stored and only used for order processing.
+            Your billing information is securely stored and only used for order
+            processing.
           </Text>
         </View>
       </View>
@@ -1048,7 +1091,7 @@ export default function CheckoutScreen() {
             <Feather name="credit-card" color="#666" size={20} />
           )}
         </View>
-        
+
         <Text
           style={{
             fontSize: 16,
@@ -1059,7 +1102,7 @@ export default function CheckoutScreen() {
         >
           Payment Information
         </Text>
-        
+
         {stepCompleted[2] && (
           <View
             style={{
@@ -1094,7 +1137,7 @@ export default function CheckoutScreen() {
         >
           Payment Method
         </Text>
-        
+
         {/* Credit/Debit Card Option */}
         <TouchableOpacity
           onPress={() => setPaymentMethod("card")}
@@ -1109,10 +1152,10 @@ export default function CheckoutScreen() {
             alignItems: "center",
           }}
         >
-          <Feather 
-            name="credit-card" 
-            color={paymentMethod === "card" ? "#1976d2" : "#666"} 
-            size={20} 
+          <Feather
+            name="credit-card"
+            color={paymentMethod === "card" ? "#1976d2" : "#666"}
+            size={20}
           />
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Text
@@ -1138,7 +1181,7 @@ export default function CheckoutScreen() {
             <Feather name="check" color="#1976d2" size={20} />
           )}
         </TouchableOpacity>
-        
+
         {/* Google Pay Option */}
         <TouchableOpacity
           onPress={() => setPaymentMethod("googlepay")}
@@ -1153,10 +1196,10 @@ export default function CheckoutScreen() {
             alignItems: "center",
           }}
         >
-          <Feather 
-            name="smartphone" 
-            color={paymentMethod === "googlepay" ? "#1976d2" : "#666"} 
-            size={20} 
+          <Feather
+            name="smartphone"
+            color={paymentMethod === "googlepay" ? "#1976d2" : "#666"}
+            size={20}
           />
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Text
@@ -1182,7 +1225,7 @@ export default function CheckoutScreen() {
             <Feather name="check" color="#1976d2" size={20} />
           )}
         </TouchableOpacity>
-        
+
         {paymentMethod === "card" && (
           <>
             <Text
@@ -1195,16 +1238,18 @@ export default function CheckoutScreen() {
             >
               Card Details
             </Text>
-            
+
             <FormField
               label="Cardholder Name"
               value={cardDetails.cardholderName}
-              onChangeText={(text) => setCardDetails({...cardDetails, cardholderName: text})}
+              onChangeText={(text) =>
+                setCardDetails({ ...cardDetails, cardholderName: text })
+              }
               placeholder="Cardholder Name"
               icon="user"
               required
             />
-            
+
             {cardDetails.cardholderName.trim() === "" && (
               <Text
                 style={{
@@ -1218,7 +1263,7 @@ export default function CheckoutScreen() {
                 Cardholder name is required
               </Text>
             )}
-            
+
             <Text
               style={{
                 fontSize: 16,
@@ -1229,7 +1274,7 @@ export default function CheckoutScreen() {
             >
               Card Information
             </Text>
-            
+
             <View
               style={{
                 backgroundColor: "#f8f9fa",
@@ -1241,11 +1286,13 @@ export default function CheckoutScreen() {
               <FormField
                 label="Card Number"
                 value={cardDetails.cardNumber}
-                onChangeText={(text) => setCardDetails({...cardDetails, cardNumber: text})}
+                onChangeText={(text) =>
+                  setCardDetails({ ...cardDetails, cardNumber: text })
+                }
                 placeholder="Card number"
                 keyboardType="numeric"
               />
-              
+
               <View
                 style={{
                   flexDirection: "row",
@@ -1256,7 +1303,9 @@ export default function CheckoutScreen() {
                   <FormField
                     label="Expiry Date"
                     value={cardDetails.expiryDate}
-                    onChangeText={(text) => setCardDetails({...cardDetails, expiryDate: text})}
+                    onChangeText={(text) =>
+                      setCardDetails({ ...cardDetails, expiryDate: text })
+                    }
                     placeholder="MM/YY"
                     keyboardType="numeric"
                   />
@@ -1265,31 +1314,37 @@ export default function CheckoutScreen() {
                   <FormField
                     label="CVC"
                     value={cardDetails.cvc}
-                    onChangeText={(text) => setCardDetails({...cardDetails, cvc: text})}
+                    onChangeText={(text) =>
+                      setCardDetails({ ...cardDetails, cvc: text })
+                    }
                     placeholder="CVC"
                     keyboardType="numeric"
                   />
                 </View>
               </View>
-              
+
               <FormField
                 label="Country"
                 value={cardDetails.country}
-                onChangeText={(text) => setCardDetails({...cardDetails, country: text})}
+                onChangeText={(text) =>
+                  setCardDetails({ ...cardDetails, country: text })
+                }
                 placeholder="Country"
               />
-              
+
               <FormField
                 label="ZIP Code"
                 value={cardDetails.zipCode}
-                onChangeText={(text) => setCardDetails({...cardDetails, zipCode: text})}
+                onChangeText={(text) =>
+                  setCardDetails({ ...cardDetails, zipCode: text })
+                }
                 placeholder="ZIP Code"
                 keyboardType="numeric"
               />
             </View>
           </>
         )}
-        
+
         <View
           style={{
             backgroundColor: "#e3f2fd",
@@ -1309,7 +1364,8 @@ export default function CheckoutScreen() {
               flex: 1,
             }}
           >
-            Your payment information is securely processed by Stripe and never stored on our servers.
+            Your payment information is securely processed by Stripe and never
+            stored on our servers.
           </Text>
         </View>
       </View>
@@ -1402,16 +1458,16 @@ export default function CheckoutScreen() {
       <ScrollView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
         {/* Order Summary */}
         <OrderSummaryCard />
-        
+
         {/* Progress Indicator */}
         <ProgressIndicator />
-        
+
         {/* Shipping Address */}
         <ShippingAddressSection />
-        
+
         {/* Billing Details */}
         <BillingDetailsSection />
-        
+
         {/* Payment Information */}
         <PaymentInformationSection />
       </ScrollView>
@@ -1441,7 +1497,9 @@ export default function CheckoutScreen() {
               fontFamily: "Poppins-Bold",
             }}
           >
-            {canProceedToCheckout() ? "Complete Order" : "Complete Required Fields"}
+            {canProceedToCheckout()
+              ? "Complete Order"
+              : "Complete Required Fields"}
           </Text>
           {!canProceedToCheckout() && (
             <Text

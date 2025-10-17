@@ -115,4 +115,3 @@ export interface SearchParams {
   facetBy?: string[];
   facetSize?: number;
 }
-

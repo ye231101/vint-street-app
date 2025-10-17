@@ -34,11 +34,11 @@ export default function PaymentMethodsScreen() {
   const loadPaymentMethods = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock data - replace with actual data fetching
       setPaymentMethods([]);
     } catch (err) {
@@ -49,21 +49,24 @@ export default function PaymentMethodsScreen() {
   };
 
   const addPaymentMethod = () => {
-    Alert.alert("Add Payment Method", "This would open the payment method form");
+    Alert.alert(
+      "Add Payment Method",
+      "This would open the payment method form"
+    );
   };
 
   const setDefaultPaymentMethod = async (id: string) => {
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      setPaymentMethods(prev => 
-        prev.map(method => ({
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      setPaymentMethods((prev) =>
+        prev.map((method) => ({
           ...method,
-          isDefault: method.id === id
+          isDefault: method.id === id,
         }))
       );
-      
+
       Alert.alert("Success", "Default payment method updated");
     } catch (err) {
       Alert.alert("Error", "Failed to update default payment method");
@@ -85,9 +88,11 @@ export default function PaymentMethodsScreen() {
           onPress: async () => {
             try {
               // Simulate API call
-              await new Promise(resolve => setTimeout(resolve, 500));
-              
-              setPaymentMethods(prev => prev.filter(method => method.id !== id));
+              await new Promise((resolve) => setTimeout(resolve, 500));
+
+              setPaymentMethods((prev) =>
+                prev.filter((method) => method.id !== id)
+              );
               Alert.alert("Success", "Payment method deleted");
             } catch (err) {
               Alert.alert("Error", "Failed to delete payment method");
@@ -171,7 +176,7 @@ export default function PaymentMethodsScreen() {
           </View>
         )}
       </View>
-      
+
       <View
         style={{
           flexDirection: "row",
@@ -558,7 +563,7 @@ export default function PaymentMethodsScreen() {
           >
             Payment Settings
           </Text>
-          
+
           <View
             style={{
               backgroundColor: "#333",
@@ -573,7 +578,7 @@ export default function PaymentMethodsScreen() {
               value={savePaymentInfo}
               onValueChange={setSavePaymentInfo}
             />
-            
+
             <View
               style={{
                 height: 1,
@@ -581,7 +586,7 @@ export default function PaymentMethodsScreen() {
                 marginVertical: 16,
               }}
             />
-            
+
             <SettingsItem
               icon="credit-card"
               title="Quick Checkout"

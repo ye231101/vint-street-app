@@ -1,14 +1,17 @@
 import type { AuthUser } from "@/api";
 import { authService } from "@/api";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { handleAuthStateChange, initializeAuth, loginUser, logoutUser, registerUser, resetPassword as resetPasswordAction } from "@/store/slices/authSlice";
+import {
+  handleAuthStateChange,
+  initializeAuth,
+  loginUser,
+  logoutUser,
+  registerUser,
+  resetPassword as resetPasswordAction,
+} from "@/store/slices/authSlice";
 import { removeSecureValue, setSecureValue } from "@/utils/storage";
 import { router } from "expo-router";
-import React, {
-  createContext,
-  useContext,
-  useEffect
-} from "react";
+import React, { createContext, useContext, useEffect } from "react";
 
 type User = AuthUser;
 
@@ -49,7 +52,8 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, user, loading, error, isInitialized } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, user, loading, error, isInitialized } =
+    useAppSelector((state) => state.auth);
 
   useEffect(() => {
     // Initialize authentication on app start
@@ -58,25 +62,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen to auth state changes (handles email confirmation links)
     const { data: authListener } = authService.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth event:', event, 'Session:', !!session);
-        
+        console.log("Auth event:", event, "Session:", !!session);
+
         // Dispatch auth state change to Redux
         dispatch(handleAuthStateChange({ event, session }));
-        
-        if (event === 'SIGNED_IN' && session) {
+
+        if (event === "SIGNED_IN" && session) {
           const { user: currentUser } = await authService.getCurrentUser();
           if (currentUser) {
             await setSecureValue(KEY_TOKEN, session.access_token);
             await setSecureValue(KEY_USER_DATA, JSON.stringify(currentUser));
-            
+
             // Auto-redirect to main app after email confirmation
             router.replace("/(tabs)");
           }
-        } else if (event === 'SIGNED_OUT') {
+        } else if (event === "SIGNED_OUT") {
           await removeSecureValue(KEY_TOKEN);
           await removeSecureValue(KEY_USER_DATA);
           router.replace("/(auth)");
-        } else if (event === 'USER_UPDATED' && session) {
+        } else if (event === "USER_UPDATED" && session) {
           // Handle email confirmation
           const { user: currentUser } = await authService.getCurrentUser();
           if (currentUser) {
@@ -115,14 +119,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     data: RegisterData
   ) => {
     if (loading) return;
-    
-    const result = await dispatch(registerUser({
-      username,
-      email,
-      password,
-      ...data
-    }));
-    
+
+    const result = await dispatch(
+      registerUser({
+        username,
+        email,
+        password,
+        ...data,
+      })
+    );
+
     if (registerUser.fulfilled.match(result)) {
       return { requiresVerification: result.payload.requiresVerification };
     }

@@ -159,7 +159,7 @@ export default function RegisterScreen() {
       if (result?.requiresVerification) {
         router.replace({
           pathname: "/(auth)/check-email",
-          params: { 
+          params: {
             email: formData.email,
             password: formData.password, // Pass password so we can auto-login after confirmation
           },
@@ -229,22 +229,22 @@ export default function RegisterScreen() {
         <Text style={{ marginRight: 8 }}>
           <Feather name={icon as any} size={24} color="black" />
         </Text>
-         <TextInput
-           placeholder={placeholder}
-           value={value}
-           onChangeText={onChangeText}
-           secureTextEntry={secureTextEntry}
-           autoCapitalize={autoCapitalize}
-           autoCorrect={false}
-           keyboardType={keyboardType}
-           style={{
-             flex: 1,
-             fontFamily: "Poppins-Regular",
-             fontSize: 16,
-             height: 52,
-             textAlignVertical: "center",
-           }}
-         />
+        <TextInput
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize}
+          autoCorrect={false}
+          keyboardType={keyboardType}
+          style={{
+            flex: 1,
+            fontFamily: "Poppins-Regular",
+            fontSize: 16,
+            height: 52,
+            textAlignVertical: "center",
+          }}
+        />
         {showPasswordToggle && (
           <Pressable onPress={onTogglePassword} hitSlop={8}>
             <Feather

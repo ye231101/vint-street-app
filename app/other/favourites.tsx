@@ -9,7 +9,7 @@ import {
   RefreshControl,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -34,11 +34,11 @@ export default function FavouritesScreen() {
   const loadFavourites = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock data - replace with actual data fetching
       setFavourites([]);
     } catch (err) {
@@ -81,7 +81,7 @@ export default function FavouritesScreen() {
           text: "Remove",
           style: "destructive",
           onPress: () => {
-            setFavourites(prev => prev.filter(item => item.id !== itemId));
+            setFavourites((prev) => prev.filter((item) => item.id !== itemId));
             Alert.alert("Success", "Item removed from favourites");
           },
         },
@@ -150,7 +150,7 @@ export default function FavouritesScreen() {
         >
           {item.name}
         </Text>
-        
+
         {item.brand && (
           <Text
             style={{
@@ -181,7 +181,7 @@ export default function FavouritesScreen() {
           >
             £{item.price.toFixed(2)}
           </Text>
-          
+
           <TouchableOpacity
             onPress={(e) => {
               e.stopPropagation();

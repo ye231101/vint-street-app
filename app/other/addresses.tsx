@@ -37,11 +37,11 @@ export default function AddressesScreen() {
   const loadAddresses = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock data - replace with actual data fetching
       setShippingAddress(null);
       setBillingAddress(null);
@@ -59,7 +59,9 @@ export default function AddressesScreen() {
   const editAddress = (type: "shipping" | "billing") => {
     const address = type === "shipping" ? shippingAddress : billingAddress;
     if (address) {
-      router.push(`/other/address-form?type=${type}&edit=true&id=${address.id}` as any);
+      router.push(
+        `/other/address-form?type=${type}&edit=true&id=${address.id}` as any
+      );
     }
   };
 
@@ -78,14 +80,14 @@ export default function AddressesScreen() {
           onPress: async () => {
             try {
               // Simulate API call
-              await new Promise(resolve => setTimeout(resolve, 500));
-              
+              await new Promise((resolve) => setTimeout(resolve, 500));
+
               if (type === "shipping") {
                 setShippingAddress(null);
               } else {
                 setBillingAddress(null);
               }
-              
+
               Alert.alert("Success", `${type} address deleted`);
             } catch (err) {
               Alert.alert("Error", "Failed to delete address");
@@ -168,7 +170,11 @@ export default function AddressesScreen() {
       {address ? (
         <AddressCard
           name={address.name}
-          address={`${address.addressLine1}${address.addressLine2 ? `, ${address.addressLine2}` : ""}, ${address.city}, ${address.state ? `${address.state}, ` : ""}${address.postcode}, ${address.country}`}
+          address={`${address.addressLine1}${
+            address.addressLine2 ? `, ${address.addressLine2}` : ""
+          }, ${address.city}, ${address.state ? `${address.state}, ` : ""}${
+            address.postcode
+          }, ${address.country}`}
           phone={address.phone || ""}
           onEdit={onEdit}
           onDelete={onDelete}

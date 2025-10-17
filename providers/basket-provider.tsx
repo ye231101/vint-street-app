@@ -38,11 +38,17 @@ interface BasketContextType {
   basket: Basket;
   isLoading: boolean;
   error: string | null;
-  addToBasket: (item: Omit<BasketItem, 'id' | 'lineTotal' | 'protectionFee'>) => void;
+  addToBasket: (
+    item: Omit<BasketItem, "id" | "lineTotal" | "protectionFee">
+  ) => void;
   removeFromBasket: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearBasket: () => void;
-  getVendorTotals: (vendorId: number) => { subtotal: number; protectionFee: number; total: number };
+  getVendorTotals: (vendorId: number) => {
+    subtotal: number;
+    protectionFee: number;
+    total: number;
+  };
   getVendorShopName: (vendorId: number) => string;
 }
 
@@ -73,15 +79,21 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
     total: 0,
     formattedTotal: "£0.00",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const calculateTotals = (items: BasketItem[]) => {
-    const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const totalProtectionFee = items.reduce((sum, item) => sum + item.protectionFee, 0);
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    const totalProtectionFee = items.reduce(
+      (sum, item) => sum + item.protectionFee,
+      0
+    );
     const total = subtotal + totalProtectionFee;
-    
+
     return {
       subtotal,
       totalProtectionFee,
@@ -97,7 +109,7 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
     const vendorItems: { [key: number]: BasketItem[] } = {};
     const vendorIds: number[] = [];
 
-    items.forEach(item => {
+    items.forEach((item) => {
       if (!vendors[item.vendorId]) {
         vendors[item.vendorId] = {
           id: item.vendorId,
@@ -114,13 +126,17 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
     return { vendors, vendorItems, vendorIds };
   };
 
-  const addToBasket = (itemData: Omit<BasketItem, 'id' | 'lineTotal' | 'protectionFee'>) => {
+  const addToBasket = (
+    itemData: Omit<BasketItem, "id" | "lineTotal" | "protectionFee">
+  ) => {
     try {
       setError(null);
-      
+
       // Check if item already exists in basket
       const existingItemIndex = basket.items.findIndex(
-        item => item.productId === itemData.productId && item.vendorId === itemData.vendorId
+        (item) =>
+          item.productId === itemData.productId &&
+          item.vendorId === itemData.vendorId
       );
 
       let updatedItems: BasketItem[];
@@ -131,8 +147,9 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
         const existingItem = updatedItems[existingItemIndex];
         const newQuantity = existingItem.quantity + itemData.quantity;
         const newLineTotal = itemData.price * newQuantity;
-        const newProtectionFee = newLineTotal * itemData.protectionFeePercentage;
-        
+        const newProtectionFee =
+          newLineTotal * itemData.protectionFeePercentage;
+
         updatedItems[existingItemIndex] = {
           ...existingItem,
           quantity: newQuantity,
@@ -145,13 +162,17 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
           ...itemData,
           id: `${itemData.productId}_${itemData.vendorId}_${Date.now()}`,
           lineTotal: itemData.price * itemData.quantity,
-          protectionFee: (itemData.price * itemData.quantity) * itemData.protectionFeePercentage,
+          protectionFee:
+            itemData.price *
+            itemData.quantity *
+            itemData.protectionFeePercentage,
         };
         updatedItems = [...basket.items, newItem];
       }
 
       const totals = calculateTotals(updatedItems);
-      const { vendors, vendorItems, vendorIds } = updateVendorData(updatedItems);
+      const { vendors, vendorItems, vendorIds } =
+        updateVendorData(updatedItems);
 
       setBasket({
         items: updatedItems,
@@ -171,10 +192,11 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
   const removeFromBasket = (itemId: string) => {
     try {
       setError(null);
-      
-      const updatedItems = basket.items.filter(item => item.id !== itemId);
+
+      const updatedItems = basket.items.filter((item) => item.id !== itemId);
       const totals = calculateTotals(updatedItems);
-      const { vendors, vendorItems, vendorIds } = updateVendorData(updatedItems);
+      const { vendors, vendorItems, vendorIds } =
+        updateVendorData(updatedItems);
 
       setBasket({
         items: updatedItems,
@@ -191,13 +213,13 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
   const updateQuantity = (itemId: string, quantity: number) => {
     try {
       setError(null);
-      
+
       if (quantity <= 0) {
         removeFromBasket(itemId);
         return;
       }
 
-      const updatedItems = basket.items.map(item => {
+      const updatedItems = basket.items.map((item) => {
         if (item.id === itemId) {
           const newLineTotal = item.price * quantity;
           const newProtectionFee = newLineTotal * item.protectionFeePercentage;
@@ -212,7 +234,8 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
       });
 
       const totals = calculateTotals(updatedItems);
-      const { vendors, vendorItems, vendorIds } = updateVendorData(updatedItems);
+      const { vendors, vendorItems, vendorIds } =
+        updateVendorData(updatedItems);
 
       setBasket({
         items: updatedItems,
@@ -242,11 +265,19 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
   };
 
   const getVendorTotals = (vendorId: number) => {
-    const vendorItems = basket.items.filter(item => item.vendorId === vendorId);
-    const subtotal = vendorItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const protectionFee = vendorItems.reduce((sum, item) => sum + item.protectionFee, 0);
+    const vendorItems = basket.items.filter(
+      (item) => item.vendorId === vendorId
+    );
+    const subtotal = vendorItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    const protectionFee = vendorItems.reduce(
+      (sum, item) => sum + item.protectionFee,
+      0
+    );
     const total = subtotal + protectionFee;
-    
+
     return { subtotal, protectionFee, total };
   };
 
@@ -267,8 +298,6 @@ export const BasketProvider: React.FC<BasketProviderProps> = ({ children }) => {
   };
 
   return (
-    <BasketContext.Provider value={value}>
-      {children}
-    </BasketContext.Provider>
+    <BasketContext.Provider value={value}>{children}</BasketContext.Provider>
   );
 };

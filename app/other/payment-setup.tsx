@@ -40,7 +40,9 @@ export default function PaymentSetupScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(null);
+  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(
+    null
+  );
 
   // Form state
   const [paypalEmail, setPaypalEmail] = useState("");
@@ -60,22 +62,22 @@ export default function PaymentSetupScreen() {
   const loadSellerSettings = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Mock data - replace with actual data fetching
       const mockSettings: SellerSettings = {
         storeName: "My Store",
         email: "store@example.com",
         phone: "+1234567890",
         address: {
-          fullAddress: "123 Main St, City, State 12345"
+          fullAddress: "123 Main St, City, State 12345",
         },
         payment: {
           paypal: {
-            email: "paypal@example.com"
+            email: "paypal@example.com",
           },
           bank: {
             acName: "John Doe",
@@ -85,13 +87,13 @@ export default function PaymentSetupScreen() {
             bankAddr: "123 Bank St, City, State",
             routingNumber: "123456789",
             iban: "GB29NWBK60161331926819",
-            swift: "NWBKGB2L"
-          }
-        }
+            swift: "NWBKGB2L",
+          },
+        },
       };
-      
+
       setSellerSettings(mockSettings);
-      
+
       // Populate form with existing data
       setPaypalEmail(mockSettings.payment.paypal.email);
       setAccountName(mockSettings.payment.bank.acName);
@@ -113,17 +115,17 @@ export default function PaymentSetupScreen() {
     if (!sellerSettings) return;
 
     setIsSaving(true);
-    
+
     try {
       // Simulate API call - replace with actual implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Update seller settings with new payment data
       const updatedSettings: SellerSettings = {
         ...sellerSettings,
         payment: {
           paypal: {
-            email: paypalEmail.trim()
+            email: paypalEmail.trim(),
           },
           bank: {
             acName: accountName.trim(),
@@ -133,11 +135,11 @@ export default function PaymentSetupScreen() {
             bankAddr: bankAddress.trim(),
             routingNumber: routingNumber.trim(),
             iban: iban.trim(),
-            swift: swift.trim()
-          }
-        }
+            swift: swift.trim(),
+          },
+        },
       };
-      
+
       setSellerSettings(updatedSettings);
       Alert.alert("Success", "Payment settings updated successfully");
     } catch (err) {
@@ -449,7 +451,7 @@ export default function PaymentSetupScreen() {
           >
             PayPal Account
           </Text>
-          
+
           <View
             style={{
               backgroundColor: "#333",
@@ -478,7 +480,7 @@ export default function PaymentSetupScreen() {
           >
             Bank Account
           </Text>
-          
+
           <View
             style={{
               backgroundColor: "#333",
@@ -493,14 +495,14 @@ export default function PaymentSetupScreen() {
               onChangeText={setAccountName}
               placeholder="Account holder name"
             />
-            
+
             <FormField
               label="Account Type"
               value={accountType}
               onChangeText={setAccountType}
               placeholder="e.g., Checking, Savings"
             />
-            
+
             <FormField
               label="Account Number"
               value={accountNumber}
@@ -508,14 +510,14 @@ export default function PaymentSetupScreen() {
               placeholder="Bank account number"
               keyboardType="numeric"
             />
-            
+
             <FormField
               label="Bank Name"
               value={bankName}
               onChangeText={setBankName}
               placeholder="Name of your bank"
             />
-            
+
             <FormField
               label="Bank Address"
               value={bankAddress}
@@ -523,7 +525,7 @@ export default function PaymentSetupScreen() {
               placeholder="Bank branch address"
               multiline
             />
-            
+
             <FormField
               label="Routing Number"
               value={routingNumber}
@@ -531,14 +533,14 @@ export default function PaymentSetupScreen() {
               placeholder="Bank routing number"
               keyboardType="numeric"
             />
-            
+
             <FormField
               label="IBAN"
               value={iban}
               onChangeText={setIban}
               placeholder="International Bank Account Number"
             />
-            
+
             <FormField
               label="SWIFT Code"
               value={swift}
@@ -560,7 +562,7 @@ export default function PaymentSetupScreen() {
               >
                 Store Information
               </Text>
-              
+
               <View
                 style={{
                   backgroundColor: "#333",
@@ -573,17 +575,14 @@ export default function PaymentSetupScreen() {
                   value={sellerSettings.storeName}
                   isHighlighted
                 />
-                
-                <SummaryItem
-                  label="Email"
-                  value={sellerSettings.email}
-                />
-                
+
+                <SummaryItem label="Email" value={sellerSettings.email} />
+
                 <SummaryItem
                   label="Phone"
                   value={sellerSettings.phone || "Not provided"}
                 />
-                
+
                 <SummaryItem
                   label="Address"
                   value={sellerSettings.address.fullAddress || "Not provided"}

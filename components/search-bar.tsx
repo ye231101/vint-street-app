@@ -1,4 +1,5 @@
 import Feather from "@expo/vector-icons/Feather";
+import { router } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
 
@@ -7,7 +8,6 @@ export interface SearchBarProps {
   value?: string;
   onChangeText?: (text: string) => void;
   onSearch?: () => void;
-  onShoppingCartPress?: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -15,7 +15,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChangeText,
   onSearch,
-  onShoppingCartPress,
 }) => {
   return (
     <View style={styles.container}>
@@ -36,7 +35,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           </Pressable>
         )}
       </View>
-      <Pressable onPress={onShoppingCartPress}>
+      <Pressable onPress={() => router.push("/basket")}>
         <Feather name="shopping-bag" size={20} color="white" />
       </Pressable>
     </View>
