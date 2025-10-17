@@ -370,28 +370,29 @@ export default function AccountScreen() {
             SETTINGS
           </Text>
 
-          <Pressable
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-            }}
-          >
-            <Feather name="settings" size={24} color="#fff" />
-            <Text
-              style={{
-                fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
-                marginLeft: 16,
-                flex: 1,
-              }}
-            >
-              App Settings
-            </Text>
-            <Feather name="chevron-right" size={16} color="#999" />
-          </Pressable>
+           <Pressable
+             onPress={() => router.push("/other/app-settings")}
+             style={{
+               flexDirection: "row",
+               alignItems: "center",
+               paddingVertical: 12,
+               paddingHorizontal: 16,
+             }}
+           >
+             <Feather name="settings" size={24} color="#fff" />
+             <Text
+               style={{
+                 fontSize: 16,
+                 fontFamily: "Poppins-Regular",
+                 color: "#fff",
+                 marginLeft: 16,
+                 flex: 1,
+               }}
+             >
+               App Settings
+             </Text>
+             <Feather name="chevron-right" size={16} color="#999" />
+           </Pressable>
 
           <Pressable
             onPress={() => router.push("/other/privacy-security")}
