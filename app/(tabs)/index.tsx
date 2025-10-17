@@ -1,5 +1,6 @@
 import { typesenseService } from "@/api/services";
 import ArticleCarousel from "@/components/article-carousel";
+import FilterSortBar from "@/components/filter-sort-bar";
 import PopularProductsCarousel from "@/components/popular-products-carousel";
 import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
@@ -11,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  FlatList,
   Image,
   Pressable,
   ScrollView,
@@ -213,6 +215,14 @@ export default function HomeScreen() {
   const [isLoadingRecentlyAdded, setIsLoadingRecentlyAdded] = useState(true);
   const [indieItemsData, setIndieItemsData] = useState<any[]>([]);
   const [isLoadingIndieItems, setIsLoadingIndieItems] = useState(true);
+  
+  // Search functionality
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
+  const [sortBy, setSortBy] = useState("Most Relevant");
 
   // Fetch all product sections on mount
   useEffect(() => {
@@ -368,14 +378,138 @@ export default function HomeScreen() {
     );
   };
 
+  const handleSearch = async () => {
+    if (!searchText.trim()) {
+      setShowSearchResults(false);
+      return;
+    }
+
+    try {
+      setIsSearching(true);
+      setShowSearchResults(true);
+      
+      const response = await typesenseService.search({
+        query: searchText,
+        queryBy: 'name,description,short_description,brand,categories,category_slugs',
+        perPage: 20,
+        page: 1,
+      });
+      
+      // Convert Typesense results to product card format
+      const products = response.hits.map((hit) => {
+        const listing = typesenseService.convertToVintStreetListing(hit.document);
+        
+        // Use thumbnail URLs for better performance, fallback to full images
+        const imageUrl = listing.thumbnailImageUrls.length > 0 
+          ? listing.thumbnailImageUrls[0] 
+          : listing.fullImageUrls.length > 0 
+            ? listing.fullImageUrls[0]
+            : null;
+        
+        // Get first available size
+        const size = listing.attributes.pa_size && listing.attributes.pa_size.length > 0 
+          ? listing.attributes.pa_size[0] 
+          : undefined;
+        
+        return {
+          id: listing.id,
+          name: listing.name,
+          brand: listing.brand || 'No Brand',
+          price: `£${listing.price.toFixed(2)}`,
+          image: imageUrl ? { uri: imageUrl } : undefined,
+          likes: listing.favoritesCount,
+          size: size,
+        };
+      });
+      
+      setSearchResults(products);
+      console.log(`Search for "${searchText}" returned ${products.length} results`);
+    } catch (error) {
+      console.error('Error searching products:', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchTextChange = (text: string) => {
+    setSearchText(text);
+    if (text.trim() === "") {
+      setShowSearchResults(false);
+      setSearchResults([]);
+    }
+  };
+
+  const handleFilterPress = () => {
+    // TODO: Implement filter modal
+    console.log("Filter pressed");
+  };
+
+  const handleSortPress = () => {
+    // TODO: Implement sort options
+    console.log("Sort pressed");
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Search Bar */}
-      <SearchBar />
-      <ScrollView
-        style={{ flex: 1, paddingHorizontal: 8 }}
-        showsVerticalScrollIndicator={false}
-      >
+      <SearchBar
+        value={searchText}
+        onChangeText={handleSearchTextChange}
+        onSearch={handleSearch}
+      />
+      
+      {showSearchResults ? (
+        // Search Results View
+        <View style={{ flex: 1 }}>
+          {/* Filter and Sort Bar */}
+          <FilterSortBar
+            filterCount={filterCount}
+            sortBy={sortBy}
+            onFilterPress={handleFilterPress}
+            onSortPress={handleSortPress}
+          />
+          
+          {isSearching ? (
+            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+              <ActivityIndicator size="large" color="#000" />
+              <Text style={{ marginTop: 12, fontSize: 14, fontFamily: 'Poppins-Regular', color: '#666' }}>
+                Searching for "{searchText}"...
+              </Text>
+            </View>
+          ) : searchResults.length > 0 ? (
+            <FlatList
+              data={searchResults}
+              keyExtractor={(item) => item.id.toString()}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <ProductCard
+                  product={item}
+                  onPress={() => handleProductPress(item.id)}
+                  width={180}
+                  height={240}
+                />
+              )}
+              contentContainerStyle={{ padding: 16 }}
+              columnWrapperStyle={{ justifyContent: "space-between", marginBottom: 16 }}
+            />
+          ) : (
+            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+              <Text style={{ fontSize: 16, fontFamily: 'Poppins-Regular', color: '#666', textAlign: 'center' }}>
+                No results found for "{searchText}"
+              </Text>
+              <Text style={{ fontSize: 14, fontFamily: 'Poppins-Regular', color: '#999', textAlign: 'center', marginTop: 8 }}>
+                Try different keywords or check your spelling
+              </Text>
+            </View>
+          )}
+        </View>
+      ) : (
+        // Home Content
+        <ScrollView
+          style={{ flex: 1, paddingHorizontal: 8 }}
+          showsVerticalScrollIndicator={false}
+        >
         {/* Banner Section */}
         <View style={{ marginVertical: 16 }}>
           <View
@@ -879,7 +1013,8 @@ export default function HomeScreen() {
         </View>
 
         <View style={{ height: 40 }} />
-      </ScrollView>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
