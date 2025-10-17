@@ -243,54 +243,53 @@ export default function MessageDetailScreen() {
   const messageItems = groupMessagesByDate(messages);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          borderBottomWidth: 1,
-          borderBottomColor: "#333",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => router.back()}
+      <SafeAreaView style={{ backgroundColor: "#000" }}>
+        <View
           style={{
-            marginRight: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "#000",
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+            borderBottomWidth: 1,
+            borderBottomColor: "#333",
           }}
         >
-          <Feather name="arrow-left" size={24} color="#fff" />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={{
+              marginRight: 16,
+            }}
+          >
+            <Feather name="arrow-left" size={24} color="#fff" />
+          </TouchableOpacity>
 
-        <Text
-          style={{
-            flex: 1,
-            fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
-          }}
-        >
-          Hello
-        </Text>
+          <Text
+            style={{
+              flex: 1,
+              fontSize: 18,
+              fontFamily: "Poppins-Bold",
+              color: "#fff",
+            }}
+          >
+            Hello
+          </Text>
 
-        <TouchableOpacity
-          onPress={() => Alert.alert("Refresh", "Refreshing messages...")}
-          style={{
-            marginLeft: 16,
-          }}
-        >
-          <Feather name="refresh-cw" size={20} color="#fff" />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            onPress={() => Alert.alert("Refresh", "Refreshing messages...")}
+            style={{
+              marginLeft: 16,
+            }}
+          >
+            <Feather name="refresh-cw" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
 
       {/* Messages Area */}
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+      <View style={{ flex: 1, backgroundColor: "#fff" }}>
         <ScrollView
           ref={scrollViewRef}
           style={{
@@ -299,6 +298,7 @@ export default function MessageDetailScreen() {
           }}
           contentContainerStyle={{
             paddingVertical: 8,
+            flexGrow: 1,
           }}
           onContentSizeChange={() =>
             scrollViewRef.current?.scrollToEnd({ animated: true })
@@ -333,17 +333,24 @@ export default function MessageDetailScreen() {
             })
           )}
         </ScrollView>
+      </View>
 
-        {/* Message Input */}
+      {/* Message Input - Fixed at bottom */}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+      >
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             backgroundColor: "#fff",
             paddingHorizontal: 16,
-            paddingVertical: 12,
+            paddingTop: 12,
+            paddingBottom: Platform.OS === "ios" ? 34 : 12, // Add bottom padding for home indicator
             borderTopWidth: 1,
             borderTopColor: "#f0f0f0",
+            minHeight: 60,
           }}
         >
           <View
@@ -356,6 +363,7 @@ export default function MessageDetailScreen() {
               paddingHorizontal: 16,
               paddingVertical: 8,
               marginRight: 12,
+              minHeight: 40,
             }}
           >
             <TextInput
@@ -365,6 +373,8 @@ export default function MessageDetailScreen() {
                 fontFamily: "Poppins-Regular",
                 color: "#000",
                 maxHeight: 100,
+                minHeight: 24,
+                textAlignVertical: "center",
               }}
               placeholder="Type a message..."
               placeholderTextColor="#999"
@@ -372,6 +382,16 @@ export default function MessageDetailScreen() {
               onChangeText={setMessageText}
               multiline
               textAlignVertical="center"
+              onFocus={() => {
+                setTimeout(() => {
+                  scrollViewRef.current?.scrollToEnd({ animated: true });
+                }, 100);
+              }}
+              onBlur={() => {
+                setTimeout(() => {
+                  scrollViewRef.current?.scrollToEnd({ animated: true });
+                }, 100);
+              }}
             />
           </View>
 
@@ -389,12 +409,13 @@ export default function MessageDetailScreen() {
               shadowOpacity: 0.3,
               shadowRadius: 4,
               elevation: 4,
+              marginBottom: 0,
             }}
           >
             <Feather name="send" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
