@@ -1,3 +1,7 @@
+import { typesenseService } from "@/api/services";
+import { VintStreetListing } from "@/api/types/product.types";
+import { useBasket } from "@/providers/basket-provider";
+import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 import Feather from "@expo/vector-icons/Feather";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,12 +13,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { typesenseService } from "@/api/services";
-import { VintStreetListing } from "@/api/types/product.types";
-import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -70,13 +71,15 @@ export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const { addProduct } = useRecentlyViewed();
+  const { addToBasket } = useBasket();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(["description"])
   );
   const scrollViewRef = useRef<ScrollView>(null);
-  const [productListing, setProductListing] = useState<VintStreetListing | null>(null);
+  const [productListing, setProductListing] =
+    useState<VintStreetListing | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch product and add to recently viewed
@@ -86,14 +89,14 @@ export default function ProductDetailsScreen() {
         setIsLoading(true);
         const productId = parseInt(id as string, 10);
         const listing = await typesenseService.getProductById(productId);
-        
+
         if (listing) {
           setProductListing(listing);
           // Add to recently viewed
           await addProduct(listing);
         }
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setIsLoading(false);
       }
@@ -108,7 +111,9 @@ export default function ProductDetailsScreen() {
   if (isLoading) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           <ActivityIndicator size="large" color="#000" />
         </View>
       </SafeAreaView>
@@ -119,12 +124,20 @@ export default function ProductDetailsScreen() {
   if (!productListing) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 16 }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text style={{ fontFamily: "Poppins-Regular", fontSize: 16 }}>
             Product not found
           </Text>
-          <Pressable onPress={handleBack} style={{ marginTop: 20 }}>
-            <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#007AFF' }}>
+          <Pressable onPress={() => router.back()} style={{ marginTop: 20 }}>
+            <Text
+              style={{
+                fontFamily: "Poppins-SemiBold",
+                fontSize: 14,
+                color: "#007AFF",
+              }}
+            >
               Go Back
             </Text>
           </Pressable>
@@ -138,32 +151,29 @@ export default function ProductDetailsScreen() {
     id: productListing.id,
     name: productListing.name,
     price: productListing.price,
-    images: productListing.fullImageUrls.length > 0 
-      ? productListing.fullImageUrls 
-      : productListing.thumbnailImageUrls,
+    images:
+      productListing.fullImageUrls.length > 0
+        ? productListing.fullImageUrls
+        : productListing.thumbnailImageUrls,
     likes: productListing.favoritesCount,
-    brand: productListing.brand || 'No Brand',
-    size: productListing.attributes.pa_size?.[0] || '',
-    description: productListing.description || productListing.shortDescription || '',
+    brand: productListing.brand || "No Brand",
+    size: productListing.attributes.pa_size?.[0] || "",
+    description:
+      productListing.description || productListing.shortDescription || "",
     vendorId: productListing.vendorId,
-    vendorShopName: productListing.vendorShopName || 'Unknown Vendor',
+    vendorShopName: productListing.vendorShopName || "Unknown Vendor",
     stockQuantity: productListing.stockQuantity,
     onSale: productListing.onSale,
     averageRating: productListing.averageRating,
     reviewCount: productListing.reviewCount,
-    condition: productListing.attributes.pa_condition?.[0] || '',
-    colour: productListing.attributes.pa_colour?.[0] || '',
-    gender: productListing.attributes.pa_gender?.[0] || '',
+    condition: productListing.attributes.pa_condition?.[0] || "",
+    colour: productListing.attributes.pa_colour?.[0] || "",
+    gender: productListing.attributes.pa_gender?.[0] || "",
     flaws: productListing.attributes.flaws?.[0],
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleShoppingCart = () => {
-    // Navigate to shopping cart
-    console.log("Navigate to shopping cart");
+    router.push("/basket");
   };
 
   const handleLike = () => {
@@ -181,11 +191,41 @@ export default function ProductDetailsScreen() {
   };
 
   const handleAddToBasket = () => {
-    console.log("Add to basket");
+    if (!productListing) return;
+
+    const productData = {
+      productId: productListing.id,
+      name: productListing.name,
+      price: productListing.price,
+      quantity: 1,
+      image: productListing.fullImageUrls?.[0] || "",
+      vendorId: productListing.vendorId,
+      vendorName: productListing.vendorShopName,
+      protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072, // 7.2% protection fee for non-official products
+    };
+
+    addToBasket(productData);
   };
 
   const handleBuyNow = () => {
-    console.log("Buy now");
+    if (!productListing) return;
+
+    // Add to basket first
+    const productData = {
+      productId: productListing.id,
+      name: productListing.name,
+      price: productListing.price,
+      quantity: 1,
+      image: productListing.fullImageUrls?.[0] || "",
+      vendorId: productListing.vendorId,
+      vendorName: productListing.vendorShopName,
+      protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072,
+    };
+
+    addToBasket(productData);
+
+    // Navigate to checkout
+    router.push("/checkout");
   };
 
   const formatPrice = (price: number) => {
@@ -334,7 +374,7 @@ export default function ProductDetailsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={handleBack}>
+        <Pressable onPress={() => router.back()}>
           <Feather name="arrow-left" size={24} color="#000" />
         </Pressable>
         <Pressable onPress={handleShoppingCart}>

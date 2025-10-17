@@ -10,8 +10,9 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthProvider } from "@/providers/auth-provider";
-import { ReduxProvider } from "@/providers/redux-provider";
+import { BasketProvider } from "@/providers/basket-provider";
 import { RecentlyViewedProvider } from "@/providers/recently-viewed-provider";
+import { ReduxProvider } from "@/providers/redux-provider";
 import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
@@ -34,15 +35,19 @@ export default function RootLayout() {
     <ReduxProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <AuthProvider>
-          <RecentlyViewedProvider>
-            <Stack>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="product" options={{ headerShown: false }} />
-              <Stack.Screen name="message" options={{ headerShown: false }} />
-              <Stack.Screen name="other" options={{ headerShown: false }} />
-            </Stack>
-          </RecentlyViewedProvider>
+          <BasketProvider>
+            <RecentlyViewedProvider>
+              <Stack>
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="product" options={{ headerShown: false }} />
+                <Stack.Screen name="message" options={{ headerShown: false }} />
+                <Stack.Screen name="other" options={{ headerShown: false }} />
+                <Stack.Screen name="basket" options={{ headerShown: false }} />
+                <Stack.Screen name="checkout" options={{ headerShown: false }} />
+              </Stack>
+            </RecentlyViewedProvider>
+          </BasketProvider>
         </AuthProvider>
         <StatusBar style="auto" backgroundColor="black" />
       </ThemeProvider>

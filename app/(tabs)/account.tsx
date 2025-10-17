@@ -2,7 +2,7 @@ import { useAuth } from "@/providers/auth-provider";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function AccountScreen() {
   const { logout, user } = useAuth();
@@ -56,7 +56,14 @@ export default function AccountScreen() {
                 >
                   {user?.firstName || user?.username || "Guest User"}
                 </Text>
-                <Feather name="shopping-bag" size={24} color="#fff" />
+                <TouchableOpacity
+                  onPress={() => router.push("/basket")}
+                  style={{
+                    padding: 8,
+                  }}
+                >
+                  <Feather name="shopping-bag" size={24} color="#fff" />
+                </TouchableOpacity>
               </View>
               <Text
                 style={{
@@ -109,6 +116,7 @@ export default function AccountScreen() {
           </Text>
 
           <Pressable
+            onPress={() => router.push("/other/seller-dashboard")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -132,6 +140,7 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
+            onPress={() => router.push("/other/payment-setup")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -181,6 +190,7 @@ export default function AccountScreen() {
           </Text>
 
           <Pressable
+            onPress={() => router.push("/other/orders")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -204,6 +214,7 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
+            onPress={() => router.push("/other/favourites")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -227,6 +238,7 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
+            onPress={() => router.push("/other/payment-methods")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -250,6 +262,7 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
+            onPress={() => router.push("/other/addresses")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -299,6 +312,7 @@ export default function AccountScreen() {
           </Text>
 
           <Pressable
+            onPress={() => router.push("/other/help-center")}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -322,6 +336,7 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
+            onPress={() => router.push("/other/contact-support")}
             style={{
               flexDirection: "row",
               alignItems: "center",
