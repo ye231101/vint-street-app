@@ -1,7 +1,8 @@
 import Feather from "@expo/vector-icons/Feather";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Pressable,
@@ -11,6 +12,9 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { typesenseService } from "@/api/services";
+import { VintStreetListing } from "@/api/types/product.types";
+import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -65,14 +69,93 @@ const mockProduct: Product = {
 export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { addProduct } = useRecentlyViewed();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(["description"])
   );
   const scrollViewRef = useRef<ScrollView>(null);
+  const [productListing, setProductListing] = useState<VintStreetListing | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const product = mockProduct; // In real app, fetch by id
+  // Fetch product and add to recently viewed
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+        const productId = parseInt(id as string, 10);
+        const listing = await typesenseService.getProductById(productId);
+        
+        if (listing) {
+          setProductListing(listing);
+          // Add to recently viewed
+          await addProduct(listing);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#000" />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Show error if product not found
+  if (!productListing) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 16 }}>
+            Product not found
+          </Text>
+          <Pressable onPress={handleBack} style={{ marginTop: 20 }}>
+            <Text style={{ fontFamily: 'Poppins-SemiBold', fontSize: 14, color: '#007AFF' }}>
+              Go Back
+            </Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Convert listing to product format for display
+  const product: Product = {
+    id: productListing.id,
+    name: productListing.name,
+    price: productListing.price,
+    images: productListing.fullImageUrls.length > 0 
+      ? productListing.fullImageUrls 
+      : productListing.thumbnailImageUrls,
+    likes: productListing.favoritesCount,
+    brand: productListing.brand || 'No Brand',
+    size: productListing.attributes.pa_size?.[0] || '',
+    description: productListing.description || productListing.shortDescription || '',
+    vendorId: productListing.vendorId,
+    vendorShopName: productListing.vendorShopName || 'Unknown Vendor',
+    stockQuantity: productListing.stockQuantity,
+    onSale: productListing.onSale,
+    averageRating: productListing.averageRating,
+    reviewCount: productListing.reviewCount,
+    condition: productListing.attributes.pa_condition?.[0] || '',
+    colour: productListing.attributes.pa_colour?.[0] || '',
+    gender: productListing.attributes.pa_gender?.[0] || '',
+    flaws: productListing.attributes.flaws?.[0],
+  };
 
   const handleBack = () => {
     router.back();

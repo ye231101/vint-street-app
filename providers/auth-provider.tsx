@@ -1,5 +1,4 @@
 import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import React, {
   createContext,
   useContext,
@@ -8,6 +7,7 @@ import React, {
 } from "react";
 import { authService } from "@/api";
 import type { AuthUser } from "@/api";
+import { setSecureValue, getSecureValue, removeSecureValue } from "@/utils/secure-storage";
 
 type User = AuthUser;
 
@@ -44,19 +44,6 @@ type AuthContextProps = {
 const KEY_TOKEN = "TOKEN";
 const KEY_USER_DATA = "USER_DATA";
 
-async function setValueFor(key: string, value: string): Promise<void> {
-  await SecureStore.setItemAsync(key, value);
-}
-
-async function removeValueFor(key: string): Promise<void> {
-  await SecureStore.deleteItemAsync(key);
-}
-
-async function getValueFor(key: string): Promise<string | null> {
-  const result = await SecureStore.getItemAsync(key);
-  return result;
-}
-
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -77,8 +64,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (currentUser) {
             setUser(currentUser);
             setIsAuthenticated(true);
-            await setValueFor(KEY_TOKEN, session.access_token);
-            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+            await setSecureValue(KEY_TOKEN, session.access_token);
+            await setSecureValue(KEY_USER_DATA, JSON.stringify(currentUser));
             router.replace("/(tabs)");
           } else {
             setIsAuthenticated(false);
@@ -108,8 +95,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (currentUser) {
             setUser(currentUser);
             setIsAuthenticated(true);
-            await setValueFor(KEY_TOKEN, session.access_token);
-            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+            await setSecureValue(KEY_TOKEN, session.access_token);
+            await setSecureValue(KEY_USER_DATA, JSON.stringify(currentUser));
             
             // Auto-redirect to main app after email confirmation
             router.replace("/(tabs)");
@@ -117,16 +104,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
           setIsAuthenticated(false);
-          await removeValueFor(KEY_TOKEN);
-          await removeValueFor(KEY_USER_DATA);
+          await removeSecureValue(KEY_TOKEN);
+          await removeSecureValue(KEY_USER_DATA);
         } else if (event === 'USER_UPDATED' && session) {
           // Handle email confirmation
           const { user: currentUser } = await authService.getCurrentUser();
           if (currentUser) {
             setUser(currentUser);
             setIsAuthenticated(true);
-            await setValueFor(KEY_TOKEN, session.access_token);
-            await setValueFor(KEY_USER_DATA, JSON.stringify(currentUser));
+            await setSecureValue(KEY_TOKEN, session.access_token);
+            await setSecureValue(KEY_USER_DATA, JSON.stringify(currentUser));
           }
         }
       }
@@ -158,8 +145,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      await setValueFor(KEY_USER_DATA, JSON.stringify(authUser));
-      await setValueFor(KEY_TOKEN, session.access_token);
+      await setSecureValue(KEY_USER_DATA, JSON.stringify(authUser));
+      await setSecureValue(KEY_TOKEN, session.access_token);
       setUser(authUser);
       setIsAuthenticated(true);
     } catch (e) {
@@ -214,8 +201,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Check if email confirmation is required (no session means confirmation needed)
       if (session) {
         // Auto-confirmed - sign in immediately
-        await setValueFor(KEY_USER_DATA, JSON.stringify(authUser));
-        await setValueFor(KEY_TOKEN, session.access_token);
+        await setSecureValue(KEY_USER_DATA, JSON.stringify(authUser));
+        await setSecureValue(KEY_TOKEN, session.access_token);
         setUser(authUser);
         setIsAuthenticated(true);
         return { requiresVerification: false };
@@ -272,8 +259,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Clear local storage
-      await removeValueFor(KEY_TOKEN);
-      await removeValueFor(KEY_USER_DATA);
+      await removeSecureValue(KEY_TOKEN);
+      await removeSecureValue(KEY_USER_DATA);
       
       // Clear auth state
       setUser(null);
@@ -286,8 +273,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setError(e instanceof Error ? e.message : "Logout failed");
       
       // Still clear local data even if there's an error
-      await removeValueFor(KEY_TOKEN);
-      await removeValueFor(KEY_USER_DATA);
+      await removeSecureValue(KEY_TOKEN);
+      await removeSecureValue(KEY_USER_DATA);
       setUser(null);
       setIsAuthenticated(false);
       router.replace("/(auth)");

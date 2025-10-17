@@ -5,8 +5,9 @@ import SearchBar from "@/components/search-bar";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Pressable,
@@ -15,6 +16,9 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { typesenseService } from "@/api/services";
+import { VintStreetListing } from "@/api/types/product.types";
+import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -58,59 +62,7 @@ const trendingProducts = [
   },
 ];
 
-const recentlyAddedProducts = [
-  {
-    id: 3,
-    name: "Nike Cropped Crew Neck Jumpe...",
-    brand: "Nike",
-    price: "£30.00",
-    image: require("@/assets/images/hero-banner.jpg"),
-    likes: 1,
-  },
-  {
-    id: 4,
-    name: "Tomy Hilfiger Crew Neck Jume",
-    brand: "Tommy Hilfiger",
-    price: "£31.00",
-    image: require("@/assets/images/hero-banner.jpg"),
-    likes: 0,
-  },
-];
 
-const indieItems = [
-  {
-    id: 5,
-    name: "Love Moschino Long-Sleeve Shirt...",
-    brand: "Love Moschino",
-    size: "XS",
-    price: "£75.00",
-    protectionFee: "£5.40",
-    image: require("@/assets/images/hero-banner.jpg"),
-    likes: 0,
-  },
-  {
-    id: 6,
-    name: "Grandpa's Great Escape and Fin..",
-    brand: "No Brand",
-    price: "£2.00",
-    protectionFee: "£0.14",
-    image: require("@/assets/images/hero-banner.jpg"),
-    likes: 0,
-  },
-];
-
-const recentlyViewedProducts: Product[] = [
-  {
-    id: 7,
-    name: "Love Moschino Long-Sleeve Shirt...",
-    brand: "Love Moschino",
-    price: "£75.00",
-    image: require("@/assets/images/hero-banner.jpg"),
-    likes: 0,
-    size: "XS",
-    protectionFee: "£5.40",
-  },
-];
 
 const brands = [
   {
@@ -252,6 +204,146 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { items: recentlyViewedItems, isInitialized: recentlyViewedInitialized } = useRecentlyViewed();
+  const [trendingProductsData, setTrendingProductsData] = useState<any[]>([]);
+  const [isLoadingTrending, setIsLoadingTrending] = useState(true);
+  const [recentlyAddedProductsData, setRecentlyAddedProductsData] = useState<any[]>([]);
+  const [isLoadingRecentlyAdded, setIsLoadingRecentlyAdded] = useState(true);
+  const [indieItemsData, setIndieItemsData] = useState<any[]>([]);
+  const [isLoadingIndieItems, setIsLoadingIndieItems] = useState(true);
+
+  // Fetch all product sections on mount
+  useEffect(() => {
+    fetchTrendingProducts();
+    fetchRecentlyAddedProducts();
+    fetchIndieItems();
+  }, []);
+
+  const fetchTrendingProducts = async () => {
+    try {
+      setIsLoadingTrending(true);
+      const response = await typesenseService.getPopularProducts(30);
+      
+      // Convert Typesense results to carousel format
+      const products = response.hits.map((hit) => {
+        const listing = typesenseService.convertToVintStreetListing(hit.document);
+        
+        // Use thumbnail URLs for better performance, fallback to full images
+        const imageUrls = listing.thumbnailImageUrls.length > 0 
+          ? listing.thumbnailImageUrls 
+          : listing.fullImageUrls;
+        
+        return {
+          id: listing.id,
+          name: listing.name,
+          brand: listing.brand || 'No Brand',
+          price: `£${listing.price.toFixed(2)}`,
+          images: imageUrls.map(url => ({ uri: url })),
+          likes: listing.favoritesCount,
+        };
+      });
+      
+      setTrendingProductsData(products);
+      console.log(`Loaded ${products.length} trending products`);
+    } catch (error) {
+      console.error('Error fetching trending products:', error);
+      // Keep empty array on error, carousel will show nothing
+      setTrendingProductsData([]);
+    } finally {
+      setIsLoadingTrending(false);
+    }
+  };
+
+  const fetchRecentlyAddedProducts = async () => {
+    try {
+      setIsLoadingRecentlyAdded(true);
+      const response = await typesenseService.getRecentlyAddedProducts(10);
+      
+      // Convert Typesense results to product card format
+      const products = response.hits.map((hit) => {
+        const listing = typesenseService.convertToVintStreetListing(hit.document);
+        
+        // Use thumbnail URLs for better performance, fallback to full images
+        const imageUrl = listing.thumbnailImageUrls.length > 0 
+          ? listing.thumbnailImageUrls[0] 
+          : listing.fullImageUrls.length > 0 
+            ? listing.fullImageUrls[0]
+            : null;
+        
+        return {
+          id: listing.id,
+          name: listing.name,
+          brand: listing.brand || 'No Brand',
+          price: `£${listing.price.toFixed(2)}`,
+          image: imageUrl ? { uri: imageUrl } : undefined,
+          likes: listing.favoritesCount,
+        };
+      });
+      
+      setRecentlyAddedProductsData(products);
+      console.log(`Loaded ${products.length} recently added products`);
+    } catch (error) {
+      console.error('Error fetching recently added products:', error);
+      // Keep empty array on error
+      setRecentlyAddedProductsData([]);
+    } finally {
+      setIsLoadingRecentlyAdded(false);
+    }
+  };
+
+  const fetchIndieItems = async () => {
+    try {
+      setIsLoadingIndieItems(true);
+      // Fetch indie items - products where vendor_id is NOT 42 (matching Flutter)
+      const response = await typesenseService.search({
+        query: '*',
+        queryBy: 'name,description,short_description,brand,categories,category_slugs',
+        filterBy: 'vendor_id:!=42',
+        perPage: 10,
+        page: 1,
+      });
+      
+      // Convert Typesense results to product card format with additional fields
+      const products = response.hits.map((hit) => {
+        const listing = typesenseService.convertToVintStreetListing(hit.document);
+        
+        // Use thumbnail URLs for better performance, fallback to full images
+        const imageUrl = listing.thumbnailImageUrls.length > 0 
+          ? listing.thumbnailImageUrls[0] 
+          : listing.fullImageUrls.length > 0 
+            ? listing.fullImageUrls[0]
+            : null;
+        
+        // Get first available size
+        const size = listing.attributes.pa_size && listing.attributes.pa_size.length > 0 
+          ? listing.attributes.pa_size[0] 
+          : undefined;
+        
+        // Calculate protection fee (example: 7.2% of price, matching typical marketplace fees)
+        const protectionFee = (listing.price * 0.072).toFixed(2);
+        
+        return {
+          id: listing.id,
+          name: listing.name,
+          brand: listing.brand || 'No Brand',
+          price: `£${listing.price.toFixed(2)}`,
+          image: imageUrl ? { uri: imageUrl } : undefined,
+          likes: listing.favoritesCount,
+          size: size,
+          protectionFee: `£${protectionFee}`,
+        };
+      });
+      
+      setIndieItemsData(products);
+      console.log(`Loaded ${products.length} indie items`);
+    } catch (error) {
+      console.error('Error fetching indie items:', error);
+      // Keep empty array on error
+      setIndieItemsData([]);
+    } finally {
+      setIsLoadingIndieItems(false);
+    }
+  };
 
   const handleProductPress = (productId: number) => {
     router.push(`/product/${productId}` as any);
@@ -317,11 +409,53 @@ export default function HomeScreen() {
         </View>
 
         <View style={{ marginBottom: 24 }}>
-          <PopularProductsCarousel
-            title="TRENDING NOW"
-            items={trendingProducts}
-            onPressItem={(item) => handleProductPress(Number(item.id))}
-          />
+          {isLoadingTrending ? (
+            <View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Bold",
+                  color: "black",
+                  marginBottom: 12,
+                }}
+              >
+                TRENDING NOW
+              </Text>
+              <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#000" />
+              </View>
+            </View>
+          ) : trendingProductsData.length > 0 ? (
+            <PopularProductsCarousel
+              title="TRENDING NOW"
+              items={trendingProductsData}
+              onPressItem={(item) => handleProductPress(Number(item.id))}
+            />
+          ) : (
+            <View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Bold",
+                  color: "black",
+                  marginBottom: 12,
+                }}
+              >
+                TRENDING NOW
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Regular",
+                  color: "#666",
+                  textAlign: 'center',
+                  paddingVertical: 20,
+                }}
+              >
+                No trending products available
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* RECENTLY ADDS */}
@@ -341,7 +475,7 @@ export default function HomeScreen() {
                 color: "#000",
               }}
             >
-              RECENTLY ADDS
+              RECENTLY ADDED
             </Text>
             <Pressable>
               <Text
@@ -355,15 +489,33 @@ export default function HomeScreen() {
               </Text>
             </Pressable>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {recentlyAddedProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onPress={() => handleProductPress(product.id)}
-              />
-            ))}
-          </ScrollView>
+          {isLoadingRecentlyAdded ? (
+            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>
+          ) : recentlyAddedProductsData.length > 0 ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {recentlyAddedProductsData.map((product) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onPress={() => handleProductPress(product.id)}
+                />
+              ))}
+            </ScrollView>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: "Poppins-Regular",
+                color: "#666",
+                textAlign: 'center',
+                paddingVertical: 20,
+              }}
+            >
+              No recently added products available
+            </Text>
+          )}
         </View>
 
         {/* Top Categories Section */}
@@ -588,29 +740,65 @@ export default function HomeScreen() {
         </View>
 
         {/* Recently Viewed Section */}
-        <View style={{ marginBottom: 24 }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#000",
-              marginBottom: 12,
-            }}
-          >
-            RECENTLY VIEWED
-          </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {recentlyViewedProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                showSize={true}
-                showProtectionFee={true}
-                onPress={() => handleProductPress(product.id)}
-              />
-            ))}
-          </ScrollView>
-        </View>
+        {recentlyViewedInitialized && recentlyViewedItems.length > 0 && (
+          <View style={{ marginBottom: 24 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 12,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Bold",
+                  color: "#000",
+                }}
+              >
+                RECENTLY VIEWED
+              </Text>
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {recentlyViewedItems.map((listing) => {
+                // Convert listing to product card format
+                const imageUrl = listing.thumbnailImageUrls.length > 0 
+                  ? listing.thumbnailImageUrls[0] 
+                  : listing.fullImageUrls.length > 0 
+                    ? listing.fullImageUrls[0]
+                    : null;
+                
+                const size = listing.attributes.pa_size && listing.attributes.pa_size.length > 0 
+                  ? listing.attributes.pa_size[0] 
+                  : undefined;
+                
+                const protectionFee = (listing.price * 0.072).toFixed(2);
+                
+                const product = {
+                  id: listing.id,
+                  name: listing.name,
+                  brand: listing.brand || 'No Brand',
+                  price: `£${listing.price.toFixed(2)}`,
+                  image: imageUrl ? { uri: imageUrl } : undefined,
+                  likes: listing.favoritesCount,
+                  size: size,
+                  protectionFee: `£${protectionFee}`,
+                };
+
+                return (
+                  <ProductCard
+                    key={listing.id}
+                    product={product}
+                    showSize={true}
+                    showProtectionFee={true}
+                    onPress={() => handleProductPress(listing.id)}
+                  />
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
 
         {/* Indie Items Section */}
         <View style={{ marginBottom: 24 }}>
@@ -643,17 +831,35 @@ export default function HomeScreen() {
               </Text>
             </Pressable>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {indieItems.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                showSize={true}
-                showProtectionFee={true}
-                onPress={() => handleProductPress(product.id)}
-              />
-            ))}
-          </ScrollView>
+          {isLoadingIndieItems ? (
+            <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+              <ActivityIndicator size="large" color="#000" />
+            </View>
+          ) : indieItemsData.length > 0 ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {indieItemsData.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  showSize={true}
+                  showProtectionFee={true}
+                  onPress={() => handleProductPress(product.id)}
+                />
+              ))}
+            </ScrollView>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12,
+                fontFamily: "Poppins-Regular",
+                color: "#666",
+                textAlign: 'center',
+                paddingVertical: 20,
+              }}
+            >
+              No indie items available
+            </Text>
+          )}
         </View>
 
         <View style={{ height: 40 }} />
