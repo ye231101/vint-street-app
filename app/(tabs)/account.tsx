@@ -1,5 +1,5 @@
 import { useAuth } from "@/providers/auth-provider";
-import { Ionicons } from "@expo/vector-icons";
+import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,7 +33,7 @@ export default function AccountScreen() {
               alignItems: "center",
               marginRight: 16,
             }}>
-              <Ionicons name="person" size={32} color="#fff" />
+              <Feather name="user" size={32} color="#fff" />
             </View>
             
             {/* User Info */}
@@ -46,7 +46,7 @@ export default function AccountScreen() {
                 }}>
                   {user?.firstName || user?.username || "Guest User"}
                 </Text>
-                <Ionicons name="bag-outline" size={24} color="#fff" />
+                <Feather name="shopping-bag" size={24} color="#fff" />
               </View>
               <Text style={{ 
                 fontSize: 14, 
@@ -91,7 +91,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="storefront-outline" size={24} color="#fff" />
+            <Feather name="shopping-cart" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -101,7 +101,7 @@ export default function AccountScreen() {
             }}>
               Seller Dashboard
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -110,7 +110,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="card-outline" size={24} color="#fff" />
+            <Feather name="credit-card" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -120,7 +120,7 @@ export default function AccountScreen() {
             }}>
               Payment Setup
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
         </View>
 
@@ -146,7 +146,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="car-outline" size={24} color="#fff" />
+            <Feather name="shopping-cart" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -156,7 +156,7 @@ export default function AccountScreen() {
             }}>
               Orders
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -165,7 +165,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="heart-outline" size={24} color="#fff" />
+            <Feather name="heart" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -175,7 +175,7 @@ export default function AccountScreen() {
             }}>
               Favourites
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -184,7 +184,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="card-outline" size={24} color="#fff" />
+            <Feather name="credit-card" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -194,7 +194,7 @@ export default function AccountScreen() {
             }}>
               Payment Methods
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -203,7 +203,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="location-outline" size={24} color="#fff" />
+            <Feather name="map-pin" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -213,7 +213,7 @@ export default function AccountScreen() {
             }}>
               Addresses
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
         </View>
 
@@ -239,7 +239,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="help-circle-outline" size={24} color="#fff" />
+            <Feather name="help-circle" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -249,7 +249,7 @@ export default function AccountScreen() {
             }}>
               Help Center
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -258,7 +258,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="chatbubble-outline" size={24} color="#fff" />
+            <Feather name="message-circle" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -268,7 +268,7 @@ export default function AccountScreen() {
             }}>
               Contact Support
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
         </View>
 
@@ -294,7 +294,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="settings-outline" size={24} color="#fff" />
+            <Feather name="settings" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -304,7 +304,7 @@ export default function AccountScreen() {
             }}>
               App Settings
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable style={{
@@ -313,7 +313,7 @@ export default function AccountScreen() {
             paddingVertical: 12,
             paddingHorizontal: 16,
           }}>
-            <Ionicons name="shield-checkmark-outline" size={24} color="#fff" />
+            <Feather name="shield" size={24} color="#fff" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
@@ -323,7 +323,7 @@ export default function AccountScreen() {
             }}>
               Privacy & Security
             </Text>
-            <Ionicons name="chevron-forward" size={16} color="#999" />
+            <Feather name="chevron-right" size={16} color="#999" />
           </Pressable>
 
           <Pressable 
@@ -335,7 +335,7 @@ export default function AccountScreen() {
               paddingHorizontal: 16,
             }}
           >
-            <Ionicons name="log-out-outline" size={24} color="#ff4444" />
+            <Feather name="log-out" size={24} color="#ff4444" />
             <Text style={{
               fontSize: 16,
               fontFamily: "Poppins-Regular",
