@@ -12,7 +12,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -93,7 +93,9 @@ export default function DiscoveryScreen() {
     if (category) {
       const categoryName = decodeURIComponent(category as string);
       // Find the category in mockCategories and navigate to it
-      const foundCategory = mockCategories.find(cat => cat.name === categoryName);
+      const foundCategory = mockCategories.find(
+        (cat) => cat.name === categoryName
+      );
       if (foundCategory) {
         handleCategoryPress(categoryName);
       }
@@ -147,7 +149,10 @@ export default function DiscoveryScreen() {
   const handleApplyFilters = (filters: any) => {
     console.log("Applied filters:", filters);
     // Update filter count based on applied filters
-    const totalFilters = Object.values(filters).reduce((total: number, options: any) => total + options.length, 0);
+    const totalFilters = Object.values(filters).reduce(
+      (total: number, options: any) => total + options.length,
+      0
+    );
     setFilterCount(totalFilters);
   };
 
@@ -310,11 +315,6 @@ export default function DiscoveryScreen() {
         </View>
       )}
 
-      {/* Floating Action Button */}
-      <Pressable style={styles.fab}>
-        <Feather name="settings" size={24} color="#fff" />
-      </Pressable>
-
       {/* Filter Modal */}
       <FilterModal
         visible={showFilterModal}
@@ -404,21 +404,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontFamily: "Poppins-Bold",
-  },
-  fab: {
-    position: "absolute",
-    bottom: 80,
-    right: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: "#FF6B35",
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
