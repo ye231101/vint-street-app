@@ -17,7 +17,7 @@ interface RecentlyViewedContextType {
 
 const RecentlyViewedContext = createContext<RecentlyViewedContextType | undefined>(undefined);
 
-const STORAGE_KEY = '@recently_viewed_products';
+const STORAGE_KEY = 'recently_viewed_products';
 const MAX_ITEMS = 50; // Maximum number of items to store
 
 export function RecentlyViewedProvider({ children }: { children: React.ReactNode }) {
