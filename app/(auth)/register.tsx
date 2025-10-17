@@ -305,7 +305,7 @@ export default function RegisterScreen() {
           {/* Logo */}
           <View style={{ alignItems: "center", marginBottom: 30 }}>
             <Image
-              source={require("@/assets/images/splash_logo.png")}
+              source={require("@/assets/images/splash-logo.png")}
               style={{ width: 160, height: 160, resizeMode: "contain" }}
             />
           </View>

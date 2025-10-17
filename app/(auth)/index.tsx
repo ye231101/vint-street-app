@@ -35,7 +35,7 @@ export default function IndexScreen() {
           <View style={{ width: "100%", maxWidth: 520 }}>
             <View style={{ paddingBottom: 40, alignItems: "center" }}>
               <Image
-                source={require("@/assets/images/splash_logo.png")}
+                source={require("@/assets/images/splash-logo.png")}
                 style={{ width: 160, height: 160, resizeMode: "contain" }}
               />
               <Text
