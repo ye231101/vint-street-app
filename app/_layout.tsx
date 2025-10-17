@@ -10,6 +10,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthProvider } from "@/providers/auth-provider";
+import { RecentlyViewedProvider } from "@/providers/recently-viewed-provider";
 import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
@@ -31,13 +32,15 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <AuthProvider>
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="product" options={{ headerShown: false }} />
-          <Stack.Screen name="message" options={{ headerShown: false }} />
-          <Stack.Screen name="other" options={{ headerShown: false }} />
-        </Stack>
+        <RecentlyViewedProvider>
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="product" options={{ headerShown: false }} />
+            <Stack.Screen name="message" options={{ headerShown: false }} />
+            <Stack.Screen name="other" options={{ headerShown: false }} />
+          </Stack>
+        </RecentlyViewedProvider>
       </AuthProvider>
       <StatusBar style="auto" backgroundColor="black" />
     </ThemeProvider>
