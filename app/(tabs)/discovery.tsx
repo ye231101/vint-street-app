@@ -4,8 +4,8 @@ import FilterSortBar from "@/components/filter-sort-bar";
 import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
 import Feather from "@expo/vector-icons/Feather";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -78,6 +78,7 @@ const mockProducts = [
 
 export default function DiscoveryScreen() {
   const router = useRouter();
+  const { category } = useLocalSearchParams();
   const [searchText, setSearchText] = useState("");
   const [categoryPath, setCategoryPath] = useState<string[]>([]);
   const [currentView, setCurrentView] = useState<
@@ -86,6 +87,18 @@ export default function DiscoveryScreen() {
   const [filterCount, setFilterCount] = useState(0);
   const [sortBy, setSortBy] = useState("Most Relevant");
   const [showFilterModal, setShowFilterModal] = useState(false);
+
+  // Handle category parameter from navigation
+  useEffect(() => {
+    if (category) {
+      const categoryName = decodeURIComponent(category as string);
+      // Find the category in mockCategories and navigate to it
+      const foundCategory = mockCategories.find(cat => cat.name === categoryName);
+      if (foundCategory) {
+        handleCategoryPress(categoryName);
+      }
+    }
+  }, [category]);
 
   const handleCategoryPress = (categoryName: string) => {
     if (categoryName === "Men's") {

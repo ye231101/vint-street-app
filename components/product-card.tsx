@@ -1,12 +1,12 @@
 import Feather from '@expo/vector-icons/Feather';
 import React from 'react';
 import {
-    Dimensions,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -53,8 +53,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         
         {/* Like Button */}
         <View style={styles.likeButton}>
-          <Feather name="heart" size={12} color="white" />
           <Text style={styles.likeText}>{product.likes}</Text>
+          <Feather name="heart" size={12} color="black" />
         </View>
       </View>
       
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 8,
     right: 8,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     borderRadius: 12,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   likeText: {
-    color: 'white',
+    color: 'black',
     fontSize: 10,
-    marginLeft: 2,
+    marginRight: 8,
   },
   content: {
     padding: 12,

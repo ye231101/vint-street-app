@@ -4,6 +4,7 @@ import ProductCard, { Product } from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   Dimensions,
@@ -98,7 +99,6 @@ const indieItems = [
   },
 ];
 
-// Recently viewed mock data (replace with provider/API when available)
 const recentlyViewedProducts: Product[] = [
   {
     id: 7,
@@ -144,7 +144,6 @@ const brands = [
   },
 ];
 
-// Top Categories content
 const topCategories = [
   {
     title: "Caps",
@@ -211,9 +210,6 @@ const eras = [
   },
 ];
 
-// Product interface is now imported from ProductCard component
-
-
 interface Brand {
   name: string;
   image: any;
@@ -255,6 +251,16 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
 );
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  const handleProductPress = (productId: number) => {
+    router.push(`/product/${productId}` as any);
+  };
+
+  const handleCategoryPress = (categoryName: string) => {
+    router.push(`/(tabs)/discovery?category=${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       {/* Search Bar */}
@@ -314,6 +320,7 @@ export default function HomeScreen() {
           <PopularProductsCarousel
             title="TRENDING NOW"
             items={trendingProducts}
+            onPressItem={(item) => handleProductPress(Number(item.id))}
           />
         </View>
 
@@ -350,7 +357,11 @@ export default function HomeScreen() {
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {recentlyAddedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                onPress={() => handleProductPress(product.id)}
+              />
             ))}
           </ScrollView>
         </View>
@@ -372,8 +383,9 @@ export default function HomeScreen() {
               const cardWidth = screenWidth / 2;
               const cardHeight = cardWidth * (9 / 16);
               return (
-                <View
+                <Pressable
                   key={cat.title}
+                  onPress={() => handleCategoryPress(cat.title)}
                   style={{
                     width: cardWidth,
                     height: cardHeight,
@@ -446,7 +458,7 @@ export default function HomeScreen() {
                     </Text>
                     <Feather name="chevron-right" size={16} color="white" />
                   </View>
-                </View>
+                </Pressable>
               );
             })}
           </ScrollView>
@@ -594,6 +606,7 @@ export default function HomeScreen() {
                 product={product}
                 showSize={true}
                 showProtectionFee={true}
+                onPress={() => handleProductPress(product.id)}
               />
             ))}
           </ScrollView>
@@ -637,6 +650,7 @@ export default function HomeScreen() {
                 product={product}
                 showSize={true}
                 showProtectionFee={true}
+                onPress={() => handleProductPress(product.id)}
               />
             ))}
           </ScrollView>
