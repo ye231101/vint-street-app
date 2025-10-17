@@ -11,18 +11,20 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import authReducer from "./slices/authSlice";
+import basketReducer from "./slices/basketSlice";
 
 // Redux Persist configuration
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["auth"], // Only persist auth state
+  whitelist: ["auth", "basket"], // Persist auth and basket state
   blacklist: [], // Don't persist these reducers
 };
 
 // Combine reducers
 const rootReducer = combineReducers({
   auth: authReducer,
+  basket: basketReducer,
 });
 
 // Create persisted reducer

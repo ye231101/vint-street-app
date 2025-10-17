@@ -1,4 +1,4 @@
-import { useBasket } from "@/providers/basket-provider";
+import { useBasket } from "@/hooks/useBasket";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Use the interfaces from the basket provider
-import { Basket, BasketItem, Vendor } from "@/providers/basket-provider";
+// Use the interfaces from the basket slice
+import { Basket, BasketItem, Vendor } from "@/store/slices/basketSlice";
 
 export default function BasketScreen() {
   const {

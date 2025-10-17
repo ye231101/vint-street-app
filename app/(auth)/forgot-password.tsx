@@ -1,4 +1,4 @@
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/hooks/useAuth";
 import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";

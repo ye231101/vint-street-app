@@ -1,6 +1,6 @@
 import { typesenseService } from "@/api/services";
 import { VintStreetListing } from "@/api/types/product.types";
-import { useBasket } from "@/providers/basket-provider";
+import { useBasket } from "@/hooks/useBasket";
 import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
 import Feather from "@expo/vector-icons/Feather";
 import { useLocalSearchParams, useRouter } from "expo-router";
