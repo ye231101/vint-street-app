@@ -5,8 +5,9 @@ import SearchBar from "@/components/search-bar";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Pressable,
@@ -15,6 +16,8 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { typesenseService } from "@/api/services";
+import { VintStreetListing } from "@/api/types/product.types";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -252,6 +255,48 @@ const BrandCard = ({ brand }: { brand: Brand }) => (
 
 export default function HomeScreen() {
   const router = useRouter();
+  const [trendingProductsData, setTrendingProductsData] = useState<any[]>([]);
+  const [isLoadingTrending, setIsLoadingTrending] = useState(true);
+
+  // Fetch trending products on mount
+  useEffect(() => {
+    fetchTrendingProducts();
+  }, []);
+
+  const fetchTrendingProducts = async () => {
+    try {
+      setIsLoadingTrending(true);
+      const response = await typesenseService.getPopularProducts(30);
+      
+      // Convert Typesense results to carousel format
+      const products = response.hits.map((hit) => {
+        const listing = typesenseService.convertToVintStreetListing(hit.document);
+        
+        // Use thumbnail URLs for better performance, fallback to full images
+        const imageUrls = listing.thumbnailImageUrls.length > 0 
+          ? listing.thumbnailImageUrls 
+          : listing.fullImageUrls;
+        
+        return {
+          id: listing.id,
+          name: listing.name,
+          brand: listing.brand || 'No Brand',
+          price: `£${listing.price.toFixed(2)}`,
+          images: imageUrls.map(url => ({ uri: url })),
+          likes: listing.favoritesCount,
+        };
+      });
+      
+      setTrendingProductsData(products);
+      console.log(`Loaded ${products.length} trending products`);
+    } catch (error) {
+      console.error('Error fetching trending products:', error);
+      // Keep empty array on error, carousel will show nothing
+      setTrendingProductsData([]);
+    } finally {
+      setIsLoadingTrending(false);
+    }
+  };
 
   const handleProductPress = (productId: number) => {
     router.push(`/product/${productId}` as any);
@@ -317,11 +362,53 @@ export default function HomeScreen() {
         </View>
 
         <View style={{ marginBottom: 24 }}>
-          <PopularProductsCarousel
-            title="TRENDING NOW"
-            items={trendingProducts}
-            onPressItem={(item) => handleProductPress(Number(item.id))}
-          />
+          {isLoadingTrending ? (
+            <View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Bold",
+                  color: "black",
+                  marginBottom: 12,
+                }}
+              >
+                TRENDING NOW
+              </Text>
+              <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+                <ActivityIndicator size="large" color="#000" />
+              </View>
+            </View>
+          ) : trendingProductsData.length > 0 ? (
+            <PopularProductsCarousel
+              title="TRENDING NOW"
+              items={trendingProductsData}
+              onPressItem={(item) => handleProductPress(Number(item.id))}
+            />
+          ) : (
+            <View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Bold",
+                  color: "black",
+                  marginBottom: 12,
+                }}
+              >
+                TRENDING NOW
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontFamily: "Poppins-Regular",
+                  color: "#666",
+                  textAlign: 'center',
+                  paddingVertical: 20,
+                }}
+              >
+                No trending products available
+              </Text>
+            </View>
+          )}
         </View>
 
         {/* RECENTLY ADDS */}
