@@ -68,7 +68,9 @@ export const initializeAuth = createAsyncThunk(
         }
       }
 
-      throw new Error("No valid session found");
+      // No session found - this is normal for first-time users
+      // Don't throw an error, just return null to indicate no authentication
+      return null;
     } catch (error) {
       throw error;
     }
@@ -241,8 +243,15 @@ const authSlice = createSlice({
       })
       .addCase(initializeAuth.fulfilled, (state, action) => {
         state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
+        if (action.payload) {
+          // User has a valid session
+          state.isAuthenticated = true;
+          state.user = action.payload.user;
+        } else {
+          // No session found - normal for first-time users
+          state.isAuthenticated = false;
+          state.user = null;
+        }
         state.error = null;
         state.isInitialized = true;
       })
