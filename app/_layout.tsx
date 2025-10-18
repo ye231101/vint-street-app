@@ -19,7 +19,7 @@ export const unstable_settings = {
 };
 
 // Auth handler component that manages authentication logic
-function AuthHandler({ children }: { children: React.ReactNode }) {
+function AuthWrapper({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   const { isAuthenticated, isInitialized } = useAppSelector((state) => state.auth);
 
@@ -89,7 +89,7 @@ export default function RootLayout() {
   return (
     <ReduxProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AuthHandler>
+        <AuthWrapper>
           <Stack>
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -99,7 +99,7 @@ export default function RootLayout() {
             <Stack.Screen name="basket" options={{ headerShown: false }} />
             <Stack.Screen name="checkout" options={{ headerShown: false }} />
           </Stack>
-        </AuthHandler>
+        </AuthWrapper>
         <StatusBar style="auto" backgroundColor="black" />
       </ThemeProvider>
     </ReduxProvider>
