@@ -1,82 +1,66 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HelpCenterScreen() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
 
   const popularTopics = [
     {
-      icon: "truck",
-      title: "Orders & Shipping",
-      subtitle: "Track orders, shipping info, returns",
+      icon: 'truck',
+      title: 'Orders & Shipping',
+      subtitle: 'Track orders, shipping info, returns',
       onPress: () => {
-        Alert.alert(
-          "Orders & Shipping",
-          "Navigate to Orders & Shipping help section"
-        );
+        Alert.alert('Orders & Shipping', 'Navigate to Orders & Shipping help section');
       },
     },
     {
-      icon: "credit-card",
-      title: "Payments & Refunds",
-      subtitle: "Payment methods, refund process",
+      icon: 'credit-card',
+      title: 'Payments & Refunds',
+      subtitle: 'Payment methods, refund process',
       onPress: () => {
-        Alert.alert(
-          "Payments & Refunds",
-          "Navigate to Payments & Refunds help section"
-        );
+        Alert.alert('Payments & Refunds', 'Navigate to Payments & Refunds help section');
       },
     },
     {
-      icon: "user",
-      title: "Account & Profile",
-      subtitle: "Account settings, profile management",
+      icon: 'user',
+      title: 'Account & Profile',
+      subtitle: 'Account settings, profile management',
       onPress: () => {
-        Alert.alert(
-          "Account & Profile",
-          "Navigate to Account & Profile help section"
-        );
+        Alert.alert('Account & Profile', 'Navigate to Account & Profile help section');
       },
     },
   ];
 
   const faqItems = [
     {
-      question: "How do I return an item?",
+      question: 'How do I return an item?',
       answer:
         "You can initiate a return within 14 days of delivery. Go to Orders, select the item, and click 'Return Item' to start the process.",
     },
     {
-      question: "When will I receive my refund?",
+      question: 'When will I receive my refund?',
       answer:
-        "Refunds are typically processed within 5-7 business days after we receive your return.",
+        'Refunds are typically processed within 5-7 business days after we receive your return.',
     },
     {
-      question: "How do I track my order?",
+      question: 'How do I track my order?',
       answer:
-        "You can track your order in the Orders section of your account. Click on the specific order to view its current status and tracking information.",
+        'You can track your order in the Orders section of your account. Click on the specific order to view its current status and tracking information.',
     },
   ];
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      Alert.alert("Search", `Searching for: ${searchQuery}`);
+      Alert.alert('Search', `Searching for: ${searchQuery}`);
     }
   };
 
   const handleContactSupport = () => {
-    router.push("/other/contact-support" as any);
+    router.push('/other/contact-support' as any);
   };
 
   const toggleFAQ = (question: string) => {
@@ -97,8 +81,8 @@ export default function HelpCenterScreen() {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingVertical: 12,
         paddingHorizontal: 16,
       }}
@@ -107,9 +91,9 @@ export default function HelpCenterScreen() {
       <View style={{ marginLeft: 16, flex: 1 }}>
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
+            fontFamily: 'Poppins-Bold',
             marginBottom: 4,
           }}
         >
@@ -117,9 +101,9 @@ export default function HelpCenterScreen() {
         </Text>
         <Text
           style={{
-            color: "#999",
+            color: '#999',
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
           }}
         >
           {subtitle}
@@ -144,27 +128,23 @@ export default function HelpCenterScreen() {
       <TouchableOpacity
         onPress={onToggle}
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           paddingVertical: 12,
           paddingHorizontal: 16,
         }}
       >
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 16,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
             flex: 1,
           }}
         >
           {question}
         </Text>
-        <Feather
-          name={isExpanded ? "chevron-up" : "chevron-down"}
-          size={16}
-          color="#999"
-        />
+        <Feather name={isExpanded ? 'chevron-up' : 'chevron-down'} size={16} color="#999" />
       </TouchableOpacity>
       {isExpanded && (
         <View
@@ -175,9 +155,9 @@ export default function HelpCenterScreen() {
         >
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
               lineHeight: 20,
             }}
           >
@@ -189,17 +169,17 @@ export default function HelpCenterScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -215,8 +195,8 @@ export default function HelpCenterScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Help Center
@@ -228,10 +208,10 @@ export default function HelpCenterScreen() {
           {/* Search Bar */}
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingHorizontal: 12,
               marginBottom: 24,
             }}
@@ -240,9 +220,9 @@ export default function HelpCenterScreen() {
             <TextInput
               style={{
                 flex: 1,
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 paddingVertical: 16,
                 paddingHorizontal: 12,
               }}
@@ -258,11 +238,11 @@ export default function HelpCenterScreen() {
           {/* Popular Topics Section */}
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 12,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
               letterSpacing: 0.5,
             }}
           >
@@ -283,7 +263,7 @@ export default function HelpCenterScreen() {
           <View
             style={{
               height: 1,
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               marginVertical: 24,
             }}
           />
@@ -291,11 +271,11 @@ export default function HelpCenterScreen() {
           {/* FAQ Section */}
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 12,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
               letterSpacing: 0.5,
             }}
           >
@@ -316,7 +296,7 @@ export default function HelpCenterScreen() {
           <View
             style={{
               height: 1,
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               marginVertical: 24,
             }}
           />
@@ -327,23 +307,23 @@ export default function HelpCenterScreen() {
       <View
         style={{
           padding: 16,
-          backgroundColor: "#000",
+          backgroundColor: '#000',
         }}
       >
         <TouchableOpacity
           onPress={handleContactSupport}
           style={{
-            backgroundColor: "#007AFF",
+            backgroundColor: '#007AFF',
             borderRadius: 12,
             paddingVertical: 16,
-            alignItems: "center",
+            alignItems: 'center',
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             Contact Support

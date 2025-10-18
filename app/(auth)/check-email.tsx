@@ -1,9 +1,9 @@
-import { authService } from "@/api";
-import Feather from "@expo/vector-icons/Feather";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { authService } from '@/api';
+import Feather from '@expo/vector-icons/Feather';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function CheckEmailScreen() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function CheckEmailScreen() {
 
   // Poll for email confirmation status
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     let attemptCount = 0;
     const MAX_ATTEMPTS = 200; // Poll for ~10 minutes (200 * 3 seconds)
 
@@ -40,7 +40,7 @@ export default function CheckEmailScreen() {
           setIsConfirmed(true);
 
           // Auto redirect after 1 second
-          setTimeout(() => router.replace("/(tabs)"), 1000);
+          setTimeout(() => router.replace('/(tabs)'), 1000);
           return;
         }
 
@@ -57,7 +57,7 @@ export default function CheckEmailScreen() {
             setIsConfirmed(true);
 
             // Auto redirect after 1 second
-            setTimeout(() => router.replace("/(tabs)"), 1000);
+            setTimeout(() => router.replace('/(tabs)'), 1000);
             return;
           }
         }
@@ -68,7 +68,7 @@ export default function CheckEmailScreen() {
           setCheckingStatus(false);
         }
       } catch (error) {
-        console.log("Error checking email confirmation:", error);
+        console.log('Error checking email confirmation:', error);
       } finally {
         if (attemptCount < MAX_ATTEMPTS) {
           setCheckingStatus(attemptCount % 2 === 0); // Blink the indicator
@@ -92,24 +92,21 @@ export default function CheckEmailScreen() {
     setResendLoading(true);
 
     try {
-      const { success, error } = await authService.resendOTP(email, "signup");
+      const { success, error } = await authService.resendOTP(email, 'signup');
 
       if (error || !success) {
-        Alert.alert("Error", error || "Failed to resend confirmation email");
+        Alert.alert('Error', error || 'Failed to resend confirmation email');
         return;
       }
     } catch (e) {
-      Alert.alert(
-        "Error",
-        e instanceof Error ? e.message : "Failed to resend email"
-      );
+      Alert.alert('Error', e instanceof Error ? e.message : 'Failed to resend email');
     } finally {
       setResendLoading(false);
     }
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1, padding: 24 }}
@@ -119,22 +116,22 @@ export default function CheckEmailScreen() {
           {/* Header */}
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               marginBottom: 20,
-              width: "100%",
+              width: '100%',
               paddingTop: 10,
             }}
           >
-            <Pressable onPress={() => router.replace("/(auth)")} hitSlop={8}>
+            <Pressable onPress={() => router.replace('/(auth)')} hitSlop={8}>
               <Feather name="arrow-left" size={24} color="black" />
             </Pressable>
             <Text
               style={{
                 fontSize: 20,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 flex: 1,
-                textAlign: "center",
+                textAlign: 'center',
                 marginRight: 24,
               }}
             >
@@ -142,17 +139,13 @@ export default function CheckEmailScreen() {
             </Text>
           </View>
 
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <View
-              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
-            >
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: '100%', maxWidth: 520, alignItems: 'center' }}>
               {/* Logo */}
-              <View style={{ alignItems: "center", marginBottom: 30 }}>
+              <View style={{ alignItems: 'center', marginBottom: 30 }}>
                 <Image
-                  source={require("@/assets/images/splash-logo.png")}
-                  style={{ width: 160, height: 160, resizeMode: "contain" }}
+                  source={require('@/assets/images/splash-logo.png')}
+                  style={{ width: 160, height: 160, resizeMode: 'contain' }}
                 />
               </View>
 
@@ -162,9 +155,9 @@ export default function CheckEmailScreen() {
                   width: 100,
                   height: 100,
                   borderRadius: 50,
-                  backgroundColor: "#e8f5e9",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  backgroundColor: '#e8f5e9',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   marginBottom: 32,
                 }}
               >
@@ -175,8 +168,8 @@ export default function CheckEmailScreen() {
               <Text
                 style={{
                   fontSize: 28,
-                  fontFamily: "Poppins-Bold",
-                  textAlign: "center",
+                  fontFamily: 'Poppins-Bold',
+                  textAlign: 'center',
                   marginBottom: 16,
                 }}
               >
@@ -187,9 +180,9 @@ export default function CheckEmailScreen() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
-                  textAlign: "center",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  textAlign: 'center',
+                  color: '#666',
                   lineHeight: 24,
                   marginBottom: 8,
                 }}
@@ -200,9 +193,9 @@ export default function CheckEmailScreen() {
               <Text
                 style={{
                   fontSize: 17,
-                  fontFamily: "Poppins-SemiBold",
-                  textAlign: "center",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  textAlign: 'center',
+                  color: '#000',
                   marginBottom: 32,
                 }}
               >
@@ -212,24 +205,23 @@ export default function CheckEmailScreen() {
               {/* Instructions */}
               <View
                 style={{
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: '#f5f5f5',
                   padding: 20,
                   borderRadius: 12,
                   marginBottom: 24,
-                  width: "100%",
+                  width: '100%',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 15,
-                    fontFamily: "Poppins-Regular",
-                    textAlign: "center",
-                    color: "#333",
+                    fontFamily: 'Poppins-Regular',
+                    textAlign: 'center',
+                    color: '#333',
                     lineHeight: 22,
                   }}
                 >
-                  Click the link in the email to confirm your account and get
-                  started.
+                  Click the link in the email to confirm your account and get started.
                 </Text>
               </View>
 
@@ -237,26 +229,26 @@ export default function CheckEmailScreen() {
               {!isConfirmed && (
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     marginBottom: 24,
                     padding: 12,
-                    backgroundColor: checkingStatus ? "#e3f2fd" : "#f5f5f5",
+                    backgroundColor: checkingStatus ? '#e3f2fd' : '#f5f5f5',
                     borderRadius: 8,
                   }}
                 >
                   <Feather
                     name="refresh-cw"
                     size={16}
-                    color={checkingStatus ? "#1976d2" : "#999"}
+                    color={checkingStatus ? '#1976d2' : '#999'}
                     style={{ marginRight: 8 }}
                   />
                   <Text
                     style={{
                       fontSize: 14,
-                      fontFamily: "Poppins-Regular",
-                      color: checkingStatus ? "#1976d2" : "#999",
+                      fontFamily: 'Poppins-Regular',
+                      color: checkingStatus ? '#1976d2' : '#999',
                     }}
                   >
                     Waiting for email confirmation...
@@ -268,12 +260,12 @@ export default function CheckEmailScreen() {
               {isConfirmed && (
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     marginBottom: 24,
                     padding: 12,
-                    backgroundColor: "#e8f5e9",
+                    backgroundColor: '#e8f5e9',
                     borderRadius: 8,
                   }}
                 >
@@ -286,8 +278,8 @@ export default function CheckEmailScreen() {
                   <Text
                     style={{
                       fontSize: 14,
-                      fontFamily: "Poppins-SemiBold",
-                      color: "#4CAF50",
+                      fontFamily: 'Poppins-SemiBold',
+                      color: '#4CAF50',
                     }}
                   >
                     Email confirmed! Redirecting...
@@ -296,11 +288,11 @@ export default function CheckEmailScreen() {
               )}
 
               {/* Helpful Tips */}
-              <View style={{ width: "100%", marginBottom: 32 }}>
+              <View style={{ width: '100%', marginBottom: 32 }}>
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "flex-start",
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
                     marginBottom: 12,
                   }}
                 >
@@ -314,8 +306,8 @@ export default function CheckEmailScreen() {
                     style={{
                       flex: 1,
                       fontSize: 14,
-                      fontFamily: "Poppins-Regular",
-                      color: "#666",
+                      fontFamily: 'Poppins-Regular',
+                      color: '#666',
                       lineHeight: 20,
                     }}
                   >
@@ -325,8 +317,8 @@ export default function CheckEmailScreen() {
 
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "flex-start",
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
                     marginBottom: 12,
                   }}
                 >
@@ -340,8 +332,8 @@ export default function CheckEmailScreen() {
                     style={{
                       flex: 1,
                       fontSize: 14,
-                      fontFamily: "Poppins-Regular",
-                      color: "#666",
+                      fontFamily: 'Poppins-Regular',
+                      color: '#666',
                       lineHeight: 20,
                     }}
                   >
@@ -351,8 +343,8 @@ export default function CheckEmailScreen() {
 
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "flex-start",
+                    flexDirection: 'row',
+                    alignItems: 'flex-start',
                   }}
                 >
                   <Feather
@@ -365,13 +357,13 @@ export default function CheckEmailScreen() {
                     style={{
                       flex: 1,
                       fontSize: 14,
-                      fontFamily: "Poppins-Regular",
-                      color: "#666",
+                      fontFamily: 'Poppins-Regular',
+                      color: '#666',
                       lineHeight: 20,
                     }}
                   >
-                    After clicking the link, return to this screen and you'll be
-                    automatically signed in
+                    After clicking the link, return to this screen and you'll be automatically
+                    signed in
                   </Text>
                 </View>
               </View>
@@ -379,20 +371,20 @@ export default function CheckEmailScreen() {
               {/* Important Note for Mobile */}
               <View
                 style={{
-                  backgroundColor: "#fff3e0",
+                  backgroundColor: '#fff3e0',
                   padding: 16,
                   borderRadius: 8,
                   borderLeftWidth: 4,
-                  borderLeftColor: "#ff9800",
+                  borderLeftColor: '#ff9800',
                   marginBottom: 32,
-                  width: "100%",
+                  width: '100%',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#e65100",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#e65100',
                     marginBottom: 8,
                   }}
                 >
@@ -401,13 +393,13 @@ export default function CheckEmailScreen() {
                 <Text
                   style={{
                     fontSize: 13,
-                    fontFamily: "Poppins-Regular",
-                    color: "#e65100",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#e65100',
                     lineHeight: 18,
                   }}
                 >
-                  Click the link in your email, then come back to this app.
-                  We'll automatically detect your confirmation and sign you in!
+                  Click the link in your email, then come back to this app. We'll automatically
+                  detect your confirmation and sign you in!
                 </Text>
               </View>
 
@@ -418,30 +410,30 @@ export default function CheckEmailScreen() {
                 style={{
                   height: 50,
                   borderRadius: 8,
-                  backgroundColor: resendLoading ? "#9e9e9e" : "#000",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
+                  backgroundColor: resendLoading ? '#9e9e9e' : '#000',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
                   marginBottom: 16,
                 }}
               >
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#fff",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#fff',
                     fontSize: 16,
                   }}
                 >
-                  {resendLoading ? "Sending..." : "Resend Confirmation Email"}
+                  {resendLoading ? 'Sending...' : 'Resend Confirmation Email'}
                 </Text>
               </Pressable>
 
               {/* Return to Login */}
-              <Pressable onPress={() => router.replace("/(auth)")}>
+              <Pressable onPress={() => router.replace('/(auth)')}>
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#666",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#666',
                     fontSize: 15,
                   }}
                 >

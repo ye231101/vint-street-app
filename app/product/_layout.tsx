@@ -1,19 +1,19 @@
-import { Stack } from "expo-router";
-import React from "react";
+import { Stack } from 'expo-router';
+import React from 'react';
 
 export default function ProductLayout() {
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        presentation: "card",
-        animation: "slide_from_right",
+        presentation: 'card',
+        animation: 'slide_from_right',
       }}
     >
       <Stack.Screen
         name="[id]"
         options={{
-          title: "Product Details",
+          title: 'Product Details',
           headerShown: false,
         }}
       />

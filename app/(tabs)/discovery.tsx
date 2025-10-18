@@ -1,91 +1,84 @@
-import CategoryWidget from "@/components/category-widget";
-import FilterModal from "@/components/filter-modal";
-import FilterSortBar from "@/components/filter-sort-bar";
-import ProductCard from "@/components/product-card";
-import SearchBar from "@/components/search-bar";
-import Feather from "@expo/vector-icons/Feather";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import CategoryWidget from '@/components/category-widget';
+import FilterModal from '@/components/filter-modal';
+import FilterSortBar from '@/components/filter-sort-bar';
+import ProductCard from '@/components/product-card';
+import SearchBar from '@/components/search-bar';
+import Feather from '@expo/vector-icons/Feather';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Mock data for categories
 const mockCategories = [
   { id: 1, name: "Men's", hasChildren: true },
   { id: 2, name: "Women's", hasChildren: true },
   { id: 3, name: "Junior's", hasChildren: true },
-  { id: 4, name: "Footwear", hasChildren: true },
-  { id: 5, name: "Games", hasChildren: true },
-  { id: 6, name: "Consoles", hasChildren: true },
-  { id: 7, name: "Music", hasChildren: true },
-  { id: 8, name: "Trading Cards", hasChildren: true },
-  { id: 9, name: "Collectibles", hasChildren: true },
-  { id: 10, name: "Uncategorised", hasChildren: false },
+  { id: 4, name: 'Footwear', hasChildren: true },
+  { id: 5, name: 'Games', hasChildren: true },
+  { id: 6, name: 'Consoles', hasChildren: true },
+  { id: 7, name: 'Music', hasChildren: true },
+  { id: 8, name: 'Trading Cards', hasChildren: true },
+  { id: 9, name: 'Collectibles', hasChildren: true },
+  { id: 10, name: 'Uncategorised', hasChildren: false },
 ];
 
 // Mock data for subcategories (when in a category)
 const mockSubcategories = [
-  { id: 1, name: "Accessories", hasChildren: false },
-  { id: 2, name: "Clothing", hasChildren: false },
+  { id: 1, name: 'Accessories', hasChildren: false },
+  { id: 2, name: 'Clothing', hasChildren: false },
 ];
 
 // Mock data for products (when viewing products)
 const mockProducts = [
   {
     id: 1,
-    name: "Kickers Coat; Navy, Cream & Red...",
-    brand: "Kickers",
-    price: "£76.00",
-    image: require("@/assets/images/hero-banner.jpg"),
+    name: 'Kickers Coat; Navy, Cream & Red...',
+    brand: 'Kickers',
+    price: '£76.00',
+    image: require('@/assets/images/hero-banner.jpg'),
     likes: 0,
-    size: "L",
+    size: 'L',
   },
   {
     id: 2,
-    name: "Chaps By Ralph Lauren Pullover,...",
-    brand: "Ralph Lauren",
-    price: "£60.00",
-    image: require("@/assets/images/homepage_slider/1.jpg"),
+    name: 'Chaps By Ralph Lauren Pullover,...',
+    brand: 'Ralph Lauren',
+    price: '£60.00',
+    image: require('@/assets/images/homepage_slider/1.jpg'),
     likes: 0,
-    size: "M",
+    size: 'M',
   },
   {
     id: 3,
-    name: "D&G 2003 Bomber Jacket, Black -...",
-    brand: "D&G",
-    price: "£999.00",
-    image: require("@/assets/images/homepage_slider/2.jpg"),
+    name: 'D&G 2003 Bomber Jacket, Black -...',
+    brand: 'D&G',
+    price: '£999.00',
+    image: require('@/assets/images/homepage_slider/2.jpg'),
     likes: 0,
-    size: "XXL",
+    size: 'XXL',
   },
   {
     id: 4,
-    name: "Tommy Hilfiger Jacket, Navy - L",
-    brand: "Tommy Hilfiger",
-    price: "£200.00",
-    image: require("@/assets/images/homepage_slider/3.jpg"),
+    name: 'Tommy Hilfiger Jacket, Navy - L',
+    brand: 'Tommy Hilfiger',
+    price: '£200.00',
+    image: require('@/assets/images/homepage_slider/3.jpg'),
     likes: 0,
-    size: "L",
+    size: 'L',
   },
 ];
 
 export default function DiscoveryScreen() {
   const router = useRouter();
   const { category } = useLocalSearchParams();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [categoryPath, setCategoryPath] = useState<string[]>([]);
-  const [currentView, setCurrentView] = useState<
-    "categories" | "subcategories" | "products"
-  >("categories");
+  const [currentView, setCurrentView] = useState<'categories' | 'subcategories' | 'products'>(
+    'categories'
+  );
   const [filterCount, setFilterCount] = useState(0);
-  const [sortBy, setSortBy] = useState("Most Relevant");
+  const [sortBy, setSortBy] = useState('Most Relevant');
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   // Handle category parameter from navigation
@@ -93,9 +86,7 @@ export default function DiscoveryScreen() {
     if (category) {
       const categoryName = decodeURIComponent(category as string);
       // Find the category in mockCategories and navigate to it
-      const foundCategory = mockCategories.find(
-        (cat) => cat.name === categoryName
-      );
+      const foundCategory = mockCategories.find((cat) => cat.name === categoryName);
       if (foundCategory) {
         handleCategoryPress(categoryName);
       }
@@ -105,41 +96,41 @@ export default function DiscoveryScreen() {
   const handleCategoryPress = (categoryName: string) => {
     if (categoryName === "Men's") {
       setCategoryPath([categoryName]);
-      setCurrentView("subcategories");
+      setCurrentView('subcategories');
     } else {
       // Navigate to products view
       setCategoryPath([categoryName]);
-      setCurrentView("products");
+      setCurrentView('products');
     }
   };
 
   const handleSubcategoryPress = (subcategoryName: string) => {
     setCategoryPath((prev) => [...prev, subcategoryName]);
-    setCurrentView("products");
+    setCurrentView('products');
   };
 
   const handleBack = () => {
     if (categoryPath.length > 1) {
       setCategoryPath((prev) => prev.slice(0, -1));
-      setCurrentView("subcategories");
+      setCurrentView('subcategories');
     } else if (categoryPath.length === 1) {
       setCategoryPath([]);
-      setCurrentView("categories");
+      setCurrentView('categories');
     }
   };
 
   const handleViewAllProducts = () => {
-    setCurrentView("products");
+    setCurrentView('products');
   };
 
   const handleSearch = () => {
     // Implement search functionality
-    console.log("Searching for:", searchText);
+    console.log('Searching for:', searchText);
   };
 
   const handleShoppingCartPress = () => {
     // Navigate to shopping cart
-    console.log("Navigate to shopping cart");
+    console.log('Navigate to shopping cart');
   };
 
   const handleFilterPress = () => {
@@ -147,7 +138,7 @@ export default function DiscoveryScreen() {
   };
 
   const handleApplyFilters = (filters: any) => {
-    console.log("Applied filters:", filters);
+    console.log('Applied filters:', filters);
     // Update filter count based on applied filters
     const totalFilters = Object.values(filters).reduce(
       (total: number, options: any) => total + options.length,
@@ -158,16 +149,16 @@ export default function DiscoveryScreen() {
 
   const handleSortPress = () => {
     // Show sort options
-    console.log("Show sort options");
+    console.log('Show sort options');
   };
 
   const handleProductPress = (productId: number) => {
     // Navigate to product detail
-    console.log("Navigate to product:", productId);
+    console.log('Navigate to product:', productId);
   };
 
   const getCurrentTitle = () => {
-    if (categoryPath.length === 0) return "Discover";
+    if (categoryPath.length === 0) return 'Discover';
     return categoryPath[categoryPath.length - 1];
   };
 
@@ -181,7 +172,7 @@ export default function DiscoveryScreen() {
             <Pressable
               onPress={() => {
                 setCategoryPath([]);
-                setCurrentView("categories");
+                setCurrentView('categories');
               }}
             >
               <Text style={styles.breadcrumbText}>All Categories</Text>
@@ -193,14 +184,13 @@ export default function DiscoveryScreen() {
                   onPress={() => {
                     if (index === categoryPath.length - 1) return;
                     setCategoryPath((prev) => prev.slice(0, index + 1));
-                    setCurrentView(index === 0 ? "subcategories" : "products");
+                    setCurrentView(index === 0 ? 'subcategories' : 'products');
                   }}
                 >
                   <Text
                     style={[
                       styles.breadcrumbText,
-                      index === categoryPath.length - 1 &&
-                        styles.breadcrumbTextActive,
+                      index === categoryPath.length - 1 && styles.breadcrumbTextActive,
                     ]}
                   >
                     {category}
@@ -216,7 +206,7 @@ export default function DiscoveryScreen() {
 
   const renderContent = () => {
     switch (currentView) {
-      case "categories":
+      case 'categories':
         return (
           <FlatList
             data={mockCategories}
@@ -232,7 +222,7 @@ export default function DiscoveryScreen() {
           />
         );
 
-      case "subcategories":
+      case 'subcategories':
         return (
           <FlatList
             data={mockSubcategories}
@@ -248,7 +238,7 @@ export default function DiscoveryScreen() {
           />
         );
 
-      case "products":
+      case 'products':
         return (
           <View style={styles.productsContainer}>
             <FilterSortBar
@@ -302,15 +292,10 @@ export default function DiscoveryScreen() {
       {renderContent()}
 
       {/* Bottom Button for Categories */}
-      {currentView === "subcategories" && (
+      {currentView === 'subcategories' && (
         <View style={styles.bottomButtonContainer}>
-          <Pressable
-            style={styles.bottomButton}
-            onPress={handleViewAllProducts}
-          >
-            <Text style={styles.bottomButtonText}>
-              View all products in this category
-            </Text>
+          <Pressable style={styles.bottomButton} onPress={handleViewAllProducts}>
+            <Text style={styles.bottomButtonText}>View all products in this category</Text>
           </Pressable>
         </View>
       )}
@@ -328,16 +313,16 @@ export default function DiscoveryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
   },
   backButton: {
     marginRight: 12,
@@ -345,34 +330,34 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontFamily: "Poppins-Bold",
-    color: "#000",
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
     flex: 1,
   },
   breadcrumbsContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
   },
   breadcrumbs: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   breadcrumbItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 8,
   },
   breadcrumbText: {
     fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#000",
-    fontWeight: "bold",
+    fontFamily: 'Poppins-Regular',
+    color: '#000',
+    fontWeight: 'bold',
   },
   breadcrumbTextActive: {
-    color: "#666",
+    color: '#666',
   },
   list: {
     flex: 1,
@@ -384,25 +369,25 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   productRow: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
   bottomButtonContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
+    borderTopColor: '#f0f0f0',
   },
   bottomButton: {
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     borderRadius: 4,
     paddingVertical: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   bottomButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontFamily: "Poppins-Bold",
+    fontFamily: 'Poppins-Bold',
   },
 });

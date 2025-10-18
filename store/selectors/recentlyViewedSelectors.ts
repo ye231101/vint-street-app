@@ -1,12 +1,13 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../index";
+import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '../index';
 
 // Basic selectors
 export const selectRecentlyViewedState = (state: RootState) => state.recentlyViewed;
 export const selectRecentlyViewedItems = (state: RootState) => state.recentlyViewed.items;
 export const selectRecentlyViewedLoading = (state: RootState) => state.recentlyViewed.loading;
 export const selectRecentlyViewedError = (state: RootState) => state.recentlyViewed.error;
-export const selectRecentlyViewedInitialized = (state: RootState) => state.recentlyViewed.isInitialized;
+export const selectRecentlyViewedInitialized = (state: RootState) =>
+  state.recentlyViewed.isInitialized;
 
 // Computed selectors
 export const selectRecentlyViewedCount = createSelector(
@@ -31,11 +32,12 @@ export const selectRecentlyViewedWithLimit = (limit: number) =>
 // Convert string dates back to Date objects for components
 export const selectRecentlyViewedItemsWithDates = createSelector(
   [selectRecentlyViewedItems],
-  (items) => items.map(item => ({
-    ...item,
-    createdAt: typeof item.createdAt === 'string' ? new Date(item.createdAt) : item.createdAt,
-    updatedAt: typeof item.updatedAt === 'string' ? new Date(item.updatedAt) : item.updatedAt,
-  }))
+  (items) =>
+    items.map((item) => ({
+      ...item,
+      createdAt: typeof item.createdAt === 'string' ? new Date(item.createdAt) : item.createdAt,
+      updatedAt: typeof item.updatedAt === 'string' ? new Date(item.updatedAt) : item.updatedAt,
+    }))
 );
 
 // Get first N items
@@ -67,9 +69,8 @@ export const selectRecentlyViewedByPriceRange = (minPrice: number, maxPrice: num
   );
 
 // Get recently viewed items sorted by date (most recent first)
-export const selectRecentlyViewedSorted = createSelector(
-  [selectRecentlyViewedItems],
-  (items) => [...items].sort((a, b) => {
+export const selectRecentlyViewedSorted = createSelector([selectRecentlyViewedItems], (items) =>
+  [...items].sort((a, b) => {
     // Since we add new items to the front, the array is already sorted by recency
     // But we can add additional sorting logic here if needed
     return 0;
@@ -88,24 +89,25 @@ export const selectRecentlyViewedByAttribute = (attribute: string, value: string
 // Get recently viewed items by category
 export const selectRecentlyViewedByCategory = (category: string) =>
   createSelector([selectRecentlyViewedItems], (items) =>
-    items.filter((item) => item.categories?.some(cat => cat.toLowerCase() === category.toLowerCase()))
+    items.filter((item) =>
+      item.categories?.some((cat) => cat.toLowerCase() === category.toLowerCase())
+    )
   );
 
 // Get recently viewed items with images
-export const selectRecentlyViewedWithImages = createSelector(
-  [selectRecentlyViewedItems],
-  (items) => items.filter((item) => 
-    item.thumbnailImageUrls?.length > 0 || item.fullImageUrls?.length > 0
-  )
+export const selectRecentlyViewedWithImages = createSelector([selectRecentlyViewedItems], (items) =>
+  items.filter((item) => item.thumbnailImageUrls?.length > 0 || item.fullImageUrls?.length > 0)
 );
 
 // Get recently viewed items without images
 export const selectRecentlyViewedWithoutImages = createSelector(
   [selectRecentlyViewedItems],
-  (items) => items.filter((item) => 
-    (!item.thumbnailImageUrls || item.thumbnailImageUrls.length === 0) &&
-    (!item.fullImageUrls || item.fullImageUrls.length === 0)
-  )
+  (items) =>
+    items.filter(
+      (item) =>
+        (!item.thumbnailImageUrls || item.thumbnailImageUrls.length === 0) &&
+        (!item.fullImageUrls || item.fullImageUrls.length === 0)
+    )
 );
 
 // Get recently viewed items by vendor
@@ -148,19 +150,16 @@ export const selectRecentlyViewedWithHighRatings = (minRating: number = 4.0) =>
   );
 
 // Get recently viewed items on sale
-export const selectRecentlyViewedOnSale = createSelector(
-  [selectRecentlyViewedItems],
-  (items) => items.filter((item) => item.onSale)
+export const selectRecentlyViewedOnSale = createSelector([selectRecentlyViewedItems], (items) =>
+  items.filter((item) => item.onSale)
 );
 
 // Get recently viewed items with stock
-export const selectRecentlyViewedInStock = createSelector(
-  [selectRecentlyViewedItems],
-  (items) => items.filter((item) => item.stockQuantity > 0)
+export const selectRecentlyViewedInStock = createSelector([selectRecentlyViewedItems], (items) =>
+  items.filter((item) => item.stockQuantity > 0)
 );
 
 // Get recently viewed items out of stock
-export const selectRecentlyViewedOutOfStock = createSelector(
-  [selectRecentlyViewedItems],
-  (items) => items.filter((item) => item.stockQuantity === 0)
+export const selectRecentlyViewedOutOfStock = createSelector([selectRecentlyViewedItems], (items) =>
+  items.filter((item) => item.stockQuantity === 0)
 );

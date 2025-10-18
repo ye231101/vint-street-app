@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface BasketItem {
   id: string;
@@ -45,11 +45,11 @@ const initialBasket: Basket = {
   vendorIds: [],
   vendorItems: {},
   subtotal: 0,
-  formattedSubtotal: "£0.00",
+  formattedSubtotal: '£0.00',
   totalProtectionFee: 0,
-  formattedTotalProtectionFee: "£0.00",
+  formattedTotalProtectionFee: '£0.00',
   total: 0,
-  formattedTotal: "£0.00",
+  formattedTotal: '£0.00',
 };
 
 const initialState: BasketState = {
@@ -60,14 +60,8 @@ const initialState: BasketState = {
 
 // Helper functions
 const calculateTotals = (items: BasketItem[]) => {
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const totalProtectionFee = items.reduce(
-    (sum, item) => sum + item.protectionFee,
-    0
-  );
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalProtectionFee = items.reduce((sum, item) => sum + item.protectionFee, 0);
   const total = subtotal + totalProtectionFee;
 
   return {
@@ -103,21 +97,19 @@ const updateVendorData = (items: BasketItem[]) => {
 };
 
 const basketSlice = createSlice({
-  name: "basket",
+  name: 'basket',
   initialState,
   reducers: {
     // Add item to basket
     addToBasket: (
       state,
-      action: PayloadAction<Omit<BasketItem, "id" | "lineTotal" | "protectionFee">>
+      action: PayloadAction<Omit<BasketItem, 'id' | 'lineTotal' | 'protectionFee'>>
     ) => {
       const itemData = action.payload;
-      
+
       // Check if item already exists in basket
       const existingItemIndex = state.basket.items.findIndex(
-        (item) =>
-          item.productId === itemData.productId &&
-          item.vendorId === itemData.vendorId
+        (item) => item.productId === itemData.productId && item.vendorId === itemData.vendorId
       );
 
       let updatedItems: BasketItem[];
@@ -142,10 +134,7 @@ const basketSlice = createSlice({
           ...itemData,
           id: `${itemData.productId}_${itemData.vendorId}_${Date.now()}`,
           lineTotal: itemData.price * itemData.quantity,
-          protectionFee:
-            itemData.price *
-            itemData.quantity *
-            itemData.protectionFeePercentage,
+          protectionFee: itemData.price * itemData.quantity * itemData.protectionFeePercentage,
         };
         updatedItems = [...state.basket.items, newItem];
       }
@@ -181,10 +170,7 @@ const basketSlice = createSlice({
     },
 
     // Update item quantity
-    updateQuantity: (
-      state,
-      action: PayloadAction<{ itemId: string; quantity: number }>
-    ) => {
+    updateQuantity: (state, action: PayloadAction<{ itemId: string; quantity: number }>) => {
       const { itemId, quantity } = action.payload;
 
       if (quantity <= 0) {

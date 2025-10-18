@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -10,8 +10,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface OrderItem {
   id: string;
@@ -41,7 +41,7 @@ export default function OrdersScreen() {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
 
-  const tabs = ["All", "In Progress", "Completed", "Cancelled"];
+  const tabs = ['All', 'In Progress', 'Completed', 'Cancelled'];
 
   useEffect(() => {
     loadOrders();
@@ -58,7 +58,7 @@ export default function OrdersScreen() {
       // Mock data - replace with actual data fetching
       setOrders([]);
     } catch (err) {
-      setError("Error loading orders");
+      setError('Error loading orders');
     } finally {
       setIsLoading(false);
     }
@@ -67,10 +67,10 @@ export default function OrdersScreen() {
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
       });
     } catch (e) {
       return dateString;
@@ -80,11 +80,11 @@ export default function OrdersScreen() {
   const getFilteredOrders = () => {
     switch (activeTab) {
       case 1: // In Progress
-        return orders.filter((order) => order.status === "processing");
+        return orders.filter((order) => order.status === 'processing');
       case 2: // Completed
-        return orders.filter((order) => order.status === "completed");
+        return orders.filter((order) => order.status === 'completed');
       case 3: // Cancelled
-        return orders.filter((order) => order.status === "cancelled");
+        return orders.filter((order) => order.status === 'cancelled');
       default: // All
         return orders;
     }
@@ -93,10 +93,10 @@ export default function OrdersScreen() {
   const OrderCard = ({ order }: { order: Order }) => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
         marginBottom: 16,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 10,
@@ -107,16 +107,16 @@ export default function OrdersScreen() {
       <View style={{ padding: 16 }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
           }}
         >
           <View style={{ flex: 1 }}>
             <Text
               style={{
-                color: "#fff",
-                fontFamily: "Poppins-Bold",
+                color: '#fff',
+                fontFamily: 'Poppins-Bold',
                 fontSize: 16,
                 marginBottom: 4,
               }}
@@ -125,9 +125,9 @@ export default function OrdersScreen() {
             </Text>
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               {formatDate(order.createdAt)}
@@ -143,8 +143,8 @@ export default function OrdersScreen() {
           >
             <Text
               style={{
-                color: `#${order.statusColor.toString(16).padStart(6, "0")}`,
-                fontFamily: "Poppins-Bold",
+                color: `#${order.statusColor.toString(16).padStart(6, '0')}`,
+                fontFamily: 'Poppins-Bold',
                 fontSize: 12,
               }}
             >
@@ -158,7 +158,7 @@ export default function OrdersScreen() {
       <View
         style={{
           height: 1,
-          backgroundColor: "#555",
+          backgroundColor: '#555',
         }}
       />
 
@@ -167,8 +167,8 @@ export default function OrdersScreen() {
         <View key={index}>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingHorizontal: 16,
               paddingVertical: 8,
             }}
@@ -178,9 +178,9 @@ export default function OrdersScreen() {
                 width: 60,
                 height: 60,
                 borderRadius: 8,
-                backgroundColor: "#555",
+                backgroundColor: '#555',
                 marginRight: 16,
-                overflow: "hidden",
+                overflow: 'hidden',
               }}
             >
               {item.imageUrl ? (
@@ -194,9 +194,9 @@ export default function OrdersScreen() {
                   style={{
                     width: 60,
                     height: 60,
-                    backgroundColor: "#555",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    backgroundColor: '#555',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Feather name="image" color="#999" size={24} />
@@ -207,8 +207,8 @@ export default function OrdersScreen() {
             <View style={{ flex: 1 }}>
               <Text
                 style={{
-                  color: "#fff",
-                  fontFamily: "Poppins-Medium",
+                  color: '#fff',
+                  fontFamily: 'Poppins-Medium',
                   fontSize: 16,
                   marginBottom: 4,
                 }}
@@ -217,9 +217,9 @@ export default function OrdersScreen() {
               </Text>
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   marginBottom: 4,
                 }}
               >
@@ -227,8 +227,8 @@ export default function OrdersScreen() {
               </Text>
               <Text
                 style={{
-                  color: "#fff",
-                  fontFamily: "Poppins-Bold",
+                  color: '#fff',
+                  fontFamily: 'Poppins-Bold',
                   fontSize: 16,
                 }}
               >
@@ -243,23 +243,23 @@ export default function OrdersScreen() {
       <View
         style={{
           height: 1,
-          backgroundColor: "#555",
+          backgroundColor: '#555',
         }}
       />
 
       {/* Order actions */}
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           padding: 16,
         }}
       >
         <Text
           style={{
-            color: "#fff",
-            fontFamily: "Poppins-Bold",
+            color: '#fff',
+            fontFamily: 'Poppins-Bold',
             fontSize: 16,
           }}
         >
@@ -268,7 +268,7 @@ export default function OrdersScreen() {
         <TouchableOpacity
           onPress={() => {
             // Navigate to order details
-            Alert.alert("Order Details", "This would show order details");
+            Alert.alert('Order Details', 'This would show order details');
           }}
           style={{
             paddingVertical: 8,
@@ -277,9 +277,9 @@ export default function OrdersScreen() {
         >
           <Text
             style={{
-              color: "#007AFF",
+              color: '#007AFF',
               fontSize: 16,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             View Details
@@ -289,29 +289,23 @@ export default function OrdersScreen() {
     </View>
   );
 
-  const OrdersList = ({
-    orders,
-    onRefresh,
-  }: {
-    orders: Order[];
-    onRefresh: () => void;
-  }) => {
+  const OrdersList = ({ orders, onRefresh }: { orders: Order[]; onRefresh: () => void }) => {
     if (orders.length === 0) {
       return (
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             paddingHorizontal: 32,
           }}
         >
           <Feather name="truck" color="#999" size={64} />
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 18,
-              fontFamily: "Poppins-Medium",
+              fontFamily: 'Poppins-Medium',
               marginTop: 16,
             }}
           >
@@ -326,11 +320,7 @@ export default function OrdersScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 16 }}
         refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={onRefresh}
-            tintColor="#007AFF"
-          />
+          <RefreshControl refreshing={isLoading} onRefresh={onRefresh} tintColor="#007AFF" />
         }
       >
         {orders.map((order) => (
@@ -342,16 +332,16 @@ export default function OrdersScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -367,8 +357,8 @@ export default function OrdersScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             My Orders
@@ -378,8 +368,8 @@ export default function OrdersScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -390,16 +380,16 @@ export default function OrdersScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -415,8 +405,8 @@ export default function OrdersScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             My Orders
@@ -426,17 +416,17 @@ export default function OrdersScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={64} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -445,10 +435,10 @@ export default function OrdersScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -457,7 +447,7 @@ export default function OrdersScreen() {
           <TouchableOpacity
             onPress={loadOrders}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -465,9 +455,9 @@ export default function OrdersScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -479,17 +469,17 @@ export default function OrdersScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -505,8 +495,8 @@ export default function OrdersScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           My Orders
@@ -516,9 +506,9 @@ export default function OrdersScreen() {
       {/* Tabs */}
       <View
         style={{
-          backgroundColor: "#000",
+          backgroundColor: '#000',
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <ScrollView
@@ -537,14 +527,14 @@ export default function OrdersScreen() {
                 paddingHorizontal: 20,
                 marginRight: 8,
                 borderBottomWidth: 2,
-                borderBottomColor: activeTab === index ? "#fff" : "transparent",
+                borderBottomColor: activeTab === index ? '#fff' : 'transparent',
               }}
             >
               <Text
                 style={{
-                  color: activeTab === index ? "#fff" : "#999",
+                  color: activeTab === index ? '#fff' : '#999',
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 {tab}

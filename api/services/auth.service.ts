@@ -1,4 +1,5 @@
-import { supabase } from "../config/supabase";
+import { EmailOtpType } from '@supabase/supabase-js';
+import { supabase } from '../config/supabase';
 import {
   AuthResponse,
   PasswordResetResponse,
@@ -8,7 +9,7 @@ import {
   VerifyOTPData,
   VerifyOTPResponse,
   mapSupabaseUserToAuthUser,
-} from "../types/auth.types";
+} from '../types/auth.types';
 
 /**
  * Auth Service
@@ -30,7 +31,8 @@ class AuthService {
         return {
           user: null,
           session: null,
-          error: "An account with this email already exists. Please use a different email or try logging in.",
+          error:
+            'An account with this email already exists. Please use a different email or try logging in.',
         };
       }
 
@@ -39,7 +41,7 @@ class AuthService {
         password,
         options: {
           data: {
-            username: username || email.split("@")[0],
+            username: username || email.split('@')[0],
             full_name,
             ...additionalData,
           },
@@ -48,19 +50,22 @@ class AuthService {
 
       if (error) {
         // Handle specific Supabase errors for duplicate emails
-        if (error.message.includes("already registered") || 
-            error.message.includes("User already registered") ||
-            error.message.includes("already exists") ||
-            error.message.includes("duplicate key") ||
-            error.message.includes("email already exists") ||
-            error.message.includes("User with this email already exists")) {
+        if (
+          error.message.includes('already registered') ||
+          error.message.includes('User already registered') ||
+          error.message.includes('already exists') ||
+          error.message.includes('duplicate key') ||
+          error.message.includes('email already exists') ||
+          error.message.includes('User with this email already exists')
+        ) {
           return {
             user: null,
             session: null,
-            error: "An account with this email already exists. Please use a different email or try logging in.",
+            error:
+              'An account with this email already exists. Please use a different email or try logging in.',
           };
         }
-        
+
         return {
           user: null,
           session: null,
@@ -73,7 +78,8 @@ class AuthService {
         return {
           user: null,
           session: null,
-          error: "An account with this email already exists. Please use a different email or try logging in.",
+          error:
+            'An account with this email already exists. Please use a different email or try logging in.',
         };
       }
 
@@ -86,7 +92,7 @@ class AuthService {
       return {
         user: null,
         session: null,
-        error: error instanceof Error ? error.message : "Sign up failed",
+        error: error instanceof Error ? error.message : 'Sign up failed',
       };
     }
   }
@@ -122,7 +128,7 @@ class AuthService {
       return {
         user: null,
         session: null,
-        error: error instanceof Error ? error.message : "Sign in failed",
+        error: error instanceof Error ? error.message : 'Sign in failed',
       };
     }
   }
@@ -142,7 +148,7 @@ class AuthService {
       return { error: null };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : "Sign out failed",
+        error: error instanceof Error ? error.message : 'Sign out failed',
       };
     }
   }
@@ -170,7 +176,7 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : "Password reset failed",
+        error: error instanceof Error ? error.message : 'Password reset failed',
         success: false,
       };
     }
@@ -192,7 +198,7 @@ class AuthService {
     } catch (error) {
       return {
         session: null,
-        error: error instanceof Error ? error.message : "Failed to get session",
+        error: error instanceof Error ? error.message : 'Failed to get session',
       };
     }
   }
@@ -216,7 +222,7 @@ class AuthService {
     } catch (error) {
       return {
         user: null,
-        error: error instanceof Error ? error.message : "Failed to get user",
+        error: error instanceof Error ? error.message : 'Failed to get user',
       };
     }
   }
@@ -233,7 +239,7 @@ class AuthService {
       const { data: authData, error } = await supabase.auth.verifyOtp({
         email,
         token,
-        type,
+        type: type as EmailOtpType,
       });
 
       if (error) {
@@ -253,8 +259,7 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error:
-          error instanceof Error ? error.message : "OTP verification failed",
+        error: error instanceof Error ? error.message : 'OTP verification failed',
         success: false,
         session: null,
         user: null,
@@ -270,11 +275,11 @@ class AuthService {
    */
   async resendOTP(
     email: string,
-    type: "signup" | "email" = "signup"
+    type: 'signup' | 'email_change' = 'signup'
   ): Promise<ResendOTPResponse> {
     try {
       const { error } = await supabase.auth.resend({
-        type,
+        type: type as 'signup' | 'email_change',
         email,
       });
 
@@ -291,7 +296,7 @@ class AuthService {
       };
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : "Failed to resend OTP",
+        error: error instanceof Error ? error.message : 'Failed to resend OTP',
         success: false,
       };
     }
@@ -306,9 +311,9 @@ class AuthService {
     try {
       // Try to reset password for the email - if it succeeds, the email exists
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'dummy://redirect' // This won't be used, just to satisfy the API
+        redirectTo: 'dummy://redirect', // This won't be used, just to satisfy the API
       });
-      
+
       // If no error, the email exists (even if password reset fails for other reasons)
       // If error contains "not found" or similar, email doesn't exist
       return !error || !error.message.toLowerCase().includes('not found');

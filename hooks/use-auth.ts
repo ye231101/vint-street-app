@@ -1,11 +1,11 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
+  clearError,
   loginUser,
+  logoutUser,
   registerUser,
   resetPassword,
-  logoutUser,
-  clearError,
-} from "@/store/slices/authSlice";
+} from '@/store/slices/authSlice';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();

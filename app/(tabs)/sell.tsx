@@ -1,6 +1,6 @@
-import Feather from "@expo/vector-icons/Feather";
-import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import Feather from '@expo/vector-icons/Feather';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from 'react';
 import {
   Alert,
   Image,
@@ -10,19 +10,19 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SellScreen() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [brand, setBrand] = useState('');
+  const [category, setCategory] = useState('');
   const [stockManagement, setStockManagement] = useState(false);
-  const [purchaseNote, setPurchaseNote] = useState("");
-  const [productStatus, setProductStatus] = useState("Published");
-  const [visibility, setVisibility] = useState("Visible");
+  const [purchaseNote, setPurchaseNote] = useState('');
+  const [productStatus, setProductStatus] = useState('Published');
+  const [visibility, setVisibility] = useState('Visible');
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [showVisibilityDropdown, setShowVisibilityDropdown] = useState(false);
@@ -35,50 +35,46 @@ export default function SellScreen() {
     "Men's",
     "Women's",
     "Junior's",
-    "Footwear",
-    "Games",
-    "Consoles",
-    "Music",
-    "Trading Cards",
-    "Collectibles",
-    "Uncategorised",
+    'Footwear',
+    'Games',
+    'Consoles',
+    'Music',
+    'Trading Cards',
+    'Collectibles',
+    'Uncategorised',
   ];
 
-  const statusOptions = ["Published", "Draft"];
-  const visibilityOptions = ["Visible", "Hidden"];
+  const statusOptions = ['Published', 'Draft'];
+  const visibilityOptions = ['Visible', 'Hidden'];
 
   const handleSaveDraft = () => {
-    Alert.alert("Draft Saved", "Your item has been saved as draft.");
+    Alert.alert('Draft Saved', 'Your item has been saved as draft.');
   };
 
   const handlePublishItem = () => {
     if (!title || !description || !price || !category) {
       Alert.alert(
-        "Required Fields",
-        "Please complete all required fields (*) to publish this product."
+        'Required Fields',
+        'Please complete all required fields (*) to publish this product.'
       );
       return;
     }
-    Alert.alert("Item Published", "Your item has been published successfully!");
+    Alert.alert('Item Published', 'Your item has been published successfully!');
   };
 
   const handleGalleryPress = async () => {
     try {
       // Request permission for gallery access
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (permissionResult.granted === false) {
-        Alert.alert(
-          "Permission Required",
-          "Permission to access photo library is required!"
-        );
+        Alert.alert('Permission Required', 'Permission to access photo library is required!');
         return;
       }
 
       // Open gallery to pick multiple images
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: "images",
+        mediaTypes: 'images',
         allowsMultipleSelection: true,
         quality: 1,
         allowsEditing: true,
@@ -88,34 +84,27 @@ export default function SellScreen() {
       if (!result.canceled && result.assets) {
         const newImages = result.assets.map((asset) => asset.uri);
         setSelectedImages((prev) => [...prev, ...newImages]);
-        Alert.alert(
-          "Success",
-          `${newImages.length} image(s) selected from gallery`
-        );
+        Alert.alert('Success', `${newImages.length} image(s) selected from gallery`);
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to access images. Please try again.");
-      console.error("Image picker error:", error);
+      Alert.alert('Error', 'Failed to access images. Please try again.');
+      console.error('Image picker error:', error);
     }
   };
 
   const handleCameraPress = async () => {
     try {
       // Request permission for camera access
-      const permissionResult =
-        await ImagePicker.requestCameraPermissionsAsync();
+      const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
       if (permissionResult.granted === false) {
-        Alert.alert(
-          "Permission Required",
-          "Permission to access camera is required!"
-        );
+        Alert.alert('Permission Required', 'Permission to access camera is required!');
         return;
       }
 
       // Open camera to take a photo
       const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: "images",
+        mediaTypes: 'images',
         quality: 1,
         allowsEditing: true,
         aspect: [3, 4], // Portrait aspect ratio
@@ -124,17 +113,17 @@ export default function SellScreen() {
       if (!result.canceled && result.assets && result.assets[0]) {
         const newImage = result.assets[0].uri;
         setSelectedImages((prev) => [...prev, newImage]);
-        Alert.alert("Success", "Photo taken successfully");
+        Alert.alert('Success', 'Photo taken successfully');
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to access camera. Please try again.");
-      console.error("Image picker error:", error);
+      Alert.alert('Error', 'Failed to access camera. Please try again.');
+      console.error('Image picker error:', error);
     }
   };
 
-  const handleImageSourceSelection = (source: "gallery" | "camera") => {
+  const handleImageSourceSelection = (source: 'gallery' | 'camera') => {
     setShowImageSourceModal(false);
-    if (source === "gallery") {
+    if (source === 'gallery') {
       handleGalleryPress();
     } else {
       handleCameraPress();
@@ -171,12 +160,12 @@ export default function SellScreen() {
     setShowUnsavedChangesModal(false);
     setHasUnsavedChanges(false);
     // Clear all form data
-    setTitle("");
-    setDescription("");
-    setPrice("");
-    setBrand("");
-    setCategory("");
-    setPurchaseNote("");
+    setTitle('');
+    setDescription('');
+    setPrice('');
+    setBrand('');
+    setCategory('');
+    setPurchaseNote('');
     setSelectedImages([]);
     setStockManagement(false);
     // Navigate away (this would be handled by the navigation system)
@@ -188,33 +177,28 @@ export default function SellScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       {/* Header */}
       <View
         style={{
-          backgroundColor: "#000",
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <TouchableOpacity
           onPress={handleNavigationAway}
-          style={{ flexDirection: "row", alignItems: "center" }}
+          style={{ flexDirection: 'row', alignItems: 'center' }}
         >
-          <Feather
-            name="arrow-left"
-            size={20}
-            color="#fff"
-            style={{ marginRight: 8 }}
-          />
+          <Feather name="arrow-left" size={20} color="#fff" style={{ marginRight: 8 }} />
           <Text
             style={{
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Sell an item
@@ -223,7 +207,7 @@ export default function SellScreen() {
         <Feather name="shopping-bag" size={24} color="#fff" />
       </View>
 
-      <ScrollView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
         <TouchableOpacity
           style={{ flex: 1 }}
           activeOpacity={1}
@@ -238,13 +222,13 @@ export default function SellScreen() {
               <TouchableOpacity
                 style={{
                   height: 200,
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: '#f5f5f5',
                   borderRadius: 12,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
-                  borderStyle: "dashed",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  borderColor: '#e0e0e0',
+                  borderStyle: 'dashed',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   marginBottom: 16,
                 }}
                 onPress={() => setShowImageSourceModal(true)}
@@ -253,8 +237,8 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#999",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#999',
                     marginTop: 8,
                   }}
                 >
@@ -265,39 +249,37 @@ export default function SellScreen() {
               <View style={{ marginBottom: 16 }}>
                 <View
                   style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
                     gap: 8,
                   }}
                 >
                   {selectedImages.map((imageUri, index) => (
-                    <View key={index} style={{ position: "relative" }}>
+                    <View key={index} style={{ position: 'relative' }}>
                       <Image
                         source={{ uri: imageUri }}
                         style={{
                           width: 100,
                           height: 100,
                           borderRadius: 8,
-                          backgroundColor: "#f0f0f0",
+                          backgroundColor: '#f0f0f0',
                         }}
                         resizeMode="cover"
                       />
                       <TouchableOpacity
                         style={{
-                          position: "absolute",
+                          position: 'absolute',
                           top: 4,
                           right: 4,
-                          backgroundColor: "rgba(0,0,0,0.6)",
+                          backgroundColor: 'rgba(0,0,0,0.6)',
                           borderRadius: 12,
                           width: 24,
                           height: 24,
-                          justifyContent: "center",
-                          alignItems: "center",
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                         onPress={() => {
-                          setSelectedImages((prev) =>
-                            prev.filter((_, i) => i !== index)
-                          );
+                          setSelectedImages((prev) => prev.filter((_, i) => i !== index));
                         }}
                       >
                         <Feather name="x" size={14} color="#fff" />
@@ -305,10 +287,10 @@ export default function SellScreen() {
                       {index === 0 && (
                         <View
                           style={{
-                            position: "absolute",
+                            position: 'absolute',
                             bottom: 4,
                             left: 4,
-                            backgroundColor: "rgba(0,0,0,0.6)",
+                            backgroundColor: 'rgba(0,0,0,0.6)',
                             paddingHorizontal: 6,
                             paddingVertical: 2,
                             borderRadius: 4,
@@ -316,9 +298,9 @@ export default function SellScreen() {
                         >
                           <Text
                             style={{
-                              color: "#fff",
+                              color: '#fff',
                               fontSize: 10,
-                              fontFamily: "Poppins-SemiBold",
+                              fontFamily: 'Poppins-SemiBold',
                             }}
                           >
                             Main
@@ -331,13 +313,13 @@ export default function SellScreen() {
                     style={{
                       width: 100,
                       height: 100,
-                      backgroundColor: "#f5f5f5",
+                      backgroundColor: '#f5f5f5',
                       borderRadius: 8,
                       borderWidth: 1,
-                      borderColor: "#e0e0e0",
-                      borderStyle: "dashed",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      borderColor: '#e0e0e0',
+                      borderStyle: 'dashed',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                     onPress={() => setShowImageSourceModal(true)}
                   >
@@ -347,10 +329,10 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Poppins-Regular",
-                    color: "#666",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#666',
                     marginTop: 8,
-                    fontStyle: "italic",
+                    fontStyle: 'italic',
                   }}
                 >
                   Drag to reorder. First image will be the main product image.
@@ -361,12 +343,12 @@ export default function SellScreen() {
             {/* Information Box */}
             <View
               style={{
-                backgroundColor: "#e3f2fd",
+                backgroundColor: '#e3f2fd',
                 borderRadius: 8,
                 padding: 12,
                 marginBottom: 24,
-                flexDirection: "row",
-                alignItems: "flex-start",
+                flexDirection: 'row',
+                alignItems: 'flex-start',
               }}
             >
               <Feather name="info" size={20} color="#1976d2" />
@@ -374,8 +356,8 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-Bold",
-                    color: "#1976d2",
+                    fontFamily: 'Poppins-Bold',
+                    color: '#1976d2',
                     marginBottom: 4,
                   }}
                 >
@@ -384,12 +366,11 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Poppins-Regular",
-                    color: "#1976d2",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#1976d2',
                   }}
                 >
-                  Fields marked with * are required. You can save as draft or
-                  publish directly.
+                  Fields marked with * are required. You can save as draft or publish directly.
                 </Text>
               </View>
             </View>
@@ -399,8 +380,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
@@ -408,14 +389,14 @@ export default function SellScreen() {
               </Text>
               <TextInput
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderRadius: 8,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   paddingHorizontal: 12,
                   paddingVertical: 12,
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
                 placeholder="Enter item title"
                 value={title}
@@ -428,8 +409,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
@@ -437,16 +418,16 @@ export default function SellScreen() {
               </Text>
               <TextInput
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderRadius: 8,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   paddingHorizontal: 12,
                   paddingVertical: 12,
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   height: 100,
-                  textAlignVertical: "top",
+                  textAlignVertical: 'top',
                 }}
                 placeholder="Enter item description"
                 value={description}
@@ -460,24 +441,24 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
                 Price *
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TextInput
                   style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: '#fff',
                     borderRadius: 8,
                     borderWidth: 1,
-                    borderColor: "#e0e0e0",
+                    borderColor: '#e0e0e0',
                     paddingHorizontal: 12,
                     paddingVertical: 12,
                     fontSize: 14,
-                    fontFamily: "Poppins-Regular",
+                    fontFamily: 'Poppins-Regular',
                     flex: 1,
                   }}
                   placeholder="0.00"
@@ -493,8 +474,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
@@ -502,14 +483,14 @@ export default function SellScreen() {
               </Text>
               <TextInput
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderRadius: 8,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   paddingHorizontal: 12,
                   paddingVertical: 12,
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
                 placeholder="Enter brand name (API brands not loaded)"
                 value={brand}
@@ -517,20 +498,20 @@ export default function SellScreen() {
               />
               <View
                 style={{
-                  backgroundColor: "#fff3cd",
+                  backgroundColor: '#fff3cd',
                   borderRadius: 4,
                   padding: 8,
                   marginTop: 8,
-                  flexDirection: "row",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
               >
                 <Feather name="alert-circle" size={16} color="#856404" />
                 <Text
                   style={{
                     fontSize: 12,
-                    fontFamily: "Poppins-Regular",
-                    color: "#856404",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#856404',
                     marginLeft: 4,
                   }}
                 >
@@ -544,8 +525,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
@@ -553,26 +534,26 @@ export default function SellScreen() {
               </Text>
               <TouchableOpacity
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderRadius: 8,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   paddingHorizontal: 12,
                   paddingVertical: 12,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
                 onPress={() => setShowCategoryModal(true)}
               >
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-Regular",
-                    color: category ? "#000" : "#999",
+                    fontFamily: 'Poppins-Regular',
+                    color: category ? '#000' : '#999',
                   }}
                 >
-                  {category || "Select Category"}
+                  {category || 'Select Category'}
                 </Text>
                 <Feather name="chevron-right" size={16} color="#999" />
               </TouchableOpacity>
@@ -583,37 +564,35 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 18,
-                  fontFamily: "Poppins-Bold",
-                  color: "#000",
+                  fontFamily: 'Poppins-Bold',
+                  color: '#000',
                   marginBottom: 16,
                 }}
               >
                 Stock Management
               </Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <TouchableOpacity
                   style={{
                     width: 20,
                     height: 20,
                     borderWidth: 2,
-                    borderColor: stockManagement ? "#000" : "#ccc",
+                    borderColor: stockManagement ? '#000' : '#ccc',
                     borderRadius: 4,
-                    backgroundColor: stockManagement ? "#000" : "transparent",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    backgroundColor: stockManagement ? '#000' : 'transparent',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     marginRight: 12,
                   }}
                   onPress={() => setStockManagement(!stockManagement)}
                 >
-                  {stockManagement && (
-                    <Feather name="check" size={14} color="#fff" />
-                  )}
+                  {stockManagement && <Feather name="check" size={14} color="#fff" />}
                 </TouchableOpacity>
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-Regular",
-                    color: "#000",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#000',
                   }}
                 >
                   Enable stock management
@@ -626,8 +605,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-SemiBold",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000',
                   marginBottom: 8,
                 }}
               >
@@ -635,16 +614,16 @@ export default function SellScreen() {
               </Text>
               <TextInput
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderRadius: 8,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   paddingHorizontal: 12,
                   paddingVertical: 12,
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   height: 80,
-                  textAlignVertical: "top",
+                  textAlignVertical: 'top',
                 }}
                 placeholder="Customer will get this info in their order email"
                 value={purchaseNote}
@@ -658,8 +637,8 @@ export default function SellScreen() {
               <Text
                 style={{
                   fontSize: 18,
-                  fontFamily: "Poppins-Bold",
-                  color: "#000",
+                  fontFamily: 'Poppins-Bold',
+                  color: '#000',
                   marginBottom: 16,
                 }}
               >
@@ -671,25 +650,25 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#000",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#000',
                     marginBottom: 8,
                   }}
                 >
                   Status
                 </Text>
-                <View style={{ position: "relative" }}>
+                <View style={{ position: 'relative' }}>
                   <TouchableOpacity
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       borderRadius: 8,
                       borderWidth: 1,
-                      borderColor: "#e0e0e0",
+                      borderColor: '#e0e0e0',
                       paddingHorizontal: 12,
                       paddingVertical: 12,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                     onPress={(e) => {
                       e.stopPropagation();
@@ -700,8 +679,8 @@ export default function SellScreen() {
                     <Text
                       style={{
                         fontSize: 14,
-                        fontFamily: "Poppins-Regular",
-                        color: "#000",
+                        fontFamily: 'Poppins-Regular',
+                        color: '#000',
                       }}
                     >
                       {productStatus}
@@ -712,17 +691,17 @@ export default function SellScreen() {
                   {showStatusDropdown && (
                     <View
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         top: 45,
                         left: 0,
                         right: 0,
-                        backgroundColor: "#fff",
+                        backgroundColor: '#fff',
                         borderRadius: 8,
                         borderWidth: 1,
-                        borderColor: "#e0e0e0",
+                        borderColor: '#e0e0e0',
                         zIndex: 1000,
                         elevation: 5,
-                        shadowColor: "#000",
+                        shadowColor: '#000',
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.25,
                         shadowRadius: 3.84,
@@ -734,13 +713,9 @@ export default function SellScreen() {
                           style={{
                             paddingVertical: 12,
                             paddingHorizontal: 12,
-                            borderBottomWidth:
-                              index < statusOptions.length - 1 ? 1 : 0,
-                            borderBottomColor: "#f0f0f0",
-                            backgroundColor:
-                              status === productStatus
-                                ? "#f5f5f5"
-                                : "transparent",
+                            borderBottomWidth: index < statusOptions.length - 1 ? 1 : 0,
+                            borderBottomColor: '#f0f0f0',
+                            backgroundColor: status === productStatus ? '#f5f5f5' : 'transparent',
                           }}
                           onPress={(e) => {
                             e.stopPropagation();
@@ -751,8 +726,8 @@ export default function SellScreen() {
                           <Text
                             style={{
                               fontSize: 14,
-                              fontFamily: "Poppins-Regular",
-                              color: "#000",
+                              fontFamily: 'Poppins-Regular',
+                              color: '#000',
                             }}
                           >
                             {status}
@@ -769,25 +744,25 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#000",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#000',
                     marginBottom: 8,
                   }}
                 >
                   Visibility
                 </Text>
-                <View style={{ position: "relative" }}>
+                <View style={{ position: 'relative' }}>
                   <TouchableOpacity
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       borderRadius: 8,
                       borderWidth: 1,
-                      borderColor: "#e0e0e0",
+                      borderColor: '#e0e0e0',
                       paddingHorizontal: 12,
                       paddingVertical: 12,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                     onPress={(e) => {
                       e.stopPropagation();
@@ -798,8 +773,8 @@ export default function SellScreen() {
                     <Text
                       style={{
                         fontSize: 14,
-                        fontFamily: "Poppins-Regular",
-                        color: "#000",
+                        fontFamily: 'Poppins-Regular',
+                        color: '#000',
                       }}
                     >
                       {visibility}
@@ -810,17 +785,17 @@ export default function SellScreen() {
                   {showVisibilityDropdown && (
                     <View
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         top: 45,
                         left: 0,
                         right: 0,
-                        backgroundColor: "#fff",
+                        backgroundColor: '#fff',
                         borderRadius: 8,
                         borderWidth: 1,
-                        borderColor: "#e0e0e0",
+                        borderColor: '#e0e0e0',
                         zIndex: 1000,
                         elevation: 5,
-                        shadowColor: "#000",
+                        shadowColor: '#000',
                         shadowOffset: { width: 0, height: 2 },
                         shadowOpacity: 0.25,
                         shadowRadius: 3.84,
@@ -832,11 +807,9 @@ export default function SellScreen() {
                           style={{
                             paddingVertical: 12,
                             paddingHorizontal: 12,
-                            borderBottomWidth:
-                              index < visibilityOptions.length - 1 ? 1 : 0,
-                            borderBottomColor: "#f0f0f0",
-                            backgroundColor:
-                              vis === visibility ? "#f5f5f5" : "transparent",
+                            borderBottomWidth: index < visibilityOptions.length - 1 ? 1 : 0,
+                            borderBottomColor: '#f0f0f0',
+                            backgroundColor: vis === visibility ? '#f5f5f5' : 'transparent',
                           }}
                           onPress={(e) => {
                             e.stopPropagation();
@@ -847,8 +820,8 @@ export default function SellScreen() {
                           <Text
                             style={{
                               fontSize: 14,
-                              fontFamily: "Poppins-Regular",
-                              color: "#000",
+                              fontFamily: 'Poppins-Regular',
+                              color: '#000',
                             }}
                           >
                             {vis}
@@ -862,23 +835,23 @@ export default function SellScreen() {
             </View>
 
             {/* Action Buttons */}
-            <View style={{ flexDirection: "row", marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 16 }}>
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: "#f0f0f0",
+                  backgroundColor: '#f0f0f0',
                   borderRadius: 8,
                   paddingVertical: 12,
                   marginRight: 8,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
                 onPress={handleSaveDraft}
               >
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#000",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#000',
                   }}
                 >
                   Save as Draft
@@ -887,19 +860,19 @@ export default function SellScreen() {
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: "#f0f0f0",
+                  backgroundColor: '#f0f0f0',
                   borderRadius: 8,
                   paddingVertical: 12,
                   marginLeft: 8,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
                 onPress={handlePublishItem}
               >
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#000",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#000',
                   }}
                 >
                   Publish Item
@@ -910,19 +883,19 @@ export default function SellScreen() {
             {/* Warning Message */}
             <View
               style={{
-                backgroundColor: "#fff3cd",
+                backgroundColor: '#fff3cd',
                 borderRadius: 8,
                 padding: 12,
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
               }}
             >
               <Feather name="alert-circle" size={20} color="#856404" />
               <Text
                 style={{
                   fontSize: 12,
-                  fontFamily: "Poppins-Regular",
-                  color: "#856404",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#856404',
                   marginLeft: 8,
                   flex: 1,
                 }}
@@ -944,19 +917,19 @@ export default function SellScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "flex-end",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'flex-end',
           }}
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
               paddingTop: 8,
               paddingHorizontal: 20,
               paddingBottom: 20,
-              maxHeight: "80%",
+              maxHeight: '80%',
             }}
           >
             {/* Modal Handle */}
@@ -964,9 +937,9 @@ export default function SellScreen() {
               style={{
                 width: 40,
                 height: 4,
-                backgroundColor: "#e0e0e0",
+                backgroundColor: '#e0e0e0',
                 borderRadius: 2,
-                alignSelf: "center",
+                alignSelf: 'center',
                 marginBottom: 20,
               }}
             />
@@ -974,17 +947,17 @@ export default function SellScreen() {
             {/* Header */}
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 marginBottom: 20,
               }}
             >
               <Text
                 style={{
                   fontSize: 18,
-                  fontFamily: "Poppins-Bold",
-                  color: "#000",
+                  fontFamily: 'Poppins-Bold',
+                  color: '#000',
                 }}
               >
                 Select Category
@@ -994,8 +967,8 @@ export default function SellScreen() {
                 style={{
                   width: 24,
                   height: 24,
-                  justifyContent: "center",
-                  alignItems: "center",
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Feather name="x" size={20} color="#000" />
@@ -1009,10 +982,10 @@ export default function SellScreen() {
                   style={{
                     paddingVertical: 15,
                     borderBottomWidth: 1,
-                    borderBottomColor: "#f0f0f0",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    borderBottomColor: '#f0f0f0',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}
                   onPress={() => {
                     setCategory(cat);
@@ -1022,8 +995,8 @@ export default function SellScreen() {
                   <Text
                     style={{
                       fontSize: 16,
-                      fontFamily: "Poppins-Regular",
-                      color: "#000",
+                      fontFamily: 'Poppins-Regular',
+                      color: '#000',
                     }}
                   >
                     {cat}
@@ -1046,13 +1019,13 @@ export default function SellScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "flex-end",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'flex-end',
           }}
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
               padding: 20,
@@ -1062,8 +1035,8 @@ export default function SellScreen() {
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
-                textAlign: "center",
+                fontFamily: 'Poppins-Bold',
+                textAlign: 'center',
                 marginBottom: 8,
               }}
             >
@@ -1072,9 +1045,9 @@ export default function SellScreen() {
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
-                textAlign: "center",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
+                textAlign: 'center',
                 marginBottom: 20,
               }}
             >
@@ -1083,30 +1056,30 @@ export default function SellScreen() {
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                alignItems: "center",
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
               }}
             >
               {/* Gallery Option */}
               <TouchableOpacity
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   paddingVertical: 20,
                   paddingHorizontal: 30,
                 }}
-                onPress={() => handleImageSourceSelection("gallery")}
+                onPress={() => handleImageSourceSelection('gallery')}
               >
                 <View
                   style={{
                     width: 80,
                     height: 80,
-                    backgroundColor: "#f5f5f5",
+                    backgroundColor: '#f5f5f5',
                     borderRadius: 15,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     marginBottom: 10,
-                    shadowColor: "#000",
+                    shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.1,
                     shadowRadius: 3,
@@ -1118,8 +1091,8 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#333",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#333',
                   }}
                 >
                   Gallery
@@ -1129,22 +1102,22 @@ export default function SellScreen() {
               {/* Camera Option */}
               <TouchableOpacity
                 style={{
-                  alignItems: "center",
+                  alignItems: 'center',
                   paddingVertical: 20,
                   paddingHorizontal: 30,
                 }}
-                onPress={() => handleImageSourceSelection("camera")}
+                onPress={() => handleImageSourceSelection('camera')}
               >
                 <View
                   style={{
                     width: 80,
                     height: 80,
-                    backgroundColor: "#f5f5f5",
+                    backgroundColor: '#f5f5f5',
                     borderRadius: 15,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     marginBottom: 10,
-                    shadowColor: "#000",
+                    shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.1,
                     shadowRadius: 3,
@@ -1156,8 +1129,8 @@ export default function SellScreen() {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#333",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#333',
                   }}
                 >
                   Camera
@@ -1178,20 +1151,20 @@ export default function SellScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
             paddingHorizontal: 20,
           }}
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderRadius: 12,
               padding: 24,
-              width: "100%",
+              width: '100%',
               maxWidth: 320,
-              shadowColor: "#000",
+              shadowColor: '#000',
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.25,
               shadowRadius: 8,
@@ -1201,10 +1174,10 @@ export default function SellScreen() {
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
-                color: "#000",
+                fontFamily: 'Poppins-Bold',
+                color: '#000',
                 marginBottom: 12,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               Unsaved Changes
@@ -1213,39 +1186,38 @@ export default function SellScreen() {
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
                 marginBottom: 24,
-                textAlign: "center",
+                textAlign: 'center',
                 lineHeight: 20,
               }}
             >
-              Your changes will be lost if you leave this page. Do you want to
-              continue?
+              Your changes will be lost if you leave this page. Do you want to continue?
             </Text>
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 gap: 12,
               }}
             >
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: "#f5f5f5",
+                  backgroundColor: '#f5f5f5',
                   borderRadius: 8,
                   paddingVertical: 12,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
                 onPress={handleCancelNavigation}
               >
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#000",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#000',
                   }}
                 >
                   Cancel
@@ -1255,18 +1227,18 @@ export default function SellScreen() {
               <TouchableOpacity
                 style={{
                   flex: 1,
-                  backgroundColor: "#ff4444",
+                  backgroundColor: '#ff4444',
                   borderRadius: 8,
                   paddingVertical: 12,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
                 onPress={handleContinueWithoutSaving}
               >
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#fff",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#fff',
                   }}
                 >
                   Continue

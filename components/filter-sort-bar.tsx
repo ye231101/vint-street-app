@@ -1,6 +1,6 @@
-import Feather from "@expo/vector-icons/Feather";
-import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import Feather from '@expo/vector-icons/Feather';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export interface FilterSortBarProps {
   filterCount?: number;
@@ -11,16 +11,14 @@ export interface FilterSortBarProps {
 
 const FilterSortBar: React.FC<FilterSortBarProps> = ({
   filterCount = 0,
-  sortBy = "Most Relevant",
+  sortBy = 'Most Relevant',
   onFilterPress,
   onSortPress,
 }) => {
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onFilterPress}>
-        <Text style={styles.buttonText}>
-          Filter by {filterCount > 0 && `| ${filterCount}`}
-        </Text>
+        <Text style={styles.buttonText}>Filter by {filterCount > 0 && `| ${filterCount}`}</Text>
         <Feather name="chevron-down" size={16} color="#666" />
       </Pressable>
 
@@ -34,20 +32,20 @@ const FilterSortBar: React.FC<FilterSortBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: '#f0f0f0',
     gap: 12,
   },
   button: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f5f5f5",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -55,8 +53,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: "#333",
+    fontFamily: 'Poppins-Regular',
+    color: '#333',
   },
 });
 

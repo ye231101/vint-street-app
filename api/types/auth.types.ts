@@ -1,4 +1,4 @@
-import { Session, User as SupabaseUser } from "@supabase/supabase-js";
+import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 
 export interface AuthUser {
   id: string;
@@ -54,7 +54,7 @@ export interface PasswordResetResponse {
 export interface VerifyOTPData {
   email: string;
   token: string;
-  type: "email" | "sms" | "signup";
+  type: 'email' | 'sms' | 'signup';
 }
 
 export interface VerifyOTPResponse {
@@ -70,14 +70,12 @@ export interface ResendOTPResponse {
 }
 
 // Helper to convert Supabase user to AuthUser
-export function mapSupabaseUserToAuthUser(
-  supabaseUser: SupabaseUser | null
-): AuthUser | null {
+export function mapSupabaseUserToAuthUser(supabaseUser: SupabaseUser | null): AuthUser | null {
   if (!supabaseUser) return null;
 
   return {
     id: supabaseUser.id,
-    email: supabaseUser.email || "",
+    email: supabaseUser.email || '',
     username: supabaseUser.user_metadata?.username,
     full_name: supabaseUser.user_metadata?.full_name,
     firstName: supabaseUser.user_metadata?.firstName,

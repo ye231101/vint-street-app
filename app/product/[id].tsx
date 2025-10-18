@@ -1,10 +1,10 @@
-import { typesenseService } from "@/api/services";
-import { VintStreetListing } from "@/api/types/product.types";
-import { useBasket } from "@/hooks/useBasket";
-import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
-import Feather from "@expo/vector-icons/Feather";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import { typesenseService } from '@/api/services';
+import { VintStreetListing } from '@/api/types/product.types';
+import { useBasket } from '@/hooks/use-basket';
+import { useRecentlyViewed } from '@/hooks/use-recently-viewed';
+import Feather from '@expo/vector-icons/Feather';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -14,10 +14,10 @@ import {
   StyleSheet,
   Text,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 interface Product {
   id: number;
@@ -43,28 +43,28 @@ interface Product {
 // Mock product data
 const mockProduct: Product = {
   id: 1,
-  name: "Tommy Hilfiger Jeans, Blue - 11",
+  name: 'Tommy Hilfiger Jeans, Blue - 11',
   price: 40.0,
   images: [
-    "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400",
-    "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400",
-    "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=400",
+    'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400',
+    'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400',
+    'https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=400',
   ],
   likes: 0,
-  brand: "Tommy Hilfiger",
-  size: "11",
+  brand: 'Tommy Hilfiger',
+  size: '11',
   description:
-    "Tommy Hilfiger Jeans, Blue - Size 11. Classic blue denim jeans in excellent condition, featuring two front pockets, including a coin pocket on the right with an embroidered Tommy Hilfiger logo for added detail. The waistband is finished with another signature Tommy Hilfiger logo embroidered on the back. Two back pockets provide a timeless silhouette & reliable high-quality staple for",
+    'Tommy Hilfiger Jeans, Blue - Size 11. Classic blue denim jeans in excellent condition, featuring two front pockets, including a coin pocket on the right with an embroidered Tommy Hilfiger logo for added detail. The waistband is finished with another signature Tommy Hilfiger logo embroidered on the back. Two back pockets provide a timeless silhouette & reliable high-quality staple for',
   vendorId: 42,
-  vendorShopName: "Vint Street Official",
+  vendorShopName: 'Vint Street Official',
   stockQuantity: 5,
   onSale: false,
   averageRating: 4.8,
   reviewCount: 127,
-  condition: "Excellent",
-  colour: "Blue",
-  gender: "Unisex",
-  flaws: "None",
+  condition: 'Excellent',
+  colour: 'Blue',
+  gender: 'Unisex',
+  flaws: 'None',
 };
 
 export default function ProductDetailsScreen() {
@@ -74,12 +74,9 @@ export default function ProductDetailsScreen() {
   const { addItem } = useBasket();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(["description"])
-  );
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['description']));
   const scrollViewRef = useRef<ScrollView>(null);
-  const [productListing, setProductListing] =
-    useState<VintStreetListing | null>(null);
+  const [productListing, setProductListing] = useState<VintStreetListing | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch product and add to recently viewed
@@ -96,7 +93,7 @@ export default function ProductDetailsScreen() {
           await addProduct(listing);
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
+        console.error('Error fetching product:', error);
       } finally {
         setIsLoading(false);
       }
@@ -110,10 +107,8 @@ export default function ProductDetailsScreen() {
   // Show loading state
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#000" />
         </View>
       </SafeAreaView>
@@ -123,19 +118,15 @@ export default function ProductDetailsScreen() {
   // Show error if product not found
   if (!productListing) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text style={{ fontFamily: "Poppins-Regular", fontSize: 16 }}>
-            Product not found
-          </Text>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 16 }}>Product not found</Text>
           <Pressable onPress={() => router.back()} style={{ marginTop: 20 }}>
             <Text
               style={{
-                fontFamily: "Poppins-SemiBold",
+                fontFamily: 'Poppins-SemiBold',
                 fontSize: 14,
-                color: "#007AFF",
+                color: '#007AFF',
               }}
             >
               Go Back
@@ -156,24 +147,23 @@ export default function ProductDetailsScreen() {
         ? productListing.fullImageUrls
         : productListing.thumbnailImageUrls,
     likes: productListing.favoritesCount,
-    brand: productListing.brand || "No Brand",
-    size: productListing.attributes.pa_size?.[0] || "",
-    description:
-      productListing.description || productListing.shortDescription || "",
+    brand: productListing.brand || 'No Brand',
+    size: productListing.attributes.pa_size?.[0] || '',
+    description: productListing.description || productListing.shortDescription || '',
     vendorId: productListing.vendorId,
-    vendorShopName: productListing.vendorShopName || "Unknown Vendor",
+    vendorShopName: productListing.vendorShopName || 'Unknown Vendor',
     stockQuantity: productListing.stockQuantity,
     onSale: productListing.onSale,
     averageRating: productListing.averageRating,
     reviewCount: productListing.reviewCount,
-    condition: productListing.attributes.pa_condition?.[0] || "",
-    colour: productListing.attributes.pa_colour?.[0] || "",
-    gender: productListing.attributes.pa_gender?.[0] || "",
+    condition: productListing.attributes.pa_condition?.[0] || '',
+    colour: productListing.attributes.pa_colour?.[0] || '',
+    gender: productListing.attributes.pa_gender?.[0] || '',
     flaws: productListing.attributes.flaws?.[0],
   };
 
   const handleShoppingCart = () => {
-    router.push("/basket");
+    router.push('/basket');
   };
 
   const handleLike = () => {
@@ -198,7 +188,7 @@ export default function ProductDetailsScreen() {
       name: productListing.name,
       price: productListing.price,
       quantity: 1,
-      image: productListing.fullImageUrls?.[0] || "",
+      image: productListing.fullImageUrls?.[0] || '',
       vendorId: productListing.vendorId,
       vendorName: productListing.vendorShopName,
       protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072, // 7.2% protection fee for non-official products
@@ -216,7 +206,7 @@ export default function ProductDetailsScreen() {
       name: productListing.name,
       price: productListing.price,
       quantity: 1,
-      image: productListing.fullImageUrls?.[0] || "",
+      image: productListing.fullImageUrls?.[0] || '',
       vendorId: productListing.vendorId,
       vendorName: productListing.vendorShopName,
       protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072,
@@ -225,7 +215,7 @@ export default function ProductDetailsScreen() {
     addItem(productData);
 
     // Navigate to checkout
-    router.push("/checkout");
+    router.push('/checkout');
   };
 
   const formatPrice = (price: number) => {
@@ -239,9 +229,7 @@ export default function ProductDetailsScreen() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={(event) => {
-          const index = Math.round(
-            event.nativeEvent.contentOffset.x / screenWidth
-          );
+          const index = Math.round(event.nativeEvent.contentOffset.x / screenWidth);
           setCurrentImageIndex(index);
         }}
         style={styles.imageScrollView}
@@ -259,37 +247,20 @@ export default function ProductDetailsScreen() {
       {/* Image dots */}
       <View style={styles.dotsContainer}>
         {product.images.map((_, index) => (
-          <View
-            key={index}
-            style={[
-              styles.dot,
-              index === currentImageIndex && styles.activeDot,
-            ]}
-          />
+          <View key={index} style={[styles.dot, index === currentImageIndex && styles.activeDot]} />
         ))}
       </View>
     </View>
   );
 
-  const renderAccordionSection = (
-    title: string,
-    section: string,
-    children: React.ReactNode
-  ) => {
+  const renderAccordionSection = (title: string, section: string, children: React.ReactNode) => {
     const isExpanded = expandedSections.has(section);
 
     return (
       <View style={styles.accordionSection}>
-        <Pressable
-          style={styles.accordionHeader}
-          onPress={() => toggleSection(section)}
-        >
+        <Pressable style={styles.accordionHeader} onPress={() => toggleSection(section)}>
           <Text style={styles.accordionTitle}>{title}</Text>
-          <Feather
-            name={isExpanded ? "chevron-down" : "chevron-right"}
-            size={20}
-            color="#666"
-          />
+          <Feather name={isExpanded ? 'chevron-down' : 'chevron-right'} size={20} color="#666" />
         </Pressable>
         {isExpanded && <View style={styles.accordionContent}>{children}</View>}
       </View>
@@ -320,7 +291,7 @@ export default function ProductDetailsScreen() {
       </View>
       <View style={styles.attributeRow}>
         <Text style={styles.attributeLabel}>Flaws</Text>
-        <Text style={styles.attributeValue}>{product.flaws || "None"}</Text>
+        <Text style={styles.attributeValue}>{product.flaws || 'None'}</Text>
       </View>
       <View style={styles.attributeRow}>
         <Text style={styles.attributeLabel}>Gender</Text>
@@ -391,21 +362,19 @@ export default function ProductDetailsScreen() {
           <View style={styles.titleRow}>
             <View style={styles.titleContainer}>
               <Text style={styles.productTitle}>{product.name}</Text>
-              <Text style={styles.productPrice}>
-                {formatPrice(product.price)}
-              </Text>
+              <Text style={styles.productPrice}>{formatPrice(product.price)}</Text>
               <Text style={styles.productStatus}>
                 {product.vendorId === 42
-                  ? "(Official Vint Street Product)"
+                  ? '(Official Vint Street Product)'
                   : `(Protection fee: ${formatPrice(product.price * 0.072)})`}
               </Text>
             </View>
             <Pressable style={styles.likeButton} onPress={handleLike}>
               <Text style={styles.likeCount}>{product.likes}</Text>
               <Feather
-                name={isLiked ? "heart" : "heart"}
+                name={isLiked ? 'heart' : 'heart'}
                 size={20}
-                color={isLiked ? "#FF6B6B" : "#666"}
+                color={isLiked ? '#FF6B6B' : '#666'}
               />
             </Pressable>
           </View>
@@ -413,17 +382,9 @@ export default function ProductDetailsScreen() {
 
         {/* Accordion Sections */}
         <View style={styles.accordionContainer}>
-          {renderAccordionSection(
-            "Description",
-            "description",
-            renderDescriptionContent()
-          )}
-          {renderAccordionSection(
-            "Attributes",
-            "attributes",
-            renderAttributesContent()
-          )}
-          {renderAccordionSection("Seller", "seller", renderSellerContent())}
+          {renderAccordionSection('Description', 'description', renderDescriptionContent())}
+          {renderAccordionSection('Attributes', 'attributes', renderAttributesContent())}
+          {renderAccordionSection('Seller', 'seller', renderSellerContent())}
         </View>
       </ScrollView>
 
@@ -443,17 +404,17 @@ export default function ProductDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   header: {
-    position: "absolute",
+    position: 'absolute',
     top: 60,
     left: 0,
     right: 0,
     zIndex: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingLeft: 16,
     paddingRight: 24,
     marginTop: 24,
@@ -462,91 +423,91 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    position: "relative",
+    position: 'relative',
     height: screenWidth * (4 / 3),
   },
   imageScrollView: {
-    height: "100%",
+    height: '100%',
   },
   productImage: {
     width: screenWidth,
-    height: "100%",
+    height: '100%',
   },
   dotsContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 20,
     left: 0,
     right: 0,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   productInfo: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 16,
   },
   titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   titleContainer: {
     flex: 1,
   },
   productTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 4,
   },
   productPrice: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#000",
+    fontWeight: '600',
+    color: '#000',
     marginBottom: 2,
   },
   productStatus: {
     fontSize: 12,
-    color: "#666",
+    color: '#666',
   },
   likeButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 16,
   },
   likeCount: {
     fontSize: 16,
-    color: "#666",
+    color: '#666',
     marginRight: 8,
   },
   accordionContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   accordionSection: {
     borderBottomWidth: 0.5,
-    borderBottomColor: "#e0e0e0",
+    borderBottomColor: '#e0e0e0',
   },
   accordionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   accordionTitle: {
     fontSize: 14,
-    fontWeight: "600",
-    color: "#000",
+    fontWeight: '600',
+    color: '#000',
   },
   accordionContent: {
     paddingHorizontal: 16,
@@ -557,13 +518,13 @@ const styles = StyleSheet.create({
   },
   descriptionTitle: {
     fontSize: 11,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 4,
   },
   descriptionText: {
     fontSize: 11,
-    color: "#000",
+    color: '#000',
     lineHeight: 16,
   },
   attributesContent: {
@@ -571,46 +532,46 @@ const styles = StyleSheet.create({
   },
   attributesTitle: {
     fontSize: 12,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 12,
   },
   attributeRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 6,
   },
   attributeLabel: {
     fontSize: 11,
-    fontWeight: "500",
-    color: "#000",
+    fontWeight: '500',
+    color: '#000',
   },
   attributeValue: {
     fontSize: 11,
-    color: "#000",
+    color: '#000',
   },
   sellerContent: {
     paddingVertical: 8,
   },
   sellerTitle: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 12,
   },
   sellerInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
   },
   sellerAvatar: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   sellerDetails: {
@@ -618,80 +579,80 @@ const styles = StyleSheet.create({
   },
   sellerName: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#000",
+    fontWeight: 'bold',
+    color: '#000',
     marginBottom: 3,
   },
   sellerRating: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   ratingText: {
     fontSize: 12,
-    color: "#666",
+    color: '#666',
     marginLeft: 3,
   },
   visitShopButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#000",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000',
     paddingVertical: 10,
     borderRadius: 6,
     marginBottom: 8,
   },
   visitShopText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 13,
     marginLeft: 8,
   },
   contactSellerButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#66B7ED",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#66B7ED',
     paddingVertical: 10,
     borderRadius: 6,
   },
   contactSellerText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 13,
     marginLeft: 8,
   },
   bottomBar: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
+    flexDirection: 'row',
+    backgroundColor: '#fff',
     paddingHorizontal: 12,
     paddingVertical: 12,
   },
   addToBasketButton: {
     flex: 1,
     height: 40,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: '#000',
     borderRadius: 6,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 6,
   },
   addToBasketText: {
     fontSize: 13,
-    color: "#000",
-    fontWeight: "bold",
+    color: '#000',
+    fontWeight: 'bold',
   },
   buyNowButton: {
     flex: 1,
     height: 40,
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     borderRadius: 6,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginLeft: 6,
   },
   buyNowText: {
     fontSize: 13,
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });

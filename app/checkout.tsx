@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -10,8 +10,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface CheckoutItem {
   id: string;
@@ -61,40 +61,40 @@ export default function CheckoutScreen() {
 
   // Form states
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postcode: "",
-    country: "United Kingdom",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    postcode: '',
+    country: 'United Kingdom',
   });
 
   const [billingAddress, setBillingAddress] = useState<BillingAddress>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    postcode: "",
-    country: "United Kingdom",
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    postcode: '',
+    country: 'United Kingdom',
   });
 
   const [isBillingDifferent, setIsBillingDifferent] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardDetails, setCardDetails] = useState({
-    cardholderName: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvc: "",
-    country: "United States",
-    zipCode: "",
+    cardholderName: '',
+    cardNumber: '',
+    expiryDate: '',
+    cvc: '',
+    country: 'United States',
+    zipCode: '',
   });
 
   useEffect(() => {
@@ -112,12 +112,12 @@ export default function CheckoutScreen() {
       // Mock data - replace with actual data fetching
       const mockItems: CheckoutItem[] = [
         {
-          id: "1",
-          name: "D&G 2003 Bomber Jacket, Black - XXL",
-          brand: "D&G",
+          id: '1',
+          name: 'D&G 2003 Bomber Jacket, Black - XXL',
+          brand: 'D&G',
           price: 999.0,
           quantity: 1,
-          image: "https://via.placeholder.com/50x50/000000/FFFFFF?text=D&G",
+          image: 'https://via.placeholder.com/50x50/000000/FFFFFF?text=D&G',
           lineTotal: 999.0,
         },
       ];
@@ -131,7 +131,7 @@ export default function CheckoutScreen() {
       setProtectionFee(mockProtectionFee);
       setTotal(mockTotal);
     } catch (err) {
-      Alert.alert("Error", "Failed to load checkout data");
+      Alert.alert('Error', 'Failed to load checkout data');
     } finally {
       setIsLoading(false);
     }
@@ -139,29 +139,29 @@ export default function CheckoutScreen() {
 
   const updateStepCompletion = () => {
     const shippingComplete =
-      shippingAddress.firstName.trim() !== "" &&
-      shippingAddress.lastName.trim() !== "" &&
-      shippingAddress.email.trim() !== "" &&
-      shippingAddress.phone.trim() !== "" &&
-      shippingAddress.address1.trim() !== "" &&
-      shippingAddress.city.trim() !== "" &&
-      shippingAddress.postcode.trim() !== "";
+      shippingAddress.firstName.trim() !== '' &&
+      shippingAddress.lastName.trim() !== '' &&
+      shippingAddress.email.trim() !== '' &&
+      shippingAddress.phone.trim() !== '' &&
+      shippingAddress.address1.trim() !== '' &&
+      shippingAddress.city.trim() !== '' &&
+      shippingAddress.postcode.trim() !== '';
 
     const billingComplete = isBillingDifferent
-      ? billingAddress.firstName.trim() !== "" &&
-        billingAddress.lastName.trim() !== "" &&
-        billingAddress.email.trim() !== "" &&
-        billingAddress.phone.trim() !== "" &&
-        billingAddress.address1.trim() !== "" &&
-        billingAddress.city.trim() !== "" &&
-        billingAddress.postcode.trim() !== ""
+      ? billingAddress.firstName.trim() !== '' &&
+        billingAddress.lastName.trim() !== '' &&
+        billingAddress.email.trim() !== '' &&
+        billingAddress.phone.trim() !== '' &&
+        billingAddress.address1.trim() !== '' &&
+        billingAddress.city.trim() !== '' &&
+        billingAddress.postcode.trim() !== ''
       : shippingComplete;
 
     const paymentComplete =
-      cardDetails.cardholderName.trim() !== "" &&
-      cardDetails.cardNumber.trim() !== "" &&
-      cardDetails.expiryDate.trim() !== "" &&
-      cardDetails.cvc.trim() !== "";
+      cardDetails.cardholderName.trim() !== '' &&
+      cardDetails.cardNumber.trim() !== '' &&
+      cardDetails.expiryDate.trim() !== '' &&
+      cardDetails.cvc.trim() !== '';
 
     setStepCompleted([shippingComplete, billingComplete, paymentComplete]);
   };
@@ -173,39 +173,35 @@ export default function CheckoutScreen() {
   const getValidationMessage = () => {
     const missingFields = [];
 
-    if (!stepCompleted[0]) missingFields.push("Shipping address");
-    if (!stepCompleted[1]) missingFields.push("Billing details");
-    if (!stepCompleted[2]) missingFields.push("Payment method");
+    if (!stepCompleted[0]) missingFields.push('Shipping address');
+    if (!stepCompleted[1]) missingFields.push('Billing details');
+    if (!stepCompleted[2]) missingFields.push('Payment method');
 
-    if (missingFields.length === 0) return "All fields are complete!";
-    if (missingFields.length === 1)
-      return `Please complete: ${missingFields[0]}`;
+    if (missingFields.length === 0) return 'All fields are complete!';
+    if (missingFields.length === 1) return `Please complete: ${missingFields[0]}`;
     if (missingFields.length === 2)
       return `Please complete: ${missingFields[0]} and ${missingFields[1]}`;
-    return `Please complete: ${missingFields.slice(0, -1).join(", ")}, and ${
+    return `Please complete: ${missingFields.slice(0, -1).join(', ')}, and ${
       missingFields[missingFields.length - 1]
     }`;
   };
 
   const processCheckout = () => {
     if (!canProceedToCheckout()) {
-      Alert.alert("Complete Required Fields", getValidationMessage());
+      Alert.alert('Complete Required Fields', getValidationMessage());
       return;
     }
 
-    Alert.alert(
-      "Checkout",
-      "This would process the payment and create the order"
-    );
+    Alert.alert('Checkout', 'This would process the payment and create the order');
   };
 
   const OrderSummaryCard = () => (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         borderRadius: 12,
         margin: 16,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -215,10 +211,10 @@ export default function CheckoutScreen() {
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           padding: 16,
-          backgroundColor: "#f8f9fa",
+          backgroundColor: '#f8f9fa',
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
         }}
@@ -227,8 +223,8 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
             marginLeft: 8,
             flex: 1,
           }}
@@ -238,11 +234,11 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
-            color: "#666",
+            fontFamily: 'Poppins-Regular',
+            color: '#666',
           }}
         >
-          {checkoutItems.length} item{checkoutItems.length !== 1 ? "s" : ""}
+          {checkoutItems.length} item{checkoutItems.length !== 1 ? 's' : ''}
         </Text>
       </View>
 
@@ -251,9 +247,9 @@ export default function CheckoutScreen() {
         <View
           key={item.id}
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             padding: 16,
-            alignItems: "center",
+            alignItems: 'center',
           }}
         >
           <View
@@ -261,7 +257,7 @@ export default function CheckoutScreen() {
               width: 50,
               height: 50,
               borderRadius: 8,
-              backgroundColor: "#f0f0f0",
+              backgroundColor: '#f0f0f0',
               marginRight: 12,
             }}
           />
@@ -270,8 +266,8 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: "Poppins-Bold",
-                color: "#333",
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
                 marginBottom: 4,
               }}
               numberOfLines={2}
@@ -281,8 +277,8 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 12,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
                 marginBottom: 4,
               }}
             >
@@ -291,8 +287,8 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 12,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
               }}
             >
               Qty: {item.quantity}
@@ -302,8 +298,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
             }}
           >
             £{item.lineTotal.toFixed(2)}
@@ -315,23 +311,23 @@ export default function CheckoutScreen() {
       <View
         style={{
           padding: 16,
-          backgroundColor: "#f8f9fa",
+          backgroundColor: '#f8f9fa',
           borderBottomLeftRadius: 12,
           borderBottomRightRadius: 12,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             marginBottom: 4,
           }}
         >
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#666",
+              fontFamily: 'Poppins-Regular',
+              color: '#666',
             }}
           >
             Subtotal
@@ -339,8 +335,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
             }}
           >
             £{subtotal.toFixed(2)}
@@ -349,16 +345,16 @@ export default function CheckoutScreen() {
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             marginBottom: 8,
           }}
         >
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#666",
+              fontFamily: 'Poppins-Regular',
+              color: '#666',
             }}
           >
             Protection Fee
@@ -366,8 +362,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
             }}
           >
             £{protectionFee.toFixed(2)}
@@ -377,22 +373,22 @@ export default function CheckoutScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#e0e0e0",
+            backgroundColor: '#e0e0e0',
             marginVertical: 8,
           }}
         />
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
             }}
           >
             Total
@@ -400,8 +396,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
             }}
           >
             £{total.toFixed(2)}
@@ -419,11 +415,11 @@ export default function CheckoutScreen() {
     return (
       <View
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
           borderRadius: 12,
           padding: 20,
           margin: 16,
-          shadowColor: "#000",
+          shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
@@ -432,8 +428,8 @@ export default function CheckoutScreen() {
       >
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginBottom: 12,
           }}
         >
@@ -441,8 +437,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
               marginLeft: 8,
               flex: 1,
             }}
@@ -452,8 +448,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#666",
+              fontFamily: 'Poppins-Regular',
+              color: '#666',
             }}
           >
             {completedSteps} of {totalSteps} completed
@@ -463,7 +459,7 @@ export default function CheckoutScreen() {
         <View
           style={{
             height: 8,
-            backgroundColor: "#e0e0e0",
+            backgroundColor: '#e0e0e0',
             borderRadius: 4,
             marginBottom: 8,
           }}
@@ -471,7 +467,7 @@ export default function CheckoutScreen() {
           <View
             style={{
               height: 8,
-              backgroundColor: progress === 1 ? "#34C759" : "#007AFF",
+              backgroundColor: progress === 1 ? '#34C759' : '#007AFF',
               borderRadius: 4,
               width: `${progress * 100}%`,
             }}
@@ -481,13 +477,13 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 12,
-            fontFamily: progress === 1 ? "Poppins-Bold" : "Poppins-Regular",
-            color: progress === 1 ? "#34C759" : "#666",
+            fontFamily: progress === 1 ? 'Poppins-Bold' : 'Poppins-Regular',
+            color: progress === 1 ? '#34C759' : '#666',
           }}
         >
           {progress === 1
-            ? "All steps completed! You can now place your order."
-            : "Complete all steps to place your order."}
+            ? 'All steps completed! You can now place your order.'
+            : 'Complete all steps to place your order.'}
         </Text>
       </View>
     );
@@ -498,7 +494,7 @@ export default function CheckoutScreen() {
     value,
     onChangeText,
     placeholder,
-    keyboardType = "default",
+    keyboardType = 'default',
     required = false,
     icon,
   }: {
@@ -506,7 +502,7 @@ export default function CheckoutScreen() {
     value: string;
     onChangeText: (text: string) => void;
     placeholder: string;
-    keyboardType?: "default" | "email-address" | "numeric";
+    keyboardType?: 'default' | 'email-address' | 'numeric';
     required?: boolean;
     icon?: string;
   }) => (
@@ -514,32 +510,25 @@ export default function CheckoutScreen() {
       <Text
         style={{
           fontSize: 14,
-          fontFamily: "Poppins-Bold",
-          color: "#333",
+          fontFamily: 'Poppins-Bold',
+          color: '#333',
           marginBottom: 8,
         }}
       >
-        {label} {required && <Text style={{ color: "#ff4444" }}>*</Text>}
+        {label} {required && <Text style={{ color: '#ff4444' }}>*</Text>}
       </Text>
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#fff",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#fff',
           borderRadius: 8,
           borderWidth: 1,
-          borderColor: "#e0e0e0",
+          borderColor: '#e0e0e0',
           paddingHorizontal: 12,
         }}
       >
-        {icon && (
-          <Feather
-            name={icon as any}
-            color="#666"
-            size={16}
-            style={{ marginRight: 8 }}
-          />
-        )}
+        {icon && <Feather name={icon as any} color="#666" size={16} style={{ marginRight: 8 }} />}
         <TextInput
           value={value}
           onChangeText={onChangeText}
@@ -549,8 +538,8 @@ export default function CheckoutScreen() {
             flex: 1,
             paddingVertical: 12,
             fontSize: 16,
-            fontFamily: "Poppins-Regular",
-            color: "#333",
+            fontFamily: 'Poppins-Regular',
+            color: '#333',
           }}
           keyboardType={keyboardType}
         />
@@ -561,10 +550,10 @@ export default function CheckoutScreen() {
   const ShippingAddressSection = () => (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         borderRadius: 16,
         margin: 16,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 20,
@@ -574,11 +563,11 @@ export default function CheckoutScreen() {
       {/* Section Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           padding: 20,
           borderBottomWidth: 1,
-          borderBottomColor: "#f0f0f0",
+          borderBottomColor: '#f0f0f0',
         }}
       >
         <View
@@ -586,9 +575,9 @@ export default function CheckoutScreen() {
             width: 40,
             height: 40,
             borderRadius: 20,
-            backgroundColor: stepCompleted[0] ? "#34C759" : "#f0f0f0",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: stepCompleted[0] ? '#34C759' : '#f0f0f0',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginRight: 16,
           }}
         >
@@ -602,8 +591,8 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
             flex: 1,
           }}
         >
@@ -613,7 +602,7 @@ export default function CheckoutScreen() {
         {stepCompleted[0] && (
           <View
             style={{
-              backgroundColor: "#34C759",
+              backgroundColor: '#34C759',
               borderRadius: 12,
               paddingHorizontal: 8,
               paddingVertical: 4,
@@ -621,9 +610,9 @@ export default function CheckoutScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 12,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               ✓
@@ -644,7 +633,7 @@ export default function CheckoutScreen() {
 
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             marginBottom: 16,
           }}
         >
@@ -652,9 +641,7 @@ export default function CheckoutScreen() {
             <FormField
               label="First Name"
               value={shippingAddress.firstName}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, firstName: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, firstName: text })}
               placeholder="First Name"
               icon="user"
               required
@@ -664,9 +651,7 @@ export default function CheckoutScreen() {
             <FormField
               label="Last Name"
               value={shippingAddress.lastName}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, lastName: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, lastName: text })}
               placeholder="Last Name"
               required
             />
@@ -675,7 +660,7 @@ export default function CheckoutScreen() {
 
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             marginBottom: 16,
           }}
         >
@@ -683,9 +668,7 @@ export default function CheckoutScreen() {
             <FormField
               label="Email"
               value={shippingAddress.email}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, email: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, email: text })}
               placeholder="Email"
               keyboardType="email-address"
               icon="mail"
@@ -696,9 +679,7 @@ export default function CheckoutScreen() {
             <FormField
               label="Phone"
               value={shippingAddress.phone}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, phone: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, phone: text })}
               placeholder="Phone"
               keyboardType="numeric"
               icon="phone"
@@ -710,9 +691,7 @@ export default function CheckoutScreen() {
         <FormField
           label="Address Line 1"
           value={shippingAddress.address1}
-          onChangeText={(text) =>
-            setShippingAddress({ ...shippingAddress, address1: text })
-          }
+          onChangeText={(text) => setShippingAddress({ ...shippingAddress, address1: text })}
           placeholder="Address Line 1"
           icon="home"
           required
@@ -720,10 +699,8 @@ export default function CheckoutScreen() {
 
         <FormField
           label="Address Line 2 (Optional)"
-          value={shippingAddress.address2 || ""}
-          onChangeText={(text) =>
-            setShippingAddress({ ...shippingAddress, address2: text })
-          }
+          value={shippingAddress.address2 || ''}
+          onChangeText={(text) => setShippingAddress({ ...shippingAddress, address2: text })}
           placeholder="Address Line 2 (Optional)"
           icon="home"
         />
@@ -731,16 +708,14 @@ export default function CheckoutScreen() {
         <FormField
           label="City"
           value={shippingAddress.city}
-          onChangeText={(text) =>
-            setShippingAddress({ ...shippingAddress, city: text })
-          }
+          onChangeText={(text) => setShippingAddress({ ...shippingAddress, city: text })}
           placeholder="City"
           required
         />
 
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             marginBottom: 16,
           }}
         >
@@ -748,9 +723,7 @@ export default function CheckoutScreen() {
             <FormField
               label="State/Country"
               value={shippingAddress.state}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, state: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, state: text })}
               placeholder="State/Country"
             />
           </View>
@@ -758,9 +731,7 @@ export default function CheckoutScreen() {
             <FormField
               label="Postcode"
               value={shippingAddress.postcode}
-              onChangeText={(text) =>
-                setShippingAddress({ ...shippingAddress, postcode: text })
-              }
+              onChangeText={(text) => setShippingAddress({ ...shippingAddress, postcode: text })}
               placeholder="Postcode"
               required
             />
@@ -773,10 +744,10 @@ export default function CheckoutScreen() {
   const BillingDetailsSection = () => (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         borderRadius: 16,
         margin: 16,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 20,
@@ -786,11 +757,11 @@ export default function CheckoutScreen() {
       {/* Section Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           padding: 20,
           borderBottomWidth: 1,
-          borderBottomColor: "#f0f0f0",
+          borderBottomColor: '#f0f0f0',
         }}
       >
         <View
@@ -798,9 +769,9 @@ export default function CheckoutScreen() {
             width: 40,
             height: 40,
             borderRadius: 20,
-            backgroundColor: stepCompleted[1] ? "#34C759" : "#f0f0f0",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: stepCompleted[1] ? '#34C759' : '#f0f0f0',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginRight: 16,
           }}
         >
@@ -814,8 +785,8 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
             flex: 1,
           }}
         >
@@ -825,7 +796,7 @@ export default function CheckoutScreen() {
         {stepCompleted[1] && (
           <View
             style={{
-              backgroundColor: "#34C759",
+              backgroundColor: '#34C759',
               borderRadius: 12,
               paddingHorizontal: 8,
               paddingVertical: 4,
@@ -833,9 +804,9 @@ export default function CheckoutScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 12,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               ✓
@@ -848,8 +819,8 @@ export default function CheckoutScreen() {
       <View style={{ padding: 20 }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginBottom: 16,
           }}
         >
@@ -857,8 +828,8 @@ export default function CheckoutScreen() {
           <Text
             style={{
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
               marginLeft: 8,
               flex: 1,
             }}
@@ -868,16 +839,16 @@ export default function CheckoutScreen() {
           <Switch
             value={isBillingDifferent}
             onValueChange={setIsBillingDifferent}
-            trackColor={{ false: "#e0e0e0", true: "#007AFF" }}
-            thumbColor={isBillingDifferent ? "#fff" : "#fff"}
+            trackColor={{ false: '#e0e0e0', true: '#007AFF' }}
+            thumbColor={isBillingDifferent ? '#fff' : '#fff'}
           />
         </View>
 
         <Text
           style={{
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
-            color: "#666",
+            fontFamily: 'Poppins-Regular',
+            color: '#666',
             marginBottom: 16,
           }}
         >
@@ -889,8 +860,8 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
-                color: "#333",
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
                 marginBottom: 16,
               }}
             >
@@ -899,7 +870,7 @@ export default function CheckoutScreen() {
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginBottom: 16,
               }}
             >
@@ -907,9 +878,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="First Name"
                   value={billingAddress.firstName}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, firstName: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, firstName: text })}
                   placeholder="First Name"
                   icon="user"
                   required
@@ -919,9 +888,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Last Name"
                   value={billingAddress.lastName}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, lastName: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, lastName: text })}
                   placeholder="Last Name"
                   required
                 />
@@ -930,7 +897,7 @@ export default function CheckoutScreen() {
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginBottom: 16,
               }}
             >
@@ -938,9 +905,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Email"
                   value={billingAddress.email}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, email: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, email: text })}
                   placeholder="Email"
                   keyboardType="email-address"
                   icon="mail"
@@ -951,9 +916,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Phone"
                   value={billingAddress.phone}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, phone: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, phone: text })}
                   placeholder="Phone"
                   keyboardType="numeric"
                   icon="phone"
@@ -965,9 +928,7 @@ export default function CheckoutScreen() {
             <FormField
               label="Address Line 1"
               value={billingAddress.address1}
-              onChangeText={(text) =>
-                setBillingAddress({ ...billingAddress, address1: text })
-              }
+              onChangeText={(text) => setBillingAddress({ ...billingAddress, address1: text })}
               placeholder="Address Line 1"
               icon="home"
               required
@@ -975,10 +936,8 @@ export default function CheckoutScreen() {
 
             <FormField
               label="Address Line 2 (Optional)"
-              value={billingAddress.address2 || ""}
-              onChangeText={(text) =>
-                setBillingAddress({ ...billingAddress, address2: text })
-              }
+              value={billingAddress.address2 || ''}
+              onChangeText={(text) => setBillingAddress({ ...billingAddress, address2: text })}
               placeholder="Address Line 2 (Optional)"
               icon="home"
             />
@@ -986,16 +945,14 @@ export default function CheckoutScreen() {
             <FormField
               label="City"
               value={billingAddress.city}
-              onChangeText={(text) =>
-                setBillingAddress({ ...billingAddress, city: text })
-              }
+              onChangeText={(text) => setBillingAddress({ ...billingAddress, city: text })}
               placeholder="City"
               required
             />
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginBottom: 16,
               }}
             >
@@ -1003,9 +960,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="State/Country"
                   value={billingAddress.state}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, state: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, state: text })}
                   placeholder="State/Country"
                 />
               </View>
@@ -1013,9 +968,7 @@ export default function CheckoutScreen() {
                 <FormField
                   label="Postcode"
                   value={billingAddress.postcode}
-                  onChangeText={(text) =>
-                    setBillingAddress({ ...billingAddress, postcode: text })
-                  }
+                  onChangeText={(text) => setBillingAddress({ ...billingAddress, postcode: text })}
                   placeholder="Postcode"
                   required
                 />
@@ -1026,25 +979,24 @@ export default function CheckoutScreen() {
 
         <View
           style={{
-            backgroundColor: "#e3f2fd",
+            backgroundColor: '#e3f2fd',
             borderRadius: 8,
             padding: 12,
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
         >
           <Feather name="shield" color="#1976d2" size={16} />
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#1976d2",
+              fontFamily: 'Poppins-Regular',
+              color: '#1976d2',
               marginLeft: 8,
               flex: 1,
             }}
           >
-            Your billing information is securely stored and only used for order
-            processing.
+            Your billing information is securely stored and only used for order processing.
           </Text>
         </View>
       </View>
@@ -1054,10 +1006,10 @@ export default function CheckoutScreen() {
   const PaymentInformationSection = () => (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         borderRadius: 16,
         margin: 16,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 20,
@@ -1067,11 +1019,11 @@ export default function CheckoutScreen() {
       {/* Section Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           padding: 20,
           borderBottomWidth: 1,
-          borderBottomColor: "#f0f0f0",
+          borderBottomColor: '#f0f0f0',
         }}
       >
         <View
@@ -1079,9 +1031,9 @@ export default function CheckoutScreen() {
             width: 40,
             height: 40,
             borderRadius: 20,
-            backgroundColor: stepCompleted[2] ? "#34C759" : "#f0f0f0",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: stepCompleted[2] ? '#34C759' : '#f0f0f0',
+            justifyContent: 'center',
+            alignItems: 'center',
             marginRight: 16,
           }}
         >
@@ -1095,8 +1047,8 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
             flex: 1,
           }}
         >
@@ -1106,7 +1058,7 @@ export default function CheckoutScreen() {
         {stepCompleted[2] && (
           <View
             style={{
-              backgroundColor: "#34C759",
+              backgroundColor: '#34C759',
               borderRadius: 12,
               paddingHorizontal: 8,
               paddingVertical: 4,
@@ -1114,9 +1066,9 @@ export default function CheckoutScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 12,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               ✓
@@ -1130,8 +1082,8 @@ export default function CheckoutScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
             marginBottom: 16,
           }}
         >
@@ -1140,29 +1092,29 @@ export default function CheckoutScreen() {
 
         {/* Credit/Debit Card Option */}
         <TouchableOpacity
-          onPress={() => setPaymentMethod("card")}
+          onPress={() => setPaymentMethod('card')}
           style={{
-            backgroundColor: paymentMethod === "card" ? "#e3f2fd" : "#fff",
+            backgroundColor: paymentMethod === 'card' ? '#e3f2fd' : '#fff',
             borderRadius: 8,
             padding: 16,
             borderWidth: 1,
-            borderColor: paymentMethod === "card" ? "#1976d2" : "#e0e0e0",
+            borderColor: paymentMethod === 'card' ? '#1976d2' : '#e0e0e0',
             marginBottom: 12,
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
         >
           <Feather
             name="credit-card"
-            color={paymentMethod === "card" ? "#1976d2" : "#666"}
+            color={paymentMethod === 'card' ? '#1976d2' : '#666'}
             size={20}
           />
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
-                color: paymentMethod === "card" ? "#1976d2" : "#333",
+                fontFamily: 'Poppins-Bold',
+                color: paymentMethod === 'card' ? '#1976d2' : '#333',
               }}
             >
               Credit/Debit Card
@@ -1170,43 +1122,41 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                color: paymentMethod === "card" ? "#1976d2" : "#666",
+                fontFamily: 'Poppins-Regular',
+                color: paymentMethod === 'card' ? '#1976d2' : '#666',
               }}
             >
               Visa, Mastercard, American Express
             </Text>
           </View>
-          {paymentMethod === "card" && (
-            <Feather name="check" color="#1976d2" size={20} />
-          )}
+          {paymentMethod === 'card' && <Feather name="check" color="#1976d2" size={20} />}
         </TouchableOpacity>
 
         {/* Google Pay Option */}
         <TouchableOpacity
-          onPress={() => setPaymentMethod("googlepay")}
+          onPress={() => setPaymentMethod('googlepay')}
           style={{
-            backgroundColor: paymentMethod === "googlepay" ? "#e3f2fd" : "#fff",
+            backgroundColor: paymentMethod === 'googlepay' ? '#e3f2fd' : '#fff',
             borderRadius: 8,
             padding: 16,
             borderWidth: 1,
-            borderColor: paymentMethod === "googlepay" ? "#1976d2" : "#e0e0e0",
+            borderColor: paymentMethod === 'googlepay' ? '#1976d2' : '#e0e0e0',
             marginBottom: 16,
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
         >
           <Feather
             name="smartphone"
-            color={paymentMethod === "googlepay" ? "#1976d2" : "#666"}
+            color={paymentMethod === 'googlepay' ? '#1976d2' : '#666'}
             size={20}
           />
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
-                color: paymentMethod === "googlepay" ? "#1976d2" : "#333",
+                fontFamily: 'Poppins-Bold',
+                color: paymentMethod === 'googlepay' ? '#1976d2' : '#333',
               }}
             >
               Google Pay
@@ -1214,25 +1164,23 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                color: paymentMethod === "googlepay" ? "#1976d2" : "#666",
+                fontFamily: 'Poppins-Regular',
+                color: paymentMethod === 'googlepay' ? '#1976d2' : '#666',
               }}
             >
               Google Pay (availability will be checked at payment)
             </Text>
           </View>
-          {paymentMethod === "googlepay" && (
-            <Feather name="check" color="#1976d2" size={20} />
-          )}
+          {paymentMethod === 'googlepay' && <Feather name="check" color="#1976d2" size={20} />}
         </TouchableOpacity>
 
-        {paymentMethod === "card" && (
+        {paymentMethod === 'card' && (
           <>
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
-                color: "#333",
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
                 marginBottom: 16,
               }}
             >
@@ -1242,20 +1190,18 @@ export default function CheckoutScreen() {
             <FormField
               label="Cardholder Name"
               value={cardDetails.cardholderName}
-              onChangeText={(text) =>
-                setCardDetails({ ...cardDetails, cardholderName: text })
-              }
+              onChangeText={(text) => setCardDetails({ ...cardDetails, cardholderName: text })}
               placeholder="Cardholder Name"
               icon="user"
               required
             />
 
-            {cardDetails.cardholderName.trim() === "" && (
+            {cardDetails.cardholderName.trim() === '' && (
               <Text
                 style={{
                   fontSize: 12,
-                  fontFamily: "Poppins-Regular",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#666',
                   marginTop: -12,
                   marginBottom: 16,
                 }}
@@ -1267,8 +1213,8 @@ export default function CheckoutScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
-                color: "#333",
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
                 marginBottom: 16,
               }}
             >
@@ -1277,7 +1223,7 @@ export default function CheckoutScreen() {
 
             <View
               style={{
-                backgroundColor: "#f8f9fa",
+                backgroundColor: '#f8f9fa',
                 borderRadius: 8,
                 padding: 16,
                 marginBottom: 16,
@@ -1286,16 +1232,14 @@ export default function CheckoutScreen() {
               <FormField
                 label="Card Number"
                 value={cardDetails.cardNumber}
-                onChangeText={(text) =>
-                  setCardDetails({ ...cardDetails, cardNumber: text })
-                }
+                onChangeText={(text) => setCardDetails({ ...cardDetails, cardNumber: text })}
                 placeholder="Card number"
                 keyboardType="numeric"
               />
 
               <View
                 style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   marginBottom: 16,
                 }}
               >
@@ -1303,9 +1247,7 @@ export default function CheckoutScreen() {
                   <FormField
                     label="Expiry Date"
                     value={cardDetails.expiryDate}
-                    onChangeText={(text) =>
-                      setCardDetails({ ...cardDetails, expiryDate: text })
-                    }
+                    onChangeText={(text) => setCardDetails({ ...cardDetails, expiryDate: text })}
                     placeholder="MM/YY"
                     keyboardType="numeric"
                   />
@@ -1314,9 +1256,7 @@ export default function CheckoutScreen() {
                   <FormField
                     label="CVC"
                     value={cardDetails.cvc}
-                    onChangeText={(text) =>
-                      setCardDetails({ ...cardDetails, cvc: text })
-                    }
+                    onChangeText={(text) => setCardDetails({ ...cardDetails, cvc: text })}
                     placeholder="CVC"
                     keyboardType="numeric"
                   />
@@ -1326,18 +1266,14 @@ export default function CheckoutScreen() {
               <FormField
                 label="Country"
                 value={cardDetails.country}
-                onChangeText={(text) =>
-                  setCardDetails({ ...cardDetails, country: text })
-                }
+                onChangeText={(text) => setCardDetails({ ...cardDetails, country: text })}
                 placeholder="Country"
               />
 
               <FormField
                 label="ZIP Code"
                 value={cardDetails.zipCode}
-                onChangeText={(text) =>
-                  setCardDetails({ ...cardDetails, zipCode: text })
-                }
+                onChangeText={(text) => setCardDetails({ ...cardDetails, zipCode: text })}
                 placeholder="ZIP Code"
                 keyboardType="numeric"
               />
@@ -1347,25 +1283,25 @@ export default function CheckoutScreen() {
 
         <View
           style={{
-            backgroundColor: "#e3f2fd",
+            backgroundColor: '#e3f2fd',
             borderRadius: 8,
             padding: 12,
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
         >
           <Feather name="shield" color="#1976d2" size={16} />
           <Text
             style={{
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#1976d2",
+              fontFamily: 'Poppins-Regular',
+              color: '#1976d2',
               marginLeft: 8,
               flex: 1,
             }}
           >
-            Your payment information is securely processed by Stripe and never
-            stored on our servers.
+            Your payment information is securely processed by Stripe and never stored on our
+            servers.
           </Text>
         </View>
       </View>
@@ -1374,16 +1310,16 @@ export default function CheckoutScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -1399,8 +1335,8 @@ export default function CheckoutScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Checkout All Items
@@ -1410,8 +1346,8 @@ export default function CheckoutScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -1421,17 +1357,17 @@ export default function CheckoutScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -1447,15 +1383,15 @@ export default function CheckoutScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Checkout All Items
         </Text>
       </View>
 
-      <ScrollView style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+      <ScrollView style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
         {/* Order Summary */}
         <OrderSummaryCard />
 
@@ -1475,40 +1411,38 @@ export default function CheckoutScreen() {
       {/* Bottom Action Button */}
       <View
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
           padding: 20,
           borderTopWidth: 1,
-          borderTopColor: "#e0e0e0",
+          borderTopColor: '#e0e0e0',
         }}
       >
         <TouchableOpacity
           onPress={processCheckout}
           style={{
-            backgroundColor: canProceedToCheckout() ? "#000" : "#ff9500",
+            backgroundColor: canProceedToCheckout() ? '#000' : '#ff9500',
             borderRadius: 12,
             paddingVertical: 16,
-            alignItems: "center",
+            alignItems: 'center',
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
-            {canProceedToCheckout()
-              ? "Complete Order"
-              : "Complete Required Fields"}
+            {canProceedToCheckout() ? 'Complete Order' : 'Complete Required Fields'}
           </Text>
           {!canProceedToCheckout() && (
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 12,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginTop: 4,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               {getValidationMessage()}

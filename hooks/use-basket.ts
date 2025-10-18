@@ -1,28 +1,28 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   selectBasket,
-  selectBasketLoading,
   selectBasketError,
-  selectBasketItemCount,
-  selectBasketTotal,
   selectBasketFormattedTotal,
-  selectIsBasketEmpty,
   selectBasketItemByProductId,
+  selectBasketItemCount,
   selectBasketItemCountByProduct,
-} from "@/store/selectors/basketSelectors";
+  selectBasketLoading,
+  selectBasketTotal,
+  selectIsBasketEmpty,
+} from '@/store/selectors/basketSelectors';
 import {
   addToBasket,
-  removeFromBasket,
-  updateQuantity,
+  BasketItem,
   clearBasket,
-  setError,
   clearError,
-} from "@/store/slices/basketSlice";
-import { BasketItem } from "@/store/slices/basketSlice";
+  removeFromBasket,
+  setError,
+  updateQuantity,
+} from '@/store/slices/basketSlice';
 
 export const useBasket = () => {
   const dispatch = useAppDispatch();
-  
+
   // Selectors
   const basket = useAppSelector(selectBasket);
   const isLoading = useAppSelector(selectBasketLoading);
@@ -33,7 +33,7 @@ export const useBasket = () => {
   const isEmpty = useAppSelector(selectIsBasketEmpty);
 
   // Actions
-  const addItem = (itemData: Omit<BasketItem, "id" | "lineTotal" | "protectionFee">) => {
+  const addItem = (itemData: Omit<BasketItem, 'id' | 'lineTotal' | 'protectionFee'>) => {
     dispatch(addToBasket(itemData));
   };
 
@@ -75,7 +75,7 @@ export const useBasket = () => {
     total,
     formattedTotal,
     isEmpty,
-    
+
     // Actions
     addItem,
     removeItem,
@@ -83,7 +83,7 @@ export const useBasket = () => {
     clearAll,
     setBasketError,
     clearBasketError,
-    
+
     // Utility functions
     getItemByProductId,
     getItemCountByProduct,

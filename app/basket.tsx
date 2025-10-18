@@ -1,14 +1,14 @@
-import { useBasket } from "@/hooks/useBasket";
-import { useAppSelector } from "@/store/hooks";
+import { useBasket } from '@/hooks/use-basket';
+import { useAppSelector } from '@/store/hooks';
 import {
   selectBasketVendorIds,
-  selectBasketVendors,
   selectBasketVendorItems,
+  selectBasketVendors,
   selectVendorTotals,
-} from "@/store/selectors/basketSelectors";
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useState } from "react";
+} from '@/store/selectors/basketSelectors';
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -18,25 +18,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Use the interfaces from the basket slice
-import { Basket, BasketItem, Vendor } from "@/store/slices/basketSlice";
+import { Basket, BasketItem, Vendor } from '@/store/slices/basketSlice';
 
 export default function BasketScreen() {
-  const {
-    basket,
-    isLoading,
-    error,
-    removeItem,
-    updateItemQuantity,
-    clearAll,
-  } = useBasket();
+  const { basket, isLoading, error, removeItem, updateItemQuantity, clearAll } = useBasket();
   const vendorIds = useAppSelector(selectBasketVendorIds);
   const vendors = useAppSelector(selectBasketVendors);
   const vendorItems = useAppSelector(selectBasketVendorItems);
-  
+
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
 
@@ -67,7 +60,7 @@ export default function BasketScreen() {
   };
 
   const proceedToCheckout = () => {
-    router.push("/checkout");
+    router.push('/checkout');
   };
 
   const VendorItemsSection = ({
@@ -82,336 +75,336 @@ export default function BasketScreen() {
     onRemove: (item: BasketItem) => void;
   }) => {
     const vendorTotals = useAppSelector(selectVendorTotals(vendor.id));
-    
+
     return (
-    <View
-      style={{
-        backgroundColor: "#fff",
-        borderRadius: 12,
-        marginBottom: 16,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-      }}
-    >
-      {/* Vendor Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          padding: 16,
-          borderBottomWidth: 1,
-          borderBottomColor: "#f0f0f0",
+          backgroundColor: '#fff',
+          borderRadius: 12,
+          marginBottom: 16,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3,
         }}
       >
-        <Feather name="shopping-bag" color="#333" size={20} />
-        <Text
+        {/* Vendor Header */}
+        <View
           style={{
-            fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
-            marginLeft: 8,
-            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 16,
+            borderBottomWidth: 1,
+            borderBottomColor: '#f0f0f0',
           }}
         >
-          {vendor.name}
-        </Text>
-        <Text
-          style={{
-            fontSize: 14,
-            fontFamily: "Poppins-Regular",
-            color: "#666",
-          }}
-        >
-          {vendor.itemCount} item{vendor.itemCount !== 1 ? "s" : ""}
-        </Text>
-      </View>
+          <Feather name="shopping-bag" color="#333" size={20} />
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'Poppins-Bold',
+              color: '#333',
+              marginLeft: 8,
+              flex: 1,
+            }}
+          >
+            {vendor.name}
+          </Text>
+          <Text
+            style={{
+              fontSize: 14,
+              fontFamily: 'Poppins-Regular',
+              color: '#666',
+            }}
+          >
+            {vendor.itemCount} item{vendor.itemCount !== 1 ? 's' : ''}
+          </Text>
+        </View>
 
-      {/* Items */}
-      {items.map((item, index) => (
-        <View key={item.id}>
+        {/* Items */}
+        {items.map((item, index) => (
+          <View key={item.id}>
+            <View
+              style={{
+                flexDirection: 'row',
+                padding: 16,
+                alignItems: 'center',
+              }}
+            >
+              {/* Product Image */}
+              <View
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 8,
+                  backgroundColor: '#f0f0f0',
+                  marginRight: 12,
+                  overflow: 'hidden',
+                }}
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  resizeMode="cover"
+                />
+              </View>
+
+              {/* Product Details */}
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'Poppins-Bold',
+                    color: '#333',
+                    marginBottom: 4,
+                  }}
+                  numberOfLines={2}
+                >
+                  {item.name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: 'Poppins-Bold',
+                    color: '#333',
+                    marginBottom: 4,
+                  }}
+                >
+                  £{item.price.toFixed(2)}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontFamily: 'Poppins-Regular',
+                    color: '#666',
+                  }}
+                >
+                  D&@
+                </Text>
+              </View>
+
+              {/* Remove Button */}
+              <TouchableOpacity
+                onPress={() => onRemove(item)}
+                style={{
+                  position: 'absolute',
+                  top: 16,
+                  right: 16,
+                  padding: 4,
+                }}
+              >
+                <Feather name="x" color="#999" size={20} />
+              </TouchableOpacity>
+
+              {/* Quantity Controls */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 8,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => onQuantityChanged(item, item.quantity - 1)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    backgroundColor: '#f0f0f0',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Feather name="minus" color="#333" size={16} />
+                </TouchableOpacity>
+
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'Poppins-Bold',
+                    color: '#333',
+                    marginHorizontal: 16,
+                    minWidth: 20,
+                    textAlign: 'center',
+                  }}
+                >
+                  {item.quantity}
+                </Text>
+
+                <TouchableOpacity
+                  onPress={() => onQuantityChanged(item, item.quantity + 1)}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    backgroundColor: '#f0f0f0',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Feather name="plus" color="#333" size={16} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {index < items.length - 1 && (
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: '#f0f0f0',
+                  marginLeft: 16,
+                }}
+              />
+            )}
+          </View>
+        ))}
+
+        {/* Vendor Totals */}
+        <View
+          style={{
+            padding: 16,
+            borderTopWidth: 1,
+            borderTopColor: '#f0f0f0',
+          }}
+        >
           <View
             style={{
-              flexDirection: "row",
-              padding: 16,
-              alignItems: "center",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 8,
             }}
           >
-            {/* Product Image */}
-            <View
+            <Text
               style={{
-                width: 80,
-                height: 80,
-                borderRadius: 8,
-                backgroundColor: "#f0f0f0",
-                marginRight: 12,
-                overflow: "hidden",
+                fontSize: 14,
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
               }}
             >
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-                resizeMode="cover"
-              />
-            </View>
-
-            {/* Product Details */}
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: "Poppins-Bold",
-                  color: "#333",
-                  marginBottom: 4,
-                }}
-                numberOfLines={2}
-              >
-                {item.name}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: "Poppins-Bold",
-                  color: "#333",
-                  marginBottom: 4,
-                }}
-              >
-                £{item.price.toFixed(2)}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontFamily: "Poppins-Regular",
-                  color: "#666",
-                }}
-              >
-                D&@
-              </Text>
-            </View>
-
-            {/* Remove Button */}
-            <TouchableOpacity
-              onPress={() => onRemove(item)}
+              Subtotal
+            </Text>
+            <Text
               style={{
-                position: "absolute",
-                top: 16,
-                right: 16,
-                padding: 4,
+                fontSize: 14,
+                fontFamily: 'Poppins-Regular',
+                color: '#333',
               }}
             >
-              <Feather name="x" color="#999" size={20} />
-            </TouchableOpacity>
-
-            {/* Quantity Controls */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: 8,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => onQuantityChanged(item, item.quantity - 1)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: "#f0f0f0",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Feather name="minus" color="#333" size={16} />
-              </TouchableOpacity>
-
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: "Poppins-Bold",
-                  color: "#333",
-                  marginHorizontal: 16,
-                  minWidth: 20,
-                  textAlign: "center",
-                }}
-              >
-                {item.quantity}
-              </Text>
-
-              <TouchableOpacity
-                onPress={() => onQuantityChanged(item, item.quantity + 1)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: "#f0f0f0",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Feather name="plus" color="#333" size={16} />
-              </TouchableOpacity>
-            </View>
+              £{vendorTotals.subtotal.toFixed(2)}
+            </Text>
           </View>
 
-          {index < items.length - 1 && (
-            <View
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 8,
+            }}
+          >
+            <Text
               style={{
-                height: 1,
-                backgroundColor: "#f0f0f0",
-                marginLeft: 16,
+                fontSize: 14,
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
               }}
-            />
-          )}
+            >
+              Protection Fee
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: 'Poppins-Regular',
+                color: '#333',
+              }}
+            >
+              £{vendorTotals.protectionFee.toFixed(2)}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              height: 1,
+              backgroundColor: '#f0f0f0',
+              marginVertical: 8,
+            }}
+          />
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginBottom: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
+              }}
+            >
+              Vendor Total
+            </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
+              }}
+            >
+              £{vendorTotals.total.toFixed(2)}
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#000',
+              borderRadius: 8,
+              paddingVertical: 12,
+              paddingHorizontal: 24,
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 16,
+                fontFamily: 'Poppins-Bold',
+              }}
+            >
+              Checkout with {vendor.name}
+            </Text>
+          </TouchableOpacity>
         </View>
-      ))}
-
-      {/* Vendor Totals */}
-      <View
-        style={{
-          padding: 16,
-          borderTopWidth: 1,
-          borderTopColor: "#f0f0f0",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 8,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#666",
-            }}
-          >
-            Subtotal
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#333",
-            }}
-          >
-            £{vendorTotals.subtotal.toFixed(2)}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 8,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#666",
-            }}
-          >
-            Protection Fee
-          </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              color: "#333",
-            }}
-          >
-            £{vendorTotals.protectionFee.toFixed(2)}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            height: 1,
-            backgroundColor: "#f0f0f0",
-            marginVertical: 8,
-          }}
-        />
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 16,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
-            }}
-          >
-            Vendor Total
-          </Text>
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: "Poppins-Bold",
-              color: "#333",
-            }}
-          >
-            £{vendorTotals.total.toFixed(2)}
-          </Text>
-        </View>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#000",
-            borderRadius: 8,
-            paddingVertical: 12,
-            paddingHorizontal: 24,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 16,
-              fontFamily: "Poppins-Bold",
-            }}
-          >
-            Checkout with {vendor.name}
-          </Text>
-        </TouchableOpacity>
       </View>
-    </View>
     );
   };
 
   const BasketSummary = ({ basket }: { basket: Basket }) => (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         padding: 16,
         borderTopWidth: 1,
-        borderTopColor: "#f0f0f0",
+        borderTopColor: '#f0f0f0',
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           marginBottom: 8,
         }}
       >
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Regular",
-            color: "#333",
+            fontFamily: 'Poppins-Regular',
+            color: '#333',
           }}
         >
           Subtotal
@@ -419,8 +412,8 @@ export default function BasketScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
           }}
         >
           {basket.formattedSubtotal}
@@ -429,16 +422,16 @@ export default function BasketScreen() {
 
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           marginBottom: 8,
         }}
       >
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Regular",
-            color: "#333",
+            fontFamily: 'Poppins-Regular',
+            color: '#333',
           }}
         >
           Protection Fee
@@ -446,8 +439,8 @@ export default function BasketScreen() {
         <Text
           style={{
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
           }}
         >
           {basket.formattedTotalProtectionFee}
@@ -457,23 +450,23 @@ export default function BasketScreen() {
       <View
         style={{
           height: 1,
-          backgroundColor: "#f0f0f0",
+          backgroundColor: '#f0f0f0',
           marginVertical: 12,
         }}
       />
 
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           marginBottom: 16,
         }}
       >
         <Text
           style={{
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
           }}
         >
           Total
@@ -481,8 +474,8 @@ export default function BasketScreen() {
         <Text
           style={{
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#333",
+            fontFamily: 'Poppins-Bold',
+            color: '#333',
           }}
         >
           {basket.formattedTotal}
@@ -493,16 +486,16 @@ export default function BasketScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -518,8 +511,8 @@ export default function BasketScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Your Basket
@@ -529,8 +522,8 @@ export default function BasketScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -541,16 +534,16 @@ export default function BasketScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -566,8 +559,8 @@ export default function BasketScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Your Basket
@@ -577,17 +570,17 @@ export default function BasketScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={48} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -596,10 +589,10 @@ export default function BasketScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -608,7 +601,7 @@ export default function BasketScreen() {
           <TouchableOpacity
             onPress={refreshBasket}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -616,9 +609,9 @@ export default function BasketScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -631,16 +624,16 @@ export default function BasketScreen() {
 
   if (!basket || basket.items.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -656,8 +649,8 @@ export default function BasketScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Your Basket
@@ -667,17 +660,17 @@ export default function BasketScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="shopping-bag" color="#999" size={64} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -686,10 +679,10 @@ export default function BasketScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -701,17 +694,17 @@ export default function BasketScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -727,8 +720,8 @@ export default function BasketScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Your Basket
@@ -758,7 +751,7 @@ export default function BasketScreen() {
         </TouchableOpacity>
       </View>
 
-      <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
+      <View style={{ flex: 1, backgroundColor: '#f5f5f5' }}>
         <ScrollView
           style={{ flex: 1 }}
           refreshControl={
@@ -776,9 +769,7 @@ export default function BasketScreen() {
                 key={vendorId}
                 vendor={vendors[vendorId]}
                 items={vendorItems[vendorId] || []}
-                onQuantityChanged={(item, quantity) =>
-                  handleUpdateQuantity(item.id, quantity)
-                }
+                onQuantityChanged={(item, quantity) => handleUpdateQuantity(item.id, quantity)}
                 onRemove={(item) => handleRemoveItem(item.id)}
               />
             ))}
@@ -799,17 +790,17 @@ export default function BasketScreen() {
           <TouchableOpacity
             onPress={proceedToCheckout}
             style={{
-              backgroundColor: "#000",
+              backgroundColor: '#000',
               borderRadius: 8,
               paddingVertical: 16,
-              alignItems: "center",
+              alignItems: 'center',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Proceed to Checkout
@@ -828,28 +819,28 @@ export default function BasketScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 20,
           }}
         >
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               borderRadius: 12,
               padding: 24,
-              width: "100%",
+              width: '100%',
               maxWidth: 400,
             }}
           >
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
-                color: "#333",
+                fontFamily: 'Poppins-Bold',
+                color: '#333',
                 marginBottom: 16,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               Clear Basket
@@ -857,36 +848,36 @@ export default function BasketScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
                 marginBottom: 24,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               Are you sure you want to remove all items from your basket?
             </Text>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
             >
               <TouchableOpacity
                 onPress={() => setShowClearModal(false)}
                 style={{
                   flex: 1,
-                  backgroundColor: "#f0f0f0",
+                  backgroundColor: '#f0f0f0',
                   borderRadius: 8,
                   paddingVertical: 12,
                   marginRight: 8,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
               >
                 <Text
                   style={{
-                    color: "#333",
+                    color: '#333',
                     fontSize: 16,
-                    fontFamily: "Poppins-Bold",
+                    fontFamily: 'Poppins-Bold',
                   }}
                 >
                   Cancel
@@ -896,18 +887,18 @@ export default function BasketScreen() {
                 onPress={handleClearBasket}
                 style={{
                   flex: 1,
-                  backgroundColor: "#ff4444",
+                  backgroundColor: '#ff4444',
                   borderRadius: 8,
                   paddingVertical: 12,
                   marginLeft: 8,
-                  alignItems: "center",
+                  alignItems: 'center',
                 }}
               >
                 <Text
                   style={{
-                    color: "#fff",
+                    color: '#fff',
                     fontSize: 16,
-                    fontFamily: "Poppins-Bold",
+                    fontFamily: 'Poppins-Bold',
                   }}
                 >
                   Clear All

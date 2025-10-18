@@ -1,16 +1,9 @@
-import { useAuth } from "@/hooks/useAuth";
-import Feather from "@expo/vector-icons/Feather";
-import { router } from "expo-router";
-import React, { useState } from "react";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from '@/hooks/use-auth';
+import Feather from '@expo/vector-icons/Feather';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function AccountScreen() {
   const { logout, user } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -25,20 +18,20 @@ export default function AccountScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       <ScrollView style={{ flex: 1 }}>
         {/* Profile Header Section */}
         <View style={{ padding: 16, paddingTop: 16 }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {/* Profile Avatar */}
             <View
               style={{
                 width: 70,
                 height: 70,
-                backgroundColor: "#333",
+                backgroundColor: '#333',
                 borderRadius: 10,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 marginRight: 16,
               }}
             >
@@ -49,22 +42,22 @@ export default function AccountScreen() {
             <View style={{ flex: 1 }}>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
                 <Text
                   style={{
                     fontSize: 18,
-                    fontFamily: "Poppins-Bold",
-                    color: "#fff",
+                    fontFamily: 'Poppins-Bold',
+                    color: '#fff',
                   }}
                 >
-                  {user?.firstName || user?.username || "Guest User"}
+                  {user?.firstName || user?.username || 'Guest User'}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => router.push("/basket")}
+                  onPress={() => router.push('/basket')}
                   style={{
                     padding: 8,
                   }}
@@ -75,19 +68,19 @@ export default function AccountScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
-                  color: "#999",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#999',
                   marginTop: 4,
                 }}
               >
-                {user?.email || "Not signed in"}
+                {user?.email || 'Not signed in'}
               </Text>
               <Pressable style={{ marginTop: 4 }}>
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: "Poppins-Regular",
-                    color: "#007AFF",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#007AFF',
                   }}
                 >
                   Edit Profile
@@ -101,7 +94,7 @@ export default function AccountScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -112,21 +105,21 @@ export default function AccountScreen() {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#999",
+              fontFamily: 'Poppins-Bold',
+              color: '#999',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             SELLER HUB
           </Text>
 
           <Pressable
-            onPress={() => router.push("/other/seller-dashboard")}
+            onPress={() => router.push('/other/seller-dashboard')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -135,8 +128,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -147,10 +140,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/payment-setup")}
+            onPress={() => router.push('/other/payment-setup')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -159,8 +152,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -175,7 +168,7 @@ export default function AccountScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -186,21 +179,21 @@ export default function AccountScreen() {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#999",
+              fontFamily: 'Poppins-Bold',
+              color: '#999',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             SHOPPING
           </Text>
 
           <Pressable
-            onPress={() => router.push("/other/orders")}
+            onPress={() => router.push('/other/orders')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -209,8 +202,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -221,10 +214,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/favourites")}
+            onPress={() => router.push('/other/favourites')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -233,8 +226,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -245,10 +238,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/payment-methods")}
+            onPress={() => router.push('/other/payment-methods')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -257,8 +250,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -269,10 +262,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/addresses")}
+            onPress={() => router.push('/other/addresses')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -281,8 +274,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -297,7 +290,7 @@ export default function AccountScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -308,21 +301,21 @@ export default function AccountScreen() {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#999",
+              fontFamily: 'Poppins-Bold',
+              color: '#999',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             SUPPORT
           </Text>
 
           <Pressable
-            onPress={() => router.push("/other/help-center")}
+            onPress={() => router.push('/other/help-center')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -331,8 +324,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -343,10 +336,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/contact-support")}
+            onPress={() => router.push('/other/contact-support')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -355,8 +348,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -371,7 +364,7 @@ export default function AccountScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -382,21 +375,21 @@ export default function AccountScreen() {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
-              color: "#999",
+              fontFamily: 'Poppins-Bold',
+              color: '#999',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             SETTINGS
           </Text>
 
           <Pressable
-            onPress={() => router.push("/other/app-settings")}
+            onPress={() => router.push('/other/app-settings')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -405,8 +398,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -417,10 +410,10 @@ export default function AccountScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push("/other/privacy-security")}
+            onPress={() => router.push('/other/privacy-security')}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -429,8 +422,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -443,8 +436,8 @@ export default function AccountScreen() {
           <Pressable
             onPress={showLogoutConfirmation}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               paddingVertical: 12,
               paddingHorizontal: 16,
             }}
@@ -453,8 +446,8 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#fff",
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
                 marginLeft: 16,
                 flex: 1,
               }}
@@ -477,20 +470,20 @@ export default function AccountScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 20,
           }}
         >
           <View
             style={{
-              backgroundColor: "white",
+              backgroundColor: 'white',
               borderRadius: 12,
               padding: 24,
-              width: "100%",
+              width: '100%',
               maxWidth: 320,
-              shadowColor: "#000",
+              shadowColor: '#000',
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -503,10 +496,10 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 20,
-                fontFamily: "Poppins-Bold",
-                color: "#000",
+                fontFamily: 'Poppins-Bold',
+                color: '#000',
                 marginBottom: 16,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               Logout
@@ -515,10 +508,10 @@ export default function AccountScreen() {
             <Text
               style={{
                 fontSize: 16,
-                fontFamily: "Poppins-Regular",
-                color: "#666",
+                fontFamily: 'Poppins-Regular',
+                color: '#666',
                 marginBottom: 24,
-                textAlign: "center",
+                textAlign: 'center',
                 lineHeight: 22,
               }}
             >
@@ -527,8 +520,8 @@ export default function AccountScreen() {
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "flex-end",
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
                 gap: 12,
               }}
             >
@@ -542,8 +535,8 @@ export default function AccountScreen() {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-Regular",
-                    color: "#666",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#666',
                   }}
                 >
                   Cancel
@@ -560,8 +553,8 @@ export default function AccountScreen() {
                 <Text
                   style={{
                     fontSize: 16,
-                    fontFamily: "Poppins-SemiBold",
-                    color: "#ff4444",
+                    fontFamily: 'Poppins-SemiBold',
+                    color: '#ff4444',
                   }}
                 >
                   Logout

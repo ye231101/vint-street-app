@@ -1,18 +1,10 @@
-import { useAuth } from "@/hooks/useAuth";
-import Feather from "@expo/vector-icons/Feather";
-import { useRouter } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
-import React, { useState } from "react";
-import {
-  Alert,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from '@/hooks/use-auth';
+import Feather from '@expo/vector-icons/Feather';
+import { useRouter } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
+import React, { useState } from 'react';
+import { Alert, Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface FormData {
   username: string;
@@ -50,20 +42,20 @@ export default function RegisterScreen() {
   const router = useRouter();
   const { register, loading, error } = useAuth();
   const [formData, setFormData] = useState<FormData>({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
-    shopName: "",
-    address1: "",
-    address2: "",
-    city: "",
-    postcode: "",
-    country: "",
-    state: "",
-    phone: "",
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    shopName: '',
+    address1: '',
+    address2: '',
+    city: '',
+    postcode: '',
+    country: '',
+    state: '',
+    phone: '',
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -72,31 +64,31 @@ export default function RegisterScreen() {
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   const validateUsername = (username: string): string | undefined => {
-    if (!username) return "Username is required";
-    if (username.length < 3) return "Username must be at least 3 characters";
-    if (username.includes(" ")) return "Username cannot contain spaces";
+    if (!username) return 'Username is required';
+    if (username.length < 3) return 'Username must be at least 3 characters';
+    if (username.includes(' ')) return 'Username cannot contain spaces';
     return undefined;
   };
 
   const validateEmail = (email: string): string | undefined => {
-    if (!email) return "Email is required";
+    if (!email) return 'Email is required';
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!emailRegex.test(email)) return "Please enter a valid email";
+    if (!emailRegex.test(email)) return 'Please enter a valid email';
     return undefined;
   };
 
   const validateEmailUniqueness = async (email: string): Promise<string | undefined> => {
-    if (!email) return "Email is required";
-    
+    if (!email) return 'Email is required';
+
     try {
       // Import authService dynamically to avoid circular dependencies
-      const { authService } = await import("@/api/services/auth.service");
+      const { authService } = await import('@/api/services/auth.service');
       const emailExists = await authService.checkEmailExists(email);
-      
+
       if (emailExists) {
-        return "An account with this email already exists.";
+        return 'An account with this email already exists.';
       }
-      
+
       return undefined;
     } catch (error) {
       // If there's an error checking email uniqueness, don't block the form
@@ -106,23 +98,18 @@ export default function RegisterScreen() {
   };
 
   const validatePassword = (password: string): string | undefined => {
-    if (!password) return "Password is required";
-    if (password.length < 6) return "Password must be at least 6 characters";
+    if (!password) return 'Password is required';
+    if (password.length < 6) return 'Password must be at least 6 characters';
     return undefined;
   };
 
-  const validateConfirmPassword = (
-    confirmPassword: string
-  ): string | undefined => {
-    if (!confirmPassword) return "Please confirm your password";
-    if (confirmPassword !== formData.password) return "Passwords do not match";
+  const validateConfirmPassword = (confirmPassword: string): string | undefined => {
+    if (!confirmPassword) return 'Please confirm your password';
+    if (confirmPassword !== formData.password) return 'Passwords do not match';
     return undefined;
   };
 
-  const validateRequired = (
-    value: string,
-    fieldName: string
-  ): string | undefined => {
+  const validateRequired = (value: string, fieldName: string): string | undefined => {
     if (!value) return `${fieldName} is required`;
     return undefined;
   };
@@ -133,17 +120,15 @@ export default function RegisterScreen() {
     newErrors.username = validateUsername(formData.username);
     newErrors.email = validateEmail(formData.email);
     newErrors.password = validatePassword(formData.password);
-    newErrors.confirmPassword = validateConfirmPassword(
-      formData.confirmPassword
-    );
-    newErrors.firstName = validateRequired(formData.firstName, "First Name");
-    newErrors.lastName = validateRequired(formData.lastName, "Last Name");
-    newErrors.shopName = validateRequired(formData.shopName, "Shop Name");
-    newErrors.address1 = validateRequired(formData.address1, "Address Line 1");
-    newErrors.city = validateRequired(formData.city, "City / Town");
-    newErrors.postcode = validateRequired(formData.postcode, "Post/ZIP Code");
-    newErrors.country = validateRequired(formData.country, "Country");
-    newErrors.phone = validateRequired(formData.phone, "Phone Number");
+    newErrors.confirmPassword = validateConfirmPassword(formData.confirmPassword);
+    newErrors.firstName = validateRequired(formData.firstName, 'First Name');
+    newErrors.lastName = validateRequired(formData.lastName, 'Last Name');
+    newErrors.shopName = validateRequired(formData.shopName, 'Shop Name');
+    newErrors.address1 = validateRequired(formData.address1, 'Address Line 1');
+    newErrors.city = validateRequired(formData.city, 'City / Town');
+    newErrors.postcode = validateRequired(formData.postcode, 'Post/ZIP Code');
+    newErrors.country = validateRequired(formData.country, 'Country');
+    newErrors.phone = validateRequired(formData.phone, 'Phone Number');
 
     // Check email uniqueness if email is valid
     if (!newErrors.email && formData.email) {
@@ -159,52 +144,45 @@ export default function RegisterScreen() {
 
   const handleSubmit = async () => {
     if (!termsAccepted) {
-      Alert.alert("Terms Required", "You must accept the terms and conditions");
+      Alert.alert('Terms Required', 'You must accept the terms and conditions');
       return;
     }
 
     if (await validateForm()) {
-      const result = await register(
-        formData.username,
-        formData.email,
-        formData.password,
-        {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          shopName: formData.shopName,
-          address1: formData.address1,
-          address2: formData.address2,
-          city: formData.city,
-          postcode: formData.postcode,
-          country: formData.country,
-          state: formData.state,
-          phone: formData.phone,
-          termsAccepted: termsAccepted,
-        }
-      );
+      const result = await register(formData.username, formData.email, formData.password, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        shopName: formData.shopName,
+        address1: formData.address1,
+        address2: formData.address2,
+        city: formData.city,
+        postcode: formData.postcode,
+        country: formData.country,
+        state: formData.state,
+        phone: formData.phone,
+        termsAccepted: termsAccepted,
+      });
 
       // If registration requires email verification, navigate to check-email screen
       if (result?.requiresVerification) {
         router.replace({
-          pathname: "/(auth)/check-email",
+          pathname: '/(auth)/check-email',
           params: {
             email: formData.email,
             password: formData.password, // Pass password so we can auto-login after confirmation
           },
         });
       } else if (error) {
-        Alert.alert("Registration Failed", error);
+        Alert.alert('Registration Failed', error);
       }
     }
   };
 
   const openTermsAndConditions = async () => {
     try {
-      await WebBrowser.openBrowserAsync(
-        "https://vintstreet.com/terms-and-conditions/"
-      );
+      await WebBrowser.openBrowserAsync('https://vintstreet.com/terms-and-conditions/');
     } catch (error) {
-      Alert.alert("Error", "Could not open terms and conditions");
+      Alert.alert('Error', 'Could not open terms and conditions');
     }
   };
 
@@ -224,8 +202,8 @@ export default function RegisterScreen() {
     icon,
     error,
     secureTextEntry,
-    keyboardType = "default",
-    autoCapitalize = "sentences",
+    keyboardType = 'default',
+    autoCapitalize = 'sentences',
     showPasswordToggle = false,
     onTogglePassword,
   }: {
@@ -236,8 +214,8 @@ export default function RegisterScreen() {
     icon: string;
     error?: string;
     secureTextEntry?: boolean;
-    keyboardType?: "default" | "email-address" | "phone-pad";
-    autoCapitalize?: "none" | "sentences" | "words" | "characters";
+    keyboardType?: 'default' | 'email-address' | 'phone-pad';
+    autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
     showPasswordToggle?: boolean;
     onTogglePassword?: () => void;
   }) => (
@@ -246,12 +224,12 @@ export default function RegisterScreen() {
         style={{
           borderWidth: 1,
           borderRadius: 8,
-          borderColor: error ? "#ff6b6b" : "#e0e0e0",
-          flexDirection: "row",
-          alignItems: "center",
+          borderColor: error ? '#ff6b6b' : '#e0e0e0',
+          flexDirection: 'row',
+          alignItems: 'center',
           paddingHorizontal: 12,
           height: 52,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
         }}
       >
         <Text style={{ marginRight: 8 }}>
@@ -267,29 +245,25 @@ export default function RegisterScreen() {
           keyboardType={keyboardType}
           style={{
             flex: 1,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
             fontSize: 16,
             height: 52,
-            textAlignVertical: "center",
+            textAlignVertical: 'center',
           }}
         />
         {showPasswordToggle && (
           <Pressable onPress={onTogglePassword} hitSlop={8}>
-            <Feather
-              name={secureTextEntry ? "eye" : "eye-off"}
-              size={24}
-              color="black"
-            />
+            <Feather name={secureTextEntry ? 'eye' : 'eye-off'} size={24} color="black" />
           </Pressable>
         )}
       </View>
       {error && (
         <Text
           style={{
-            color: "#ff6b6b",
+            color: '#ff6b6b',
             fontSize: 12,
             marginTop: 4,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
           }}
         >
           {error}
@@ -299,7 +273,7 @@ export default function RegisterScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1, padding: 24 }}
@@ -309,8 +283,8 @@ export default function RegisterScreen() {
           {/* Header */}
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               marginBottom: 20,
             }}
           >
@@ -320,9 +294,9 @@ export default function RegisterScreen() {
             <Text
               style={{
                 fontSize: 20,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 flex: 1,
-                textAlign: "center",
+                textAlign: 'center',
                 marginRight: 24, // Offset for the back button
               }}
             >
@@ -331,10 +305,10 @@ export default function RegisterScreen() {
           </View>
 
           {/* Logo */}
-          <View style={{ alignItems: "center", marginBottom: 30 }}>
+          <View style={{ alignItems: 'center', marginBottom: 30 }}>
             <Image
-              source={require("@/assets/images/splash-logo.png")}
-              style={{ width: 160, height: 160, resizeMode: "contain" }}
+              source={require('@/assets/images/splash-logo.png')}
+              style={{ width: 160, height: 160, resizeMode: 'contain' }}
             />
           </View>
 
@@ -342,26 +316,24 @@ export default function RegisterScreen() {
           {error && (
             <View
               style={{
-                backgroundColor: "#ffe5e5",
-                borderColor: "#ff9c9c",
+                backgroundColor: '#ffe5e5',
+                borderColor: '#ff9c9c',
                 borderWidth: 1,
                 padding: 10,
                 borderRadius: 8,
                 marginBottom: 16,
               }}
             >
-              <Text style={{ fontFamily: "Poppins-Regular", color: "#b00020" }}>
-                {error}
-              </Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: '#b00020' }}>{error}</Text>
             </View>
           )}
 
-          <View style={{ width: "100%", maxWidth: 520, alignSelf: "center" }}>
+          <View style={{ width: '100%', maxWidth: 520, alignSelf: 'center' }}>
             {/* Account Information Section */}
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 8,
                 marginTop: 8,
               }}
@@ -372,7 +344,7 @@ export default function RegisterScreen() {
             <InputField
               label="Username"
               value={formData.username}
-              onChangeText={(text) => updateFormData("username", text)}
+              onChangeText={(text) => updateFormData('username', text)}
               placeholder="Username"
               icon="user"
               error={errors.username}
@@ -382,7 +354,7 @@ export default function RegisterScreen() {
             <InputField
               label="Email"
               value={formData.email}
-              onChangeText={(text) => updateFormData("email", text)}
+              onChangeText={(text) => updateFormData('email', text)}
               placeholder="Email"
               icon="mail"
               error={errors.email}
@@ -393,7 +365,7 @@ export default function RegisterScreen() {
             <InputField
               label="Password"
               value={formData.password}
-              onChangeText={(text) => updateFormData("password", text)}
+              onChangeText={(text) => updateFormData('password', text)}
               placeholder="Password"
               icon="lock"
               error={errors.password}
@@ -406,23 +378,21 @@ export default function RegisterScreen() {
             <InputField
               label="Confirm Password"
               value={formData.confirmPassword}
-              onChangeText={(text) => updateFormData("confirmPassword", text)}
+              onChangeText={(text) => updateFormData('confirmPassword', text)}
               placeholder="Confirm Password"
               icon="lock"
               error={errors.confirmPassword}
               secureTextEntry={obscureConfirmPassword}
               autoCapitalize="none"
               showPasswordToggle={true}
-              onTogglePassword={() =>
-                setObscureConfirmPassword(!obscureConfirmPassword)
-              }
+              onTogglePassword={() => setObscureConfirmPassword(!obscureConfirmPassword)}
             />
 
             {/* Personal Information Section */}
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 8,
                 marginTop: 8,
               }}
@@ -433,7 +403,7 @@ export default function RegisterScreen() {
             <InputField
               label="First Name"
               value={formData.firstName}
-              onChangeText={(text) => updateFormData("firstName", text)}
+              onChangeText={(text) => updateFormData('firstName', text)}
               placeholder="First Name"
               icon="user"
               error={errors.firstName}
@@ -442,7 +412,7 @@ export default function RegisterScreen() {
             <InputField
               label="Last Name"
               value={formData.lastName}
-              onChangeText={(text) => updateFormData("lastName", text)}
+              onChangeText={(text) => updateFormData('lastName', text)}
               placeholder="Last Name"
               icon="user"
               error={errors.lastName}
@@ -451,7 +421,7 @@ export default function RegisterScreen() {
             <InputField
               label="Shop Name"
               value={formData.shopName}
-              onChangeText={(text) => updateFormData("shopName", text)}
+              onChangeText={(text) => updateFormData('shopName', text)}
               placeholder="Shop Name"
               icon="shopping-bag"
               error={errors.shopName}
@@ -461,7 +431,7 @@ export default function RegisterScreen() {
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 8,
                 marginTop: 8,
               }}
@@ -472,7 +442,7 @@ export default function RegisterScreen() {
             <InputField
               label="Address Line 1"
               value={formData.address1}
-              onChangeText={(text) => updateFormData("address1", text)}
+              onChangeText={(text) => updateFormData('address1', text)}
               placeholder="Address Line 1"
               icon="home"
               error={errors.address1}
@@ -481,7 +451,7 @@ export default function RegisterScreen() {
             <InputField
               label="Address Line 2"
               value={formData.address2}
-              onChangeText={(text) => updateFormData("address2", text)}
+              onChangeText={(text) => updateFormData('address2', text)}
               placeholder="Address Line 2"
               icon="home"
             />
@@ -489,7 +459,7 @@ export default function RegisterScreen() {
             <InputField
               label="City / Town"
               value={formData.city}
-              onChangeText={(text) => updateFormData("city", text)}
+              onChangeText={(text) => updateFormData('city', text)}
               placeholder="City / Town"
               icon="map-pin"
               error={errors.city}
@@ -498,7 +468,7 @@ export default function RegisterScreen() {
             <InputField
               label="Post/ZIP Code"
               value={formData.postcode}
-              onChangeText={(text) => updateFormData("postcode", text)}
+              onChangeText={(text) => updateFormData('postcode', text)}
               placeholder="Post/ZIP Code"
               icon="mail"
               error={errors.postcode}
@@ -507,7 +477,7 @@ export default function RegisterScreen() {
             <InputField
               label="Country"
               value={formData.country}
-              onChangeText={(text) => updateFormData("country", text)}
+              onChangeText={(text) => updateFormData('country', text)}
               placeholder="Country"
               icon="globe"
               error={errors.country}
@@ -516,7 +486,7 @@ export default function RegisterScreen() {
             <InputField
               label="State/County"
               value={formData.state}
-              onChangeText={(text) => updateFormData("state", text)}
+              onChangeText={(text) => updateFormData('state', text)}
               placeholder="State/County"
               icon="map"
             />
@@ -524,7 +494,7 @@ export default function RegisterScreen() {
             <InputField
               label="Phone Number"
               value={formData.phone}
-              onChangeText={(text) => updateFormData("phone", text)}
+              onChangeText={(text) => updateFormData('phone', text)}
               placeholder="Phone Number"
               icon="phone"
               error={errors.phone}
@@ -534,8 +504,8 @@ export default function RegisterScreen() {
             {/* Terms and Conditions */}
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "flex-start",
+                flexDirection: 'row',
+                alignItems: 'flex-start',
                 marginTop: 24,
                 marginBottom: 24,
               }}
@@ -546,26 +516,24 @@ export default function RegisterScreen() {
                   width: 20,
                   height: 20,
                   borderWidth: 1,
-                  borderColor: "#e0e0e0",
+                  borderColor: '#e0e0e0',
                   borderRadius: 4,
                   marginRight: 12,
                   marginTop: 2,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: termsAccepted ? "#000" : "#fff",
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: termsAccepted ? '#000' : '#fff',
                 }}
               >
-                {termsAccepted && (
-                  <Feather name="check" size={16} color="white" />
-                )}
+                {termsAccepted && <Feather name="check" size={16} color="white" />}
               </Pressable>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontFamily: "Poppins-Regular", lineHeight: 20 }}>
-                  I have read and agree to the{" "}
+                <Text style={{ fontFamily: 'Poppins-Regular', lineHeight: 20 }}>
+                  I have read and agree to the{' '}
                   <Text
                     style={{
-                      color: "#007AFF",
-                      textDecorationLine: "underline",
+                      color: '#007AFF',
+                      textDecorationLine: 'underline',
                     }}
                     onPress={openTermsAndConditions}
                   >
@@ -582,40 +550,38 @@ export default function RegisterScreen() {
               style={{
                 height: 50,
                 borderRadius: 8,
-                backgroundColor: loading ? "#9e9e9e" : "#000",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor: loading ? '#9e9e9e' : '#000',
+                alignItems: 'center',
+                justifyContent: 'center',
                 marginBottom: 24,
               }}
             >
               <Text
                 style={{
-                  fontFamily: "Poppins-Regular",
-                  color: "#fff",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#fff',
                   fontSize: 16,
                 }}
               >
-                {loading ? "Creating Account..." : "Create Account"}
+                {loading ? 'Creating Account...' : 'Create Account'}
               </Text>
             </Pressable>
 
             {/* Login Link */}
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <Text style={{ fontFamily: "Poppins-Regular" }}>
-                Already have an account?{" "}
-              </Text>
+              <Text style={{ fontFamily: 'Poppins-Regular' }}>Already have an account? </Text>
               <Pressable onPress={() => router.back()}>
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#222",
-                    fontWeight: "500",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#222',
+                    fontWeight: '500',
                   }}
                 >
                   Login

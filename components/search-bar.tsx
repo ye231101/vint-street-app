@@ -1,7 +1,7 @@
-import Feather from "@expo/vector-icons/Feather";
-import { router } from "expo-router";
-import React from "react";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import Feather from '@expo/vector-icons/Feather';
+import { router } from 'expo-router';
+import React from 'react';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 export interface SearchBarProps {
   placeholder?: string;
@@ -11,7 +11,7 @@ export interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = "Search...",
+  placeholder = 'Search...',
   value,
   onChangeText,
   onSearch,
@@ -30,12 +30,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
           returnKeyType="search"
         />
         {value && value.length > 0 && (
-          <Pressable onPress={() => onChangeText?.("")}>
+          <Pressable onPress={() => onChangeText?.('')}>
             <Feather name="x" size={20} color="white" />
           </Pressable>
         )}
       </View>
-      <Pressable onPress={() => router.push("/basket")}>
+      <Pressable onPress={() => router.push('/basket')}>
         <Feather name="shopping-bag" size={20} color="white" />
       </Pressable>
     </View>
@@ -44,18 +44,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: "#151515",
+    backgroundColor: '#151515',
     gap: 32,
   },
   searchContainer: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#4a4a4a",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#4a4a4a',
     borderRadius: 8,
     paddingHorizontal: 12,
   },
@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 8,
     fontSize: 14,
-    color: "#fff",
-    fontFamily: "Poppins-Regular",
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
   },
 });
 

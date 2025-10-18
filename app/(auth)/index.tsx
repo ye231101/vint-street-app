@@ -1,22 +1,15 @@
-import { useAuth } from "@/hooks/useAuth";
-import Feather from "@expo/vector-icons/Feather";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from '@/hooks/use-auth';
+import Feather from '@expo/vector-icons/Feather';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function IndexScreen() {
   const router = useRouter();
   const { login, loading, error } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [secure, setSecure] = useState(true);
 
   const onSubmit = async () => {
@@ -24,26 +17,24 @@ export default function IndexScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1, padding: 24 }}
       >
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <View style={{ width: "100%", maxWidth: 520 }}>
-            <View style={{ paddingBottom: 40, alignItems: "center" }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ width: '100%', maxWidth: 520 }}>
+            <View style={{ paddingBottom: 40, alignItems: 'center' }}>
               <Image
-                source={require("@/assets/images/splash-logo.png")}
-                style={{ width: 160, height: 160, resizeMode: "contain" }}
+                source={require('@/assets/images/splash-logo.png')}
+                style={{ width: 160, height: 160, resizeMode: 'contain' }}
               />
               <Text
                 style={{
                   fontSize: 24,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginTop: 16,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 Welcome to Vint Street
@@ -51,10 +42,10 @@ export default function IndexScreen() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
-                  color: "#8e8e8e",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#8e8e8e',
                   marginTop: 8,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 Sign in to continue
@@ -64,30 +55,26 @@ export default function IndexScreen() {
             {Boolean(error) && (
               <View
                 style={{
-                  backgroundColor: "#ffe5e5",
-                  borderColor: "#ff9c9c",
+                  backgroundColor: '#ffe5e5',
+                  borderColor: '#ff9c9c',
                   borderWidth: 1,
                   padding: 10,
                   borderRadius: 8,
                   marginBottom: 16,
                 }}
               >
-                <Text
-                  style={{ fontFamily: "Poppins-Regular", color: "#b00020" }}
-                >
-                  {error}
-                </Text>
+                <Text style={{ fontFamily: 'Poppins-Regular', color: '#b00020' }}>{error}</Text>
               </View>
             )}
 
-            <View style={{ width: "100%", marginTop: 0 }}>
+            <View style={{ width: '100%', marginTop: 0 }}>
               <View
                 style={{
                   borderWidth: 1,
                   borderRadius: 8,
-                  borderColor: "#e0e0e0",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  borderColor: '#e0e0e0',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                   paddingHorizontal: 12,
                   height: 52,
                 }}
@@ -104,24 +91,24 @@ export default function IndexScreen() {
                   keyboardType="email-address"
                   style={{
                     flex: 1,
-                    fontFamily: "Poppins-Regular",
+                    fontFamily: 'Poppins-Regular',
                     fontSize: 16,
                     height: 52,
-                    textAlignVertical: "center",
+                    textAlignVertical: 'center',
                   }}
                   returnKeyType="next"
                 />
               </View>
             </View>
 
-            <View style={{ width: "100%", marginTop: 16 }}>
+            <View style={{ width: '100%', marginTop: 16 }}>
               <View
                 style={{
                   borderWidth: 1,
                   borderRadius: 8,
-                  borderColor: "#e0e0e0",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  borderColor: '#e0e0e0',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                   paddingHorizontal: 12,
                   height: 52,
                 }}
@@ -138,16 +125,16 @@ export default function IndexScreen() {
                   autoCorrect={false}
                   style={{
                     flex: 1,
-                    fontFamily: "Poppins-Regular",
+                    fontFamily: 'Poppins-Regular',
                     fontSize: 16,
                     height: 52,
-                    textAlignVertical: "center",
+                    textAlignVertical: 'center',
                   }}
                   returnKeyType="done"
                   onSubmitEditing={onSubmit}
                 />
                 <Pressable onPress={() => setSecure((s) => !s)} hitSlop={8}>
-                  <Text style={{ fontSize: 16, fontFamily: "Poppins-Regular" }}>
+                  <Text style={{ fontSize: 16, fontFamily: 'Poppins-Regular' }}>
                     {secure ? (
                       <Feather name="eye" size={24} color="black" />
                     ) : (
@@ -158,9 +145,9 @@ export default function IndexScreen() {
               </View>
             </View>
 
-            <View style={{ alignItems: "flex-end", marginTop: 16 }}>
-              <Pressable onPress={() => router.push("/(auth)/forgot-password")}>
-                <Text style={{ fontFamily: "Poppins-Regular", color: "#222" }}>
+            <View style={{ alignItems: 'flex-end', marginTop: 16 }}>
+              <Pressable onPress={() => router.push('/(auth)/forgot-password')}>
+                <Text style={{ fontFamily: 'Poppins-Regular', color: '#222' }}>
                   Forgot Password?
                 </Text>
               </Pressable>
@@ -172,39 +159,37 @@ export default function IndexScreen() {
               style={{
                 height: 50,
                 borderRadius: 8,
-                backgroundColor: loading ? "#9e9e9e" : "#000",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor: loading ? '#9e9e9e' : '#000',
+                alignItems: 'center',
+                justifyContent: 'center',
                 marginTop: 24,
               }}
             >
               <Text
                 style={{
-                  fontFamily: "Poppins-Regular",
-                  color: "#fff",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#fff',
                   fontSize: 16,
                 }}
               >
-                {loading ? "..." : "Login"}
+                {loading ? '...' : 'Login'}
               </Text>
             </Pressable>
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
+                flexDirection: 'row',
+                justifyContent: 'center',
                 marginTop: 24,
               }}
             >
-              <Text style={{ fontFamily: "Poppins-Regular" }}>
-                Don't have an account?{" "}
-              </Text>
-              <Pressable onPress={() => router.push("/(auth)/register")}>
+              <Text style={{ fontFamily: 'Poppins-Regular' }}>Don't have an account? </Text>
+              <Pressable onPress={() => router.push('/(auth)/register')}>
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#222",
-                    fontWeight: "500",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#222',
+                    fontWeight: '500',
                   }}
                 >
                   Register

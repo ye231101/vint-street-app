@@ -1,26 +1,21 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { router, Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { initializeAuth, handleAuthStateChange } from "@/store/slices/authSlice";
-import { authService } from "@/api";
-import { getSecureValue, removeSecureValue, setSecureValue } from "@/utils/storage";
-import { router } from "expo-router";
-import { ReduxProvider } from "@/providers/redux-provider";
-import { StatusBar } from "expo-status-bar";
+import { authService } from '@/api';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { ReduxProvider } from '@/providers/redux-provider';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { handleAuthStateChange, initializeAuth } from '@/store/slices/authSlice';
+import { removeStorageValue, setStorageValue } from '@/utils/storage';
 
 SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  anchor: "(tabs)",
+  anchor: '(tabs)',
 };
 
 // Auth handler component that manages authentication logic
@@ -33,36 +28,34 @@ function AuthHandler({ children }: { children: React.ReactNode }) {
     dispatch(initializeAuth());
 
     // Listen to auth state changes (handles email confirmation links)
-    const { data: authListener } = authService.onAuthStateChange(
-      async (event, session) => {
-        console.log("Auth event:", event, "Session:", !!session);
+    const { data: authListener } = authService.onAuthStateChange(async (event, session) => {
+      console.log('Auth event:', event, 'Session:', !!session);
 
-        // Dispatch auth state change to Redux
-        dispatch(handleAuthStateChange({ event, session }));
+      // Dispatch auth state change to Redux
+      dispatch(handleAuthStateChange({ event, session }));
 
-        if (event === "SIGNED_IN" && session) {
-          const { user: currentUser } = await authService.getCurrentUser();
-          if (currentUser) {
-            await setSecureValue("TOKEN", session.access_token);
-            await setSecureValue("USER_DATA", JSON.stringify(currentUser));
+      if (event === 'SIGNED_IN' && session) {
+        const { user: currentUser } = await authService.getCurrentUser();
+        if (currentUser) {
+          await setStorageValue('TOKEN', session.access_token);
+          await setStorageValue('USER_DATA', JSON.stringify(currentUser));
 
-            // Auto-redirect to main app after email confirmation
-            router.replace("/(tabs)");
-          }
-        } else if (event === "SIGNED_OUT") {
-          await removeSecureValue("TOKEN");
-          await removeSecureValue("USER_DATA");
-          router.replace("/(auth)");
-        } else if (event === "USER_UPDATED" && session) {
-          // Handle email confirmation
-          const { user: currentUser } = await authService.getCurrentUser();
-          if (currentUser) {
-            await setSecureValue("TOKEN", session.access_token);
-            await setSecureValue("USER_DATA", JSON.stringify(currentUser));
-          }
+          // Auto-redirect to main app after email confirmation
+          router.replace('/(tabs)');
+        }
+      } else if (event === 'SIGNED_OUT') {
+        await removeStorageValue('TOKEN');
+        await removeStorageValue('USER_DATA');
+        router.replace('/(auth)');
+      } else if (event === 'USER_UPDATED' && session) {
+        // Handle email confirmation
+        const { user: currentUser } = await authService.getCurrentUser();
+        if (currentUser) {
+          await setStorageValue('TOKEN', session.access_token);
+          await setStorageValue('USER_DATA', JSON.stringify(currentUser));
         }
       }
-    );
+    });
 
     return () => {
       authListener?.subscription.unsubscribe();
@@ -73,9 +66,9 @@ function AuthHandler({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isInitialized) {
       if (isAuthenticated) {
-        router.replace("/(tabs)");
+        router.replace('/(tabs)');
       } else {
-        router.replace("/(auth)");
+        router.replace('/(auth)');
       }
     }
   }, [isAuthenticated, isInitialized]);
@@ -95,7 +88,7 @@ export default function RootLayout() {
 
   return (
     <ReduxProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <AuthHandler>
           <Stack>
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />

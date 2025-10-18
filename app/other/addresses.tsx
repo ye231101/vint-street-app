@@ -1,15 +1,8 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Address {
   id: string;
@@ -21,7 +14,7 @@ interface Address {
   postcode: string;
   country: string;
   phone?: string;
-  type: "shipping" | "billing";
+  type: 'shipping' | 'billing';
 }
 
 export default function AddressesScreen() {
@@ -46,56 +39,50 @@ export default function AddressesScreen() {
       setShippingAddress(null);
       setBillingAddress(null);
     } catch (err) {
-      setError("Error loading addresses");
+      setError('Error loading addresses');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const addAddress = (type: "shipping" | "billing") => {
+  const addAddress = (type: 'shipping' | 'billing') => {
     router.push(`/other/address-form?type=${type}` as any);
   };
 
-  const editAddress = (type: "shipping" | "billing") => {
-    const address = type === "shipping" ? shippingAddress : billingAddress;
+  const editAddress = (type: 'shipping' | 'billing') => {
+    const address = type === 'shipping' ? shippingAddress : billingAddress;
     if (address) {
-      router.push(
-        `/other/address-form?type=${type}&edit=true&id=${address.id}` as any
-      );
+      router.push(`/other/address-form?type=${type}&edit=true&id=${address.id}` as any);
     }
   };
 
-  const deleteAddress = (type: "shipping" | "billing") => {
-    Alert.alert(
-      `Delete ${type} Address`,
-      `Are you sure you want to delete your ${type} address?`,
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              // Simulate API call
-              await new Promise((resolve) => setTimeout(resolve, 500));
+  const deleteAddress = (type: 'shipping' | 'billing') => {
+    Alert.alert(`Delete ${type} Address`, `Are you sure you want to delete your ${type} address?`, [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
-              if (type === "shipping") {
-                setShippingAddress(null);
-              } else {
-                setBillingAddress(null);
-              }
-
-              Alert.alert("Success", `${type} address deleted`);
-            } catch (err) {
-              Alert.alert("Error", "Failed to delete address");
+            if (type === 'shipping') {
+              setShippingAddress(null);
+            } else {
+              setBillingAddress(null);
             }
-          },
+
+            Alert.alert('Success', `${type} address deleted`);
+          } catch (err) {
+            Alert.alert('Error', 'Failed to delete address');
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const AddressSection = ({
@@ -112,14 +99,14 @@ export default function AddressesScreen() {
     subtitle: string;
     icon: string;
     address: Address | null;
-    addressType: "shipping" | "billing";
+    addressType: 'shipping' | 'billing';
     onAdd: () => void;
     onEdit: () => void;
     onDelete: () => void;
   }) => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
         padding: 16,
         marginBottom: 16,
@@ -128,14 +115,14 @@ export default function AddressesScreen() {
       {/* Section Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           marginBottom: 16,
         }}
       >
         <View
           style={{
-            backgroundColor: "rgba(0, 122, 255, 0.1)",
+            backgroundColor: 'rgba(0, 122, 255, 0.1)',
             borderRadius: 8,
             padding: 8,
             marginRight: 12,
@@ -146,9 +133,9 @@ export default function AddressesScreen() {
         <View style={{ flex: 1 }}>
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 4,
             }}
           >
@@ -156,9 +143,9 @@ export default function AddressesScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             {subtitle}
@@ -171,32 +158,32 @@ export default function AddressesScreen() {
         <AddressCard
           name={address.name}
           address={`${address.addressLine1}${
-            address.addressLine2 ? `, ${address.addressLine2}` : ""
-          }, ${address.city}, ${address.state ? `${address.state}, ` : ""}${
-            address.postcode
-          }, ${address.country}`}
-          phone={address.phone || ""}
+            address.addressLine2 ? `, ${address.addressLine2}` : ''
+          }, ${address.city}, ${address.state ? `${address.state}, ` : ''}${address.postcode}, ${
+            address.country
+          }`}
+          phone={address.phone || ''}
           onEdit={onEdit}
           onDelete={onDelete}
         />
       ) : (
         <View
           style={{
-            backgroundColor: "#444",
+            backgroundColor: '#444',
             borderRadius: 8,
             padding: 20,
             borderWidth: 1,
-            borderColor: "#555",
-            borderStyle: "solid",
+            borderColor: '#555',
+            borderStyle: 'solid',
           }}
         >
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: 'center' }}>
             <Feather name={icon as any} color="#666" size={32} />
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 16,
-                fontFamily: "Poppins-Medium",
+                fontFamily: 'Poppins-Medium',
                 marginTop: 12,
                 marginBottom: 8,
               }}
@@ -205,10 +192,10 @@ export default function AddressesScreen() {
             </Text>
             <Text
               style={{
-                color: "#777",
+                color: '#777',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                textAlign: "center",
+                fontFamily: 'Poppins-Regular',
+                textAlign: 'center',
                 marginBottom: 16,
               }}
             >
@@ -217,19 +204,19 @@ export default function AddressesScreen() {
             <TouchableOpacity
               onPress={onAdd}
               style={{
-                backgroundColor: "#007AFF",
+                backgroundColor: '#007AFF',
                 borderRadius: 8,
                 paddingVertical: 12,
                 paddingHorizontal: 24,
-                width: "100%",
-                alignItems: "center",
+                width: '100%',
+                alignItems: 'center',
               }}
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 Add {addressType} Address
@@ -256,18 +243,18 @@ export default function AddressesScreen() {
   }) => (
     <View
       style={{
-        backgroundColor: "#444",
+        backgroundColor: '#444',
         borderRadius: 8,
         padding: 16,
         borderWidth: 1,
-        borderColor: "rgba(0, 122, 255, 0.3)",
+        borderColor: 'rgba(0, 122, 255, 0.3)',
       }}
     >
       <Text
         style={{
-          color: "#fff",
+          color: '#fff',
           fontSize: 14,
-          fontFamily: "Poppins-Regular",
+          fontFamily: 'Poppins-Regular',
           marginBottom: 4,
         }}
       >
@@ -275,9 +262,9 @@ export default function AddressesScreen() {
       </Text>
       <Text
         style={{
-          color: "#999",
+          color: '#999',
           fontSize: 14,
-          fontFamily: "Poppins-Regular",
+          fontFamily: 'Poppins-Regular',
           marginBottom: 4,
         }}
       >
@@ -286,9 +273,9 @@ export default function AddressesScreen() {
       {phone && (
         <Text
           style={{
-            color: "#999",
+            color: '#999',
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
             marginBottom: 16,
           }}
         >
@@ -297,8 +284,8 @@ export default function AddressesScreen() {
       )}
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
         }}
       >
         <TouchableOpacity
@@ -324,16 +311,16 @@ export default function AddressesScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -349,8 +336,8 @@ export default function AddressesScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Addresses
@@ -360,8 +347,8 @@ export default function AddressesScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -372,16 +359,16 @@ export default function AddressesScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -397,8 +384,8 @@ export default function AddressesScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Addresses
@@ -408,17 +395,17 @@ export default function AddressesScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={48} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -427,10 +414,10 @@ export default function AddressesScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -439,7 +426,7 @@ export default function AddressesScreen() {
           <TouchableOpacity
             onPress={loadAddresses}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -447,9 +434,9 @@ export default function AddressesScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -461,17 +448,17 @@ export default function AddressesScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -487,8 +474,8 @@ export default function AddressesScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Addresses
@@ -504,9 +491,9 @@ export default function AddressesScreen() {
             icon="truck"
             address={shippingAddress}
             addressType="shipping"
-            onAdd={() => addAddress("shipping")}
-            onEdit={() => editAddress("shipping")}
-            onDelete={() => deleteAddress("shipping")}
+            onAdd={() => addAddress('shipping')}
+            onEdit={() => editAddress('shipping')}
+            onDelete={() => deleteAddress('shipping')}
           />
 
           {/* Billing Address Section */}
@@ -516,9 +503,9 @@ export default function AddressesScreen() {
             icon="credit-card"
             address={billingAddress}
             addressType="billing"
-            onAdd={() => addAddress("billing")}
-            onEdit={() => editAddress("billing")}
-            onDelete={() => deleteAddress("billing")}
+            onAdd={() => addAddress('billing')}
+            onEdit={() => editAddress('billing')}
+            onDelete={() => deleteAddress('billing')}
           />
         </View>
       </ScrollView>

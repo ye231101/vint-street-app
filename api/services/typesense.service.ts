@@ -7,13 +7,13 @@
  * due to React Native compatibility issues
  */
 
-import { typesenseConfig } from "../config/typesense.config";
+import { typesenseConfig } from '../config/typesense.config';
 import {
   SearchParams,
   TypesenseProductDocument,
   TypesenseSearchResponse,
-  VintStreetListing
-} from "../types/product.types";
+  VintStreetListing,
+} from '../types/product.types';
 
 class TypesenseService {
   private baseUrl!: string;
@@ -36,7 +36,7 @@ class TypesenseService {
 
       console.log(`Typesense client initialized with host: ${host}`);
     } catch (error) {
-      console.error("Error initializing Typesense client:", error);
+      console.error('Error initializing Typesense client:', error);
       throw error;
     }
   }
@@ -44,45 +44,37 @@ class TypesenseService {
   /**
    * Make a request to Typesense API
    */
-  private async makeRequest(
-    endpoint: string,
-    params?: Record<string, any>
-  ): Promise<any> {
+  private async makeRequest(endpoint: string, params?: Record<string, any>): Promise<any> {
     try {
       // Build query string
       const queryString = params
-        ? "?" +
+        ? '?' +
           Object.entries(params)
-            .map(
-              ([key, value]) =>
-                `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-            )
-            .join("&")
-        : "";
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&')
+        : '';
 
       const url = `${this.baseUrl}${endpoint}${queryString}`;
 
-      console.log("Typesense request URL:", url);
+      console.log('Typesense request URL:', url);
 
       const response = await fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "X-TYPESENSE-API-KEY": this.apiKey,
-          "Content-Type": "application/json",
+          'X-TYPESENSE-API-KEY': this.apiKey,
+          'Content-Type': 'application/json',
         },
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(
-          `Typesense API error: ${response.status} - ${errorText}`
-        );
+        throw new Error(`Typesense API error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("Typesense request error:", error);
+      console.error('Typesense request error:', error);
       throw error;
     }
   }
@@ -102,9 +94,7 @@ class TypesenseService {
   /**
    * Convert Typesense document to VintStreetListing
    */
-  convertToVintStreetListing(
-    document: TypesenseProductDocument
-  ): VintStreetListing {
+  convertToVintStreetListing(document: TypesenseProductDocument): VintStreetListing {
     // Extract image URLs
     const fullImageUrls: string[] = [];
     const thumbnailImageUrls: string[] = [];
@@ -112,7 +102,7 @@ class TypesenseService {
     if (document.image_urls) {
       if (Array.isArray(document.image_urls)) {
         fullImageUrls.push(...document.image_urls);
-      } else if (typeof document.image_urls === "string") {
+      } else if (typeof document.image_urls === 'string') {
         fullImageUrls.push(document.image_urls);
       }
     }
@@ -120,30 +110,29 @@ class TypesenseService {
     if (document.image_urls_thumbnail) {
       if (Array.isArray(document.image_urls_thumbnail)) {
         thumbnailImageUrls.push(...document.image_urls_thumbnail);
-      } else if (typeof document.image_urls_thumbnail === "string") {
+      } else if (typeof document.image_urls_thumbnail === 'string') {
         thumbnailImageUrls.push(document.image_urls_thumbnail);
       }
     }
 
     // Safely extract brand - handle both array and string cases
-    let brandName = "";
+    let brandName = '';
     if (document.brand) {
       if (Array.isArray(document.brand)) {
         const brandList = document.brand;
         if (brandList.length > 0) {
           brandName = brandList[0].toString();
         }
-      } else if (typeof document.brand === "string") {
+      } else if (typeof document.brand === 'string') {
         brandName = document.brand;
       }
     }
 
     return {
-      id: parseInt(document.id?.toString() || "0", 10) || 0,
-      name: document.name || "",
-      price: parseFloat(document.price?.toString() || "0") || 0.0,
-      stockQuantity:
-        parseInt(document.stock_quantity?.toString() || "0", 10) || 0,
+      id: parseInt(document.id?.toString() || '0', 10) || 0,
+      name: document.name || '',
+      price: parseFloat(document.price?.toString() || '0') || 0.0,
+      stockQuantity: parseInt(document.stock_quantity?.toString() || '0', 10) || 0,
       permalink: document.permalink,
       onSale: document.onSale || false,
       featured: document.featured || false,
@@ -164,17 +153,17 @@ class TypesenseService {
       reviewCount: document.review_count || 0,
       sku: document.sku,
       shortDescription: document.short_description,
-      stockStatus: document.stock_status || "instock",
+      stockStatus: document.stock_status || 'instock',
       categories: Array.isArray(document.categories)
         ? document.categories.map((item) => item.toString())
         : [],
       categorySlugs: Array.isArray(document.category_slugs)
         ? document.category_slugs.map((item) => item.toString())
         : [],
-      vendorId: parseInt(document.vendor_id?.toString() || "0", 10) || 0,
-      vendorName: document.vendor_name?.toString() || "",
-      vendorShopName: document.vendor_shop_name?.toString() || "",
-      vendorShopUrl: document.vendor_shop_url?.toString() || "",
+      vendorId: parseInt(document.vendor_id?.toString() || '0', 10) || 0,
+      vendorName: document.vendor_name?.toString() || '',
+      vendorShopName: document.vendor_shop_name?.toString() || '',
+      vendorShopUrl: document.vendor_shop_url?.toString() || '',
       createdAt: new Date((document.created_at || 0) * 1000),
       updatedAt: new Date((document.updated_at || 0) * 1000),
     };
@@ -187,7 +176,7 @@ class TypesenseService {
     try {
       const {
         query,
-        queryBy = "name,description,short_description,brand,categories,category_slugs",
+        queryBy = 'name,description,short_description,brand,categories,category_slugs',
         filterBy,
         sortBy,
         perPage = 20,
@@ -197,8 +186,7 @@ class TypesenseService {
       } = params;
 
       // Create base filter conditions
-      const defaultFilterConditions =
-        'post_status:="publish" && catalog_visibility:!="hidden"';
+      const defaultFilterConditions = 'post_status:="publish" && catalog_visibility:!="hidden"';
 
       // Combine default filters with user-provided filters
       let combinedFilter: string;
@@ -208,10 +196,7 @@ class TypesenseService {
         combinedFilter = defaultFilterConditions;
       }
 
-      console.log(
-        "TypesenseService - Building search with filter:",
-        combinedFilter
-      );
+      console.log('TypesenseService - Building search with filter:', combinedFilter);
 
       const searchParameters: any = {
         q: query,
@@ -223,18 +208,18 @@ class TypesenseService {
 
       if (sortBy) {
         searchParameters.sort_by = sortBy;
-        console.log("TypesenseService - Using sort:", sortBy);
+        console.log('TypesenseService - Using sort:', sortBy);
       }
 
       if (facetBy && facetBy.length > 0) {
-        searchParameters.facet_by = facetBy.join(",");
+        searchParameters.facet_by = facetBy.join(',');
       }
 
       if (facetSize) {
         searchParameters.max_facet_values = facetSize;
       }
 
-      console.log("TypesenseService - Search parameters:", searchParameters);
+      console.log('TypesenseService - Search parameters:', searchParameters);
 
       const endpoint = `/collections/${this.collectionName}/documents/search`;
       const response = await this.makeRequest(endpoint, searchParameters);
@@ -256,7 +241,7 @@ class TypesenseService {
         facets,
       };
     } catch (error) {
-      console.error("Error performing Typesense search:", error);
+      console.error('Error performing Typesense search:', error);
       throw error;
     }
   }
@@ -265,13 +250,11 @@ class TypesenseService {
    * System search method that bypasses analytics tracking
    * Used for internal operations like popular products carousel
    */
-  private async systemSearch(
-    params: SearchParams
-  ): Promise<TypesenseSearchResponse> {
+  private async systemSearch(params: SearchParams): Promise<TypesenseSearchResponse> {
     try {
       const {
         query,
-        queryBy = "name,description,brand,categories",
+        queryBy = 'name,description,brand,categories',
         filterBy,
         sortBy,
         perPage = 20,
@@ -279,8 +262,7 @@ class TypesenseService {
       } = params;
 
       // Create base filter conditions
-      const defaultFilterConditions =
-        'post_status:="publish" && catalog_visibility:!="hidden"';
+      const defaultFilterConditions = 'post_status:="publish" && catalog_visibility:!="hidden"';
 
       // Combine default filters with provided filters
       let combinedFilter: string;
@@ -302,7 +284,7 @@ class TypesenseService {
         searchParameters.sort_by = sortBy;
       }
 
-      console.log("System search with parameters:", searchParameters);
+      console.log('System search with parameters:', searchParameters);
 
       const endpoint = `/collections/${this.collectionName}/documents/search`;
       const response = await this.makeRequest(endpoint, searchParameters);
@@ -314,7 +296,7 @@ class TypesenseService {
         per_page: response.per_page || perPage,
       };
     } catch (error) {
-      console.error("Error performing system search:", error);
+      console.error('Error performing system search:', error);
       throw error;
     }
   }
@@ -323,16 +305,14 @@ class TypesenseService {
    * Get trending products using different criteria than recent products
    * Matches Flutter implementation
    */
-  private async getTrendingProducts(
-    limit: number = 30
-  ): Promise<TypesenseSearchResponse> {
-    console.log("Getting trending products using system search");
+  private async getTrendingProducts(limit: number = 30): Promise<TypesenseSearchResponse> {
+    console.log('Getting trending products using system search');
     return this.systemSearch({
-      query: "*",
-      queryBy: "name,description,brand,categories",
+      query: '*',
+      queryBy: 'name,description,brand,categories',
       perPage: limit,
       filterBy: 'stock_status:="instock"',
-      sortBy: "created_at:desc", // Sort by most recent since favorites_count doesn't exist
+      sortBy: 'created_at:desc', // Sort by most recent since favorites_count doesn't exist
     });
   }
 
@@ -340,38 +320,25 @@ class TypesenseService {
    * Get popular products based on search queries
    * Matches Flutter implementation
    */
-  async getPopularProducts(
-    limit: number = 30
-  ): Promise<TypesenseSearchResponse> {
+  async getPopularProducts(limit: number = 30): Promise<TypesenseSearchResponse> {
     try {
-      console.log("Fetching popular search queries...");
+      console.log('Fetching popular search queries...');
 
       // First try to get popular queries with a timeout
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(
-          () => reject(new Error("Popular queries fetch timed out")),
-          3000
-        );
+        setTimeout(() => reject(new Error('Popular queries fetch timed out')), 3000);
       });
 
-      const searchPromise = this.makeRequest(
-        `/collections/product_queries/documents/search`,
-        {
-          q: "*",
-          query_by: "q",
-          sort_by: "count:desc",
-          per_page: (limit * 3).toString(),
-        }
-      );
+      const searchPromise = this.makeRequest(`/collections/product_queries/documents/search`, {
+        q: '*',
+        query_by: 'q',
+        sort_by: 'count:desc',
+        per_page: (limit * 3).toString(),
+      });
 
-      const popularQueries = (await Promise.race([
-        searchPromise,
-        timeoutPromise,
-      ])) as any;
+      const popularQueries = (await Promise.race([searchPromise, timeoutPromise])) as any;
 
-      console.log(
-        `Received ${popularQueries.hits?.length || 0} popular queries`
-      );
+      console.log(`Received ${popularQueries.hits?.length || 0} popular queries`);
 
       // Extract popular query strings (not individual terms)
       const popularQueryStrings: string[] = [];
@@ -382,16 +349,14 @@ class TypesenseService {
             popularQueryStrings.push(query);
           }
         } catch (e) {
-          console.warn("Error processing query hit:", e);
+          console.warn('Error processing query hit:', e);
           continue;
         }
         if (popularQueryStrings.length >= limit) break;
       }
 
       console.log(
-        `Extracted ${
-          popularQueryStrings.length
-        } popular queries: ${popularQueryStrings.join(", ")}`
+        `Extracted ${popularQueryStrings.length} popular queries: ${popularQueryStrings.join(', ')}`
       );
 
       if (popularQueryStrings.length === 0) {
@@ -403,27 +368,20 @@ class TypesenseService {
       const allHits: any[] = [];
 
       // Search with the most popular queries first using system search (no analytics)
-      for (
-        let i = 0;
-        i < popularQueryStrings.length && allHits.length < limit;
-        i++
-      ) {
+      for (let i = 0; i < popularQueryStrings.length && allHits.length < limit; i++) {
         try {
           const query = popularQueryStrings[i];
 
           const timeoutPromise2 = new Promise((_, reject) => {
-            setTimeout(
-              () => reject(new Error("Individual query search timed out")),
-              2000
-            );
+            setTimeout(() => reject(new Error('Individual query search timed out')), 2000);
           });
 
           const searchPromise2 = this.systemSearch({
             query: query,
-            queryBy: "name,description,brand,categories",
+            queryBy: 'name,description,brand,categories',
             perPage: 10, // Get fewer per query to ensure diversity
             filterBy: 'stock_status:="instock"',
-            sortBy: "_text_match:desc",
+            sortBy: '_text_match:desc',
           });
 
           const response = (await Promise.race([
@@ -436,45 +394,36 @@ class TypesenseService {
 
           // Add unique products
           for (const hit of hits) {
-            const productId = parseInt(hit.document.id || "0", 10);
+            const productId = parseInt(hit.document.id || '0', 10);
             if (allHits.length < limit && !uniqueProductIds.has(productId)) {
               uniqueProductIds.add(productId);
               allHits.push(hit);
             }
           }
         } catch (e) {
-          console.warn(
-            `Error searching for query "${popularQueryStrings[i]}":`,
-            e
-          );
+          console.warn(`Error searching for query "${popularQueryStrings[i]}":`, e);
           continue;
         }
       }
 
-      console.log(
-        `Found ${allHits.length} unique products from popular queries`
-      );
+      console.log(`Found ${allHits.length} unique products from popular queries`);
 
       // If we didn't get enough products, supplement with trending products
       if (allHits.length < limit) {
         try {
-          const trendingResponse = await this.getTrendingProducts(
-            limit - allHits.length
-          );
+          const trendingResponse = await this.getTrendingProducts(limit - allHits.length);
           const trendingHits = trendingResponse.hits || [];
 
           for (const hit of trendingHits) {
-            const productId = parseInt(hit.document.id || "0", 10);
+            const productId = parseInt(hit.document.id || '0', 10);
             if (allHits.length < limit && !uniqueProductIds.has(productId)) {
               uniqueProductIds.add(productId);
               allHits.push(hit);
             }
           }
-          console.log(
-            `Supplemented with trending products, total: ${allHits.length}`
-          );
+          console.log(`Supplemented with trending products, total: ${allHits.length}`);
         } catch (e) {
-          console.warn("Error supplementing with trending products:", e);
+          console.warn('Error supplementing with trending products:', e);
         }
       }
 
@@ -486,10 +435,7 @@ class TypesenseService {
         per_page: limit,
       };
     } catch (error) {
-      console.warn(
-        "Error getting popular products, falling back to trending:",
-        error
-      );
+      console.warn('Error getting popular products, falling back to trending:', error);
       return this.getTrendingProducts(limit);
     }
   }
@@ -500,8 +446,8 @@ class TypesenseService {
   async getProductById(productId: number): Promise<VintStreetListing | null> {
     try {
       const response = await this.search({
-        query: "*",
-        queryBy: "name",
+        query: '*',
+        queryBy: 'name',
         filterBy: `id:=${productId}`,
         perPage: 1,
       });
@@ -513,7 +459,7 @@ class TypesenseService {
       }
       return null;
     } catch (error) {
-      console.error("Error fetching product by ID:", error);
+      console.error('Error fetching product by ID:', error);
       return null;
     }
   }
@@ -521,15 +467,13 @@ class TypesenseService {
   /**
    * Get recently added products
    */
-  async getRecentlyAddedProducts(
-    limit: number = 20
-  ): Promise<TypesenseSearchResponse> {
+  async getRecentlyAddedProducts(limit: number = 20): Promise<TypesenseSearchResponse> {
     return this.systemSearch({
-      query: "*",
-      queryBy: "name,description,brand,categories",
+      query: '*',
+      queryBy: 'name,description,brand,categories',
       perPage: limit,
       filterBy: 'stock_status:="instock"',
-      sortBy: "created_at:desc",
+      sortBy: 'created_at:desc',
     });
   }
 }

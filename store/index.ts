@@ -1,24 +1,18 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
   persistReducer,
-  persistStore,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from "redux-persist";
-import authReducer from "./slices/authSlice";
-import basketReducer from "./slices/basketSlice";
-import recentlyViewedReducer from "./slices/recentlyViewedSlice";
+  persistStore
+} from 'redux-persist';
+import authReducer from './slices/authSlice';
+import basketReducer from './slices/basketSlice';
+import recentlyViewedReducer from './slices/recentlyViewedSlice';
 
 // Redux Persist configuration
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage: AsyncStorage,
-  whitelist: ["auth", "basket", "recentlyViewed"], // Persist auth, basket, and recently viewed state
+  whitelist: ['auth', 'basket', 'recentlyViewed'], // Persist auth, basket, and recently viewed state
   blacklist: [], // Don't persist these reducers
 };
 

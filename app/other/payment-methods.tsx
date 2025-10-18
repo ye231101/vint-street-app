@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,8 +9,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PaymentMethod {
   id: string;
@@ -42,17 +42,14 @@ export default function PaymentMethodsScreen() {
       // Mock data - replace with actual data fetching
       setPaymentMethods([]);
     } catch (err) {
-      setError("Error loading payment methods");
+      setError('Error loading payment methods');
     } finally {
       setIsLoading(false);
     }
   };
 
   const addPaymentMethod = () => {
-    Alert.alert(
-      "Add Payment Method",
-      "This would open the payment method form"
-    );
+    Alert.alert('Add Payment Method', 'This would open the payment method form');
   };
 
   const setDefaultPaymentMethod = async (id: string) => {
@@ -67,40 +64,34 @@ export default function PaymentMethodsScreen() {
         }))
       );
 
-      Alert.alert("Success", "Default payment method updated");
+      Alert.alert('Success', 'Default payment method updated');
     } catch (err) {
-      Alert.alert("Error", "Failed to update default payment method");
+      Alert.alert('Error', 'Failed to update default payment method');
     }
   };
 
   const deletePaymentMethod = (id: string) => {
-    Alert.alert(
-      "Delete Payment Method",
-      "Are you sure you want to delete this payment method?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              // Simulate API call
-              await new Promise((resolve) => setTimeout(resolve, 500));
+    Alert.alert('Delete Payment Method', 'Are you sure you want to delete this payment method?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
-              setPaymentMethods((prev) =>
-                prev.filter((method) => method.id !== id)
-              );
-              Alert.alert("Success", "Payment method deleted");
-            } catch (err) {
-              Alert.alert("Error", "Failed to delete payment method");
-            }
-          },
+            setPaymentMethods((prev) => prev.filter((method) => method.id !== id));
+            Alert.alert('Success', 'Payment method deleted');
+          } catch (err) {
+            Alert.alert('Error', 'Failed to delete payment method');
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const SavedCard = ({
@@ -120,7 +111,7 @@ export default function PaymentMethodsScreen() {
   }) => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
         padding: 16,
         marginBottom: 12,
@@ -128,8 +119,8 @@ export default function PaymentMethodsScreen() {
     >
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           marginBottom: 16,
         }}
       >
@@ -137,9 +128,9 @@ export default function PaymentMethodsScreen() {
         <View style={{ marginLeft: 12, flex: 1 }}>
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 4,
             }}
           >
@@ -147,9 +138,9 @@ export default function PaymentMethodsScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             Expires {expiryDate}
@@ -158,7 +149,7 @@ export default function PaymentMethodsScreen() {
         {isDefault && (
           <View
             style={{
-              backgroundColor: "rgba(0, 122, 255, 0.2)",
+              backgroundColor: 'rgba(0, 122, 255, 0.2)',
               borderRadius: 4,
               paddingHorizontal: 8,
               paddingVertical: 4,
@@ -166,9 +157,9 @@ export default function PaymentMethodsScreen() {
           >
             <Text
               style={{
-                color: "#007AFF",
+                color: '#007AFF',
                 fontSize: 12,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Default
@@ -179,8 +170,8 @@ export default function PaymentMethodsScreen() {
 
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
         }}
       >
         {!isDefault && (
@@ -193,9 +184,9 @@ export default function PaymentMethodsScreen() {
           >
             <Text
               style={{
-                color: "#007AFF",
+                color: '#007AFF',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               Set as Default
@@ -210,9 +201,9 @@ export default function PaymentMethodsScreen() {
         >
           <Text
             style={{
-              color: "#ff4444",
+              color: '#ff4444',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             Delete
@@ -237,8 +228,8 @@ export default function PaymentMethodsScreen() {
   }) => (
     <View
       style={{
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingVertical: 12,
       }}
     >
@@ -246,9 +237,9 @@ export default function PaymentMethodsScreen() {
       <View style={{ marginLeft: 16, flex: 1 }}>
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
+            fontFamily: 'Poppins-Bold',
             marginBottom: 4,
           }}
         >
@@ -256,9 +247,9 @@ export default function PaymentMethodsScreen() {
         </Text>
         <Text
           style={{
-            color: "#999",
+            color: '#999',
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
           }}
         >
           {subtitle}
@@ -267,24 +258,24 @@ export default function PaymentMethodsScreen() {
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{ false: "#333", true: "#007AFF" }}
-        thumbColor={value ? "#fff" : "#999"}
+        trackColor={{ false: '#333', true: '#007AFF' }}
+        thumbColor={value ? '#fff' : '#999'}
       />
     </View>
   );
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -300,8 +291,8 @@ export default function PaymentMethodsScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Payment Methods
@@ -311,8 +302,8 @@ export default function PaymentMethodsScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -323,16 +314,16 @@ export default function PaymentMethodsScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -348,8 +339,8 @@ export default function PaymentMethodsScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Payment Methods
@@ -359,17 +350,17 @@ export default function PaymentMethodsScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={48} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -378,10 +369,10 @@ export default function PaymentMethodsScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -390,7 +381,7 @@ export default function PaymentMethodsScreen() {
           <TouchableOpacity
             onPress={loadPaymentMethods}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -398,9 +389,9 @@ export default function PaymentMethodsScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -412,17 +403,17 @@ export default function PaymentMethodsScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -438,8 +429,8 @@ export default function PaymentMethodsScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Payment Methods
@@ -451,7 +442,7 @@ export default function PaymentMethodsScreen() {
           {/* Add New Payment Method */}
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
               padding: 16,
               marginBottom: 24,
@@ -459,9 +450,9 @@ export default function PaymentMethodsScreen() {
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginBottom: 16,
               }}
             >
@@ -470,17 +461,17 @@ export default function PaymentMethodsScreen() {
             <TouchableOpacity
               onPress={addPaymentMethod}
               style={{
-                backgroundColor: "#007AFF",
+                backgroundColor: '#007AFF',
                 borderRadius: 8,
                 paddingVertical: 12,
-                alignItems: "center",
+                alignItems: 'center',
               }}
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 Add Payment Method
@@ -493,9 +484,9 @@ export default function PaymentMethodsScreen() {
             <>
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 20,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 16,
                 }}
               >
@@ -517,22 +508,22 @@ export default function PaymentMethodsScreen() {
           ) : (
             <View
               style={{
-                backgroundColor: "#333",
+                backgroundColor: '#333',
                 borderRadius: 12,
                 padding: 20,
                 borderWidth: 1,
-                borderColor: "#555",
-                borderStyle: "solid",
-                alignItems: "center",
+                borderColor: '#555',
+                borderStyle: 'solid',
+                alignItems: 'center',
                 marginBottom: 24,
               }}
             >
               <Feather name="credit-card" color="#666" size={32} />
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 16,
-                  fontFamily: "Poppins-Medium",
+                  fontFamily: 'Poppins-Medium',
                   marginTop: 12,
                   marginBottom: 8,
                 }}
@@ -541,10 +532,10 @@ export default function PaymentMethodsScreen() {
               </Text>
               <Text
                 style={{
-                  color: "#777",
+                  color: '#777',
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
-                  textAlign: "center",
+                  fontFamily: 'Poppins-Regular',
+                  textAlign: 'center',
                 }}
               >
                 Add a payment method to continue
@@ -555,9 +546,9 @@ export default function PaymentMethodsScreen() {
           {/* Payment Settings */}
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 20,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 16,
             }}
           >
@@ -566,7 +557,7 @@ export default function PaymentMethodsScreen() {
 
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
               padding: 16,
             }}
@@ -582,7 +573,7 @@ export default function PaymentMethodsScreen() {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#555",
+                backgroundColor: '#555',
                 marginVertical: 16,
               }}
             />

@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,8 +9,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SellerSettings {
   storeName: string;
@@ -40,20 +40,18 @@ export default function PaymentSetupScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(
-    null
-  );
+  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(null);
 
   // Form state
-  const [paypalEmail, setPaypalEmail] = useState("");
-  const [accountName, setAccountName] = useState("");
-  const [accountType, setAccountType] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [bankAddress, setBankAddress] = useState("");
-  const [routingNumber, setRoutingNumber] = useState("");
-  const [iban, setIban] = useState("");
-  const [swift, setSwift] = useState("");
+  const [paypalEmail, setPaypalEmail] = useState('');
+  const [accountName, setAccountName] = useState('');
+  const [accountType, setAccountType] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [bankAddress, setBankAddress] = useState('');
+  const [routingNumber, setRoutingNumber] = useState('');
+  const [iban, setIban] = useState('');
+  const [swift, setSwift] = useState('');
 
   useEffect(() => {
     loadSellerSettings();
@@ -69,25 +67,25 @@ export default function PaymentSetupScreen() {
 
       // Mock data - replace with actual data fetching
       const mockSettings: SellerSettings = {
-        storeName: "My Store",
-        email: "store@example.com",
-        phone: "+1234567890",
+        storeName: 'My Store',
+        email: 'store@example.com',
+        phone: '+1234567890',
         address: {
-          fullAddress: "123 Main St, City, State 12345",
+          fullAddress: '123 Main St, City, State 12345',
         },
         payment: {
           paypal: {
-            email: "paypal@example.com",
+            email: 'paypal@example.com',
           },
           bank: {
-            acName: "John Doe",
-            acType: "Checking",
-            acNumber: "1234567890",
-            bankName: "Example Bank",
-            bankAddr: "123 Bank St, City, State",
-            routingNumber: "123456789",
-            iban: "GB29NWBK60161331926819",
-            swift: "NWBKGB2L",
+            acName: 'John Doe',
+            acType: 'Checking',
+            acNumber: '1234567890',
+            bankName: 'Example Bank',
+            bankAddr: '123 Bank St, City, State',
+            routingNumber: '123456789',
+            iban: 'GB29NWBK60161331926819',
+            swift: 'NWBKGB2L',
           },
         },
       };
@@ -105,7 +103,7 @@ export default function PaymentSetupScreen() {
       setIban(mockSettings.payment.bank.iban);
       setSwift(mockSettings.payment.bank.swift);
     } catch (err) {
-      setError("Error loading payment settings");
+      setError('Error loading payment settings');
     } finally {
       setIsLoading(false);
     }
@@ -141,9 +139,9 @@ export default function PaymentSetupScreen() {
       };
 
       setSellerSettings(updatedSettings);
-      Alert.alert("Success", "Payment settings updated successfully");
+      Alert.alert('Success', 'Payment settings updated successfully');
     } catch (err) {
-      Alert.alert("Error", "Failed to update payment settings");
+      Alert.alert('Error', 'Failed to update payment settings');
     } finally {
       setIsSaving(false);
     }
@@ -154,22 +152,22 @@ export default function PaymentSetupScreen() {
     value,
     onChangeText,
     placeholder,
-    keyboardType = "default",
+    keyboardType = 'default',
     multiline = false,
   }: {
     label: string;
     value: string;
     onChangeText: (text: string) => void;
     placeholder: string;
-    keyboardType?: "default" | "email-address" | "numeric";
+    keyboardType?: 'default' | 'email-address' | 'numeric';
     multiline?: boolean;
   }) => (
     <View style={{ marginBottom: 16 }}>
       <Text
         style={{
-          color: "#fff",
+          color: '#fff',
           fontSize: 16,
-          fontFamily: "Poppins-Bold",
+          fontFamily: 'Poppins-Bold',
           marginBottom: 8,
         }}
       >
@@ -181,15 +179,15 @@ export default function PaymentSetupScreen() {
         placeholder={placeholder}
         placeholderTextColor="#999"
         style={{
-          backgroundColor: "#555",
+          backgroundColor: '#555',
           borderRadius: 8,
           paddingHorizontal: 12,
           paddingVertical: 12,
-          color: "#fff",
+          color: '#fff',
           fontSize: 16,
-          fontFamily: "Poppins-Regular",
+          fontFamily: 'Poppins-Regular',
           minHeight: multiline ? 80 : 48,
-          textAlignVertical: multiline ? "top" : "center",
+          textAlignVertical: multiline ? 'top' : 'center',
         }}
         keyboardType={keyboardType}
         multiline={multiline}
@@ -208,28 +206,28 @@ export default function PaymentSetupScreen() {
   }) => (
     <View
       style={{
-        flexDirection: "row",
+        flexDirection: 'row',
         marginBottom: 16,
       }}
     >
       <View style={{ flex: 2 }}>
         <Text
           style={{
-            color: "#999",
+            color: '#999',
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
           }}
         >
           {label}
         </Text>
       </View>
-      <View style={{ flex: 3, alignItems: "flex-end" }}>
+      <View style={{ flex: 3, alignItems: 'flex-end' }}>
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: isHighlighted ? 16 : 14,
-            fontFamily: isHighlighted ? "Poppins-Bold" : "Poppins-Regular",
-            textAlign: "right",
+            fontFamily: isHighlighted ? 'Poppins-Bold' : 'Poppins-Regular',
+            textAlign: 'right',
           }}
         >
           {value}
@@ -240,16 +238,16 @@ export default function PaymentSetupScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -265,8 +263,8 @@ export default function PaymentSetupScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Payment Setup
@@ -276,8 +274,8 @@ export default function PaymentSetupScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -288,16 +286,16 @@ export default function PaymentSetupScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -313,8 +311,8 @@ export default function PaymentSetupScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Payment Setup
@@ -324,17 +322,17 @@ export default function PaymentSetupScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={64} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -343,10 +341,10 @@ export default function PaymentSetupScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -355,7 +353,7 @@ export default function PaymentSetupScreen() {
           <TouchableOpacity
             onPress={loadSellerSettings}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -363,9 +361,9 @@ export default function PaymentSetupScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -377,17 +375,17 @@ export default function PaymentSetupScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -403,8 +401,8 @@ export default function PaymentSetupScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Payment Setup
@@ -415,7 +413,7 @@ export default function PaymentSetupScreen() {
             onPress={savePaymentSettings}
             disabled={isSaving}
             style={{
-              backgroundColor: isSaving ? "#555" : "#007AFF",
+              backgroundColor: isSaving ? '#555' : '#007AFF',
               borderRadius: 8,
               paddingVertical: 8,
               paddingHorizontal: 16,
@@ -426,9 +424,9 @@ export default function PaymentSetupScreen() {
             ) : (
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 Save
@@ -443,9 +441,9 @@ export default function PaymentSetupScreen() {
           {/* PayPal Section */}
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 20,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 16,
             }}
           >
@@ -454,7 +452,7 @@ export default function PaymentSetupScreen() {
 
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
               padding: 16,
               marginBottom: 24,
@@ -472,9 +470,9 @@ export default function PaymentSetupScreen() {
           {/* Bank Account Section */}
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 20,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 16,
             }}
           >
@@ -483,7 +481,7 @@ export default function PaymentSetupScreen() {
 
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
               padding: 16,
               marginBottom: 24,
@@ -554,9 +552,9 @@ export default function PaymentSetupScreen() {
             <>
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 20,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 16,
                 }}
               >
@@ -565,27 +563,20 @@ export default function PaymentSetupScreen() {
 
               <View
                 style={{
-                  backgroundColor: "#333",
+                  backgroundColor: '#333',
                   borderRadius: 12,
                   padding: 16,
                 }}
               >
-                <SummaryItem
-                  label="Store Name"
-                  value={sellerSettings.storeName}
-                  isHighlighted
-                />
+                <SummaryItem label="Store Name" value={sellerSettings.storeName} isHighlighted />
 
                 <SummaryItem label="Email" value={sellerSettings.email} />
 
-                <SummaryItem
-                  label="Phone"
-                  value={sellerSettings.phone || "Not provided"}
-                />
+                <SummaryItem label="Phone" value={sellerSettings.phone || 'Not provided'} />
 
                 <SummaryItem
                   label="Address"
-                  value={sellerSettings.address.fullAddress || "Not provided"}
+                  value={sellerSettings.address.fullAddress || 'Not provided'}
                 />
               </View>
             </>

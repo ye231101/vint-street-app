@@ -1,15 +1,8 @@
-import Feather from "@expo/vector-icons/Feather";
-import React, { useState } from "react";
-import {
-  Dimensions,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import Feather from '@expo/vector-icons/Feather';
+import React, { useState } from 'react';
+import { Dimensions, Image, Pressable, ScrollView, Text, View } from 'react-native';
 
-const { width: screenWidth } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get('window');
 
 export interface PopularProductItem {
   id: number | string;
@@ -21,7 +14,7 @@ export interface PopularProductItem {
 }
 
 export default function PopularProductsCarousel({
-  title = "TRENDING NOW",
+  title = 'TRENDING NOW',
   items = [],
   onPressItem,
 }: {
@@ -31,9 +24,7 @@ export default function PopularProductsCarousel({
 }) {
   const cardWidth = screenWidth / 2 - 20;
   const cardHeight = cardWidth * (4 / 3);
-  const [currentForId, setCurrentForId] = useState<
-    Record<string | number, number>
-  >({});
+  const [currentForId, setCurrentForId] = useState<Record<string | number, number>>({});
   const [outerScrollEnabled, setOuterScrollEnabled] = useState(true);
   const [draggingInner, setDraggingInner] = useState(false);
 
@@ -51,8 +42,8 @@ export default function PopularProductsCarousel({
       <Text
         style={{
           fontSize: 12,
-          fontFamily: "Poppins-Bold",
-          color: "black",
+          fontFamily: 'Poppins-Bold',
+          color: 'black',
           marginBottom: 12,
         }}
       >
@@ -73,11 +64,11 @@ export default function PopularProductsCarousel({
             style={{
               width: cardWidth,
               marginRight: 8,
-              backgroundColor: "white",
-              overflow: "hidden",
+              backgroundColor: 'white',
+              overflow: 'hidden',
             }}
           >
-            <View style={{ position: "relative" }}>
+            <View style={{ position: 'relative' }}>
               {Array.isArray(product.images) && product.images.length > 0 ? (
                 <ScrollView
                   horizontal
@@ -108,7 +99,7 @@ export default function PopularProductsCarousel({
                       style={{
                         width: cardWidth,
                         height: cardHeight,
-                        resizeMode: "cover",
+                        resizeMode: 'cover',
                         borderRadius: 8,
                       }}
                     />
@@ -120,24 +111,24 @@ export default function PopularProductsCarousel({
                   style={{
                     width: cardWidth,
                     height: cardHeight,
-                    resizeMode: "cover",
+                    resizeMode: 'cover',
                   }}
                 />
               )}
               <View
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   bottom: 8,
                   right: 8,
-                  backgroundColor: "rgba(255,255,255,0.6)",
+                  backgroundColor: 'rgba(255,255,255,0.6)',
                   borderRadius: 12,
                   paddingHorizontal: 6,
                   paddingVertical: 2,
-                  flexDirection: "row",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
               >
-                <Text style={{ color: "black", fontSize: 12, marginRight: 8 }}>
+                <Text style={{ color: 'black', fontSize: 12, marginRight: 8 }}>
                   {product.likes ?? 0}
                 </Text>
                 <Feather name="heart" size={12} color="black" />
@@ -146,13 +137,13 @@ export default function PopularProductsCarousel({
                 <View
                   pointerEvents="none"
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     left: 0,
                     right: 0,
                     bottom: 6,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   {product.images.map((_, dotIdx) => (
@@ -165,8 +156,8 @@ export default function PopularProductsCarousel({
                         marginHorizontal: 3,
                         backgroundColor:
                           (currentForId[product.id] ?? 0) === dotIdx
-                            ? "#ffffff"
-                            : "rgba(255,255,255,0.5)",
+                            ? '#ffffff'
+                            : 'rgba(255,255,255,0.5)',
                       }}
                     />
                   ))}
@@ -177,7 +168,7 @@ export default function PopularProductsCarousel({
               <Text
                 style={{
                   fontSize: 10,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 2,
                 }}
                 numberOfLines={1}
@@ -187,8 +178,8 @@ export default function PopularProductsCarousel({
               <Text
                 style={{
                   fontSize: 8,
-                  fontFamily: "Poppins-Regular",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#666',
                   marginBottom: 2,
                 }}
                 numberOfLines={1}
@@ -198,7 +189,7 @@ export default function PopularProductsCarousel({
               <Text
                 style={{
                   fontSize: 11,
-                  fontFamily: "Poppins-SemiBold",
+                  fontFamily: 'Poppins-SemiBold',
                 }}
               >
                 {product.price}
@@ -206,8 +197,8 @@ export default function PopularProductsCarousel({
               <Text
                 style={{
                   fontSize: 9,
-                  fontFamily: "Poppins-Regular",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  color: '#666',
                   marginTop: 2,
                 }}
               >

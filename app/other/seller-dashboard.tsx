@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,8 +9,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ReportsData {
   summary: {
@@ -67,19 +67,15 @@ export default function SellerDashboardScreen() {
   const [error, setError] = useState<string | null>(null);
   const [reportsData, setReportsData] = useState<ReportsData | null>(null);
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
-  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(
-    null
-  );
-  const [topSellingProducts, setTopSellingProducts] = useState<
-    TopSellingProduct[]
-  >([]);
-  const [selectedPeriod, setSelectedPeriod] = useState("week");
+  const [sellerSettings, setSellerSettings] = useState<SellerSettings | null>(null);
+  const [topSellingProducts, setTopSellingProducts] = useState<TopSellingProduct[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState('week');
 
   const periodOptions = [
-    { value: "today", label: "Today" },
-    { value: "week", label: "This Week" },
-    { value: "month", label: "This Month" },
-    { value: "year", label: "This Year" },
+    { value: 'today', label: 'Today' },
+    { value: 'week', label: 'This Week' },
+    { value: 'month', label: 'This Month' },
+    { value: 'year', label: 'This Year' },
   ];
 
   useEffect(() => {
@@ -98,11 +94,11 @@ export default function SellerDashboardScreen() {
       const mockReportsData: ReportsData = {
         summary: {
           totalSales: 1250.5,
-          formattedTotalSales: "£1,250.50",
+          formattedTotalSales: '£1,250.50',
           totalOrders: 15,
           pageviews: 1250,
           sellerBalance: 850.25,
-          formattedSellerBalance: "£850.25",
+          formattedSellerBalance: '£850.25',
           processingOrders: 3,
           completedOrders: 8,
           onHoldOrders: 1,
@@ -114,33 +110,33 @@ export default function SellerDashboardScreen() {
 
       const mockRecentOrders: RecentOrder[] = [
         {
-          id: "1",
-          number: "#1001",
-          status: "processing",
+          id: '1',
+          number: '#1001',
+          status: 'processing',
           total: 89.99,
-          formattedTotal: "£89.99",
-          dateCreated: "2024-01-15T10:30:00Z",
+          formattedTotal: '£89.99',
+          dateCreated: '2024-01-15T10:30:00Z',
         },
         {
-          id: "2",
-          number: "#1002",
-          status: "completed",
+          id: '2',
+          number: '#1002',
+          status: 'completed',
           total: 125.5,
-          formattedTotal: "£125.50",
-          dateCreated: "2024-01-14T14:20:00Z",
+          formattedTotal: '£125.50',
+          dateCreated: '2024-01-14T14:20:00Z',
         },
       ];
 
       const mockSellerSettings: SellerSettings = {
-        storeName: "Vintage Street Store",
-        firstName: "John",
-        lastName: "Doe",
-        email: "john@vintagestreet.com",
-        phone: "+1234567890",
+        storeName: 'Vintage Street Store',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john@vintagestreet.com',
+        phone: '+1234567890',
         address: {
-          fullAddress: "123 Vintage Lane, London, UK",
+          fullAddress: '123 Vintage Lane, London, UK',
         },
-        gravatar: "",
+        gravatar: '',
         trusted: true,
         rating: {
           rating: 4.8,
@@ -150,16 +146,16 @@ export default function SellerDashboardScreen() {
 
       const mockTopProducts: TopSellingProduct[] = [
         {
-          id: "1",
-          title: "Vintage Nike Air Max",
+          id: '1',
+          title: 'Vintage Nike Air Max',
           soldQty: 25,
-          formattedSoldQty: "25",
+          formattedSoldQty: '25',
         },
         {
-          id: "2",
-          title: "Retro Adidas Jacket",
+          id: '2',
+          title: 'Retro Adidas Jacket',
           soldQty: 18,
-          formattedSoldQty: "18",
+          formattedSoldQty: '18',
         },
       ];
 
@@ -168,7 +164,7 @@ export default function SellerDashboardScreen() {
       setSellerSettings(mockSellerSettings);
       setTopSellingProducts(mockTopProducts);
     } catch (err) {
-      setError("Error loading dashboard data");
+      setError('Error loading dashboard data');
     } finally {
       setIsLoading(false);
     }
@@ -199,7 +195,7 @@ export default function SellerDashboardScreen() {
   }) => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
         padding: 16,
         flex: 1,
@@ -207,9 +203,9 @@ export default function SellerDashboardScreen() {
     >
       <Text
         style={{
-          color: "#999",
+          color: '#999',
           fontSize: 14,
-          fontFamily: "Poppins-Regular",
+          fontFamily: 'Poppins-Regular',
           marginBottom: 8,
         }}
       >
@@ -217,9 +213,9 @@ export default function SellerDashboardScreen() {
       </Text>
       <Text
         style={{
-          color: "#fff",
+          color: '#fff',
           fontSize: 20,
-          fontFamily: "Poppins-Bold",
+          fontFamily: 'Poppins-Bold',
         }}
       >
         {value}
@@ -233,32 +229,32 @@ export default function SellerDashboardScreen() {
     const summary = reportsData.summary;
     const statusItems = [
       {
-        label: "Processing",
+        label: 'Processing',
         count: summary.processingOrders,
-        color: "#007AFF",
+        color: '#007AFF',
       },
-      { label: "Completed", count: summary.completedOrders, color: "#34C759" },
-      { label: "On Hold", count: summary.onHoldOrders, color: "#FF9500" },
-      { label: "Pending", count: summary.pendingOrders, color: "#FFCC00" },
-      { label: "Cancelled", count: summary.cancelledOrders, color: "#FF3B30" },
-      { label: "Refunded", count: summary.refundedOrders, color: "#AF52DE" },
+      { label: 'Completed', count: summary.completedOrders, color: '#34C759' },
+      { label: 'On Hold', count: summary.onHoldOrders, color: '#FF9500' },
+      { label: 'Pending', count: summary.pendingOrders, color: '#FFCC00' },
+      { label: 'Cancelled', count: summary.cancelledOrders, color: '#FF3B30' },
+      { label: 'Refunded', count: summary.refundedOrders, color: '#AF52DE' },
     ].filter((item) => item.count > 0);
 
     if (statusItems.length === 0) {
       return (
         <View
           style={{
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             borderRadius: 12,
             padding: 16,
           }}
         >
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
             }}
           >
             No orders yet
@@ -270,33 +266,33 @@ export default function SellerDashboardScreen() {
     return (
       <View
         style={{
-          backgroundColor: "#333",
+          backgroundColor: '#333',
           borderRadius: 12,
           padding: 16,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginBottom: 16,
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             Order Status
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             {summary.totalOrders} Total
@@ -307,8 +303,8 @@ export default function SellerDashboardScreen() {
           <View
             key={index}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               marginBottom: 8,
             }}
           >
@@ -323,9 +319,9 @@ export default function SellerDashboardScreen() {
             />
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 flex: 1,
               }}
             >
@@ -333,9 +329,9 @@ export default function SellerDashboardScreen() {
             </Text>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               {item.count}
@@ -349,7 +345,7 @@ export default function SellerDashboardScreen() {
   const TopProductsList = () => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
       }}
     >
@@ -357,8 +353,8 @@ export default function SellerDashboardScreen() {
         <View key={product.id}>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               padding: 16,
             }}
           >
@@ -367,17 +363,17 @@ export default function SellerDashboardScreen() {
                 width: 40,
                 height: 40,
                 borderRadius: 20,
-                backgroundColor: "rgba(0, 122, 255, 0.2)",
-                justifyContent: "center",
-                alignItems: "center",
+                backgroundColor: 'rgba(0, 122, 255, 0.2)',
+                justifyContent: 'center',
+                alignItems: 'center',
                 marginRight: 16,
               }}
             >
               <Text
                 style={{
-                  color: "#007AFF",
+                  color: '#007AFF',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 {index + 1}
@@ -387,9 +383,9 @@ export default function SellerDashboardScreen() {
             <View style={{ flex: 1 }}>
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 4,
                 }}
               >
@@ -397,16 +393,16 @@ export default function SellerDashboardScreen() {
               </Text>
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 Sold: {product.formattedSoldQty}
               </Text>
             </View>
 
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => navigateToEditProduct(product.id)}
                 style={{ padding: 8, marginRight: 8 }}
@@ -425,7 +421,7 @@ export default function SellerDashboardScreen() {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#555",
+                backgroundColor: '#555',
                 marginLeft: 72,
               }}
             />
@@ -438,7 +434,7 @@ export default function SellerDashboardScreen() {
   const RecentOrdersList = () => (
     <View
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
       }}
     >
@@ -446,17 +442,17 @@ export default function SellerDashboardScreen() {
         <View key={order.id}>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               padding: 16,
             }}
           >
             <View style={{ flex: 1 }}>
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 16,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 4,
                 }}
               >
@@ -464,9 +460,9 @@ export default function SellerDashboardScreen() {
               </Text>
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 {order.status} • {order.formattedTotal}
@@ -474,7 +470,7 @@ export default function SellerDashboardScreen() {
             </View>
             <TouchableOpacity
               style={{
-                backgroundColor: "#007AFF",
+                backgroundColor: '#007AFF',
                 borderRadius: 8,
                 paddingVertical: 8,
                 paddingHorizontal: 16,
@@ -482,9 +478,9 @@ export default function SellerDashboardScreen() {
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 14,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 View
@@ -495,7 +491,7 @@ export default function SellerDashboardScreen() {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#555",
+                backgroundColor: '#555',
                 marginLeft: 16,
               }}
             />
@@ -511,15 +507,15 @@ export default function SellerDashboardScreen() {
     return (
       <View
         style={{
-          backgroundColor: "#333",
+          backgroundColor: '#333',
           borderRadius: 12,
           padding: 16,
         }}
       >
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginBottom: 16,
           }}
         >
@@ -528,9 +524,9 @@ export default function SellerDashboardScreen() {
               width: 50,
               height: 50,
               borderRadius: 25,
-              backgroundColor: "#555",
-              justifyContent: "center",
-              alignItems: "center",
+              backgroundColor: '#555',
+              justifyContent: 'center',
+              alignItems: 'center',
               marginRight: 16,
             }}
           >
@@ -540,9 +536,9 @@ export default function SellerDashboardScreen() {
           <View style={{ flex: 1 }}>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 4,
               }}
             >
@@ -550,9 +546,9 @@ export default function SellerDashboardScreen() {
             </Text>
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               {sellerSettings.firstName} {sellerSettings.lastName}
@@ -560,13 +556,13 @@ export default function SellerDashboardScreen() {
           </View>
 
           {sellerSettings.trusted && (
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: 'center' }}>
               <Feather name="check-circle" color="#34C759" size={20} />
               <Text
                 style={{
-                  color: "#34C759",
+                  color: '#34C759',
                   fontSize: 10,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   marginTop: 4,
                 }}
               >
@@ -578,24 +574,24 @@ export default function SellerDashboardScreen() {
 
         <View
           style={{
-            flexDirection: "row",
+            flexDirection: 'row',
             marginBottom: 12,
           }}
         >
           <View style={{ flex: 1 }}>
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 marginBottom: 8,
               }}
             >
               <Feather name="mail" color="#999" size={16} />
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 12,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   marginLeft: 8,
                 }}
               >
@@ -604,9 +600,9 @@ export default function SellerDashboardScreen() {
             </View>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginLeft: 24,
               }}
             >
@@ -617,17 +613,17 @@ export default function SellerDashboardScreen() {
           <View style={{ flex: 1 }}>
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 marginBottom: 8,
               }}
             >
               <Feather name="phone" color="#999" size={16} />
               <Text
                 style={{
-                  color: "#999",
+                  color: '#999',
                   fontSize: 12,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                   marginLeft: 8,
                 }}
               >
@@ -636,30 +632,30 @@ export default function SellerDashboardScreen() {
             </View>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginLeft: 24,
               }}
             >
-              {sellerSettings.phone || "Not provided"}
+              {sellerSettings.phone || 'Not provided'}
             </Text>
           </View>
         </View>
 
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            flexDirection: 'row',
+            alignItems: 'center',
             marginBottom: 8,
           }}
         >
           <Feather name="map-pin" color="#999" size={16} />
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
               marginLeft: 8,
             }}
           >
@@ -668,24 +664,24 @@ export default function SellerDashboardScreen() {
         </View>
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 14,
-            fontFamily: "Poppins-Regular",
+            fontFamily: 'Poppins-Regular',
             marginLeft: 24,
             marginBottom: 12,
           }}
         >
-          {sellerSettings.address.fullAddress || "Not provided"}
+          {sellerSettings.address.fullAddress || 'Not provided'}
         </Text>
 
         {sellerSettings.rating.count > 0 && (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Feather name="star" color="#999" size={16} />
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 12,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginLeft: 8,
               }}
             >
@@ -693,14 +689,13 @@ export default function SellerDashboardScreen() {
             </Text>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginLeft: 8,
               }}
             >
-              {sellerSettings.rating.rating} ({sellerSettings.rating.count}{" "}
-              reviews)
+              {sellerSettings.rating.rating} ({sellerSettings.rating.count} reviews)
             </Text>
           </View>
         )}
@@ -716,7 +711,7 @@ export default function SellerDashboardScreen() {
     return (
       <View
         style={{
-          backgroundColor: "#333",
+          backgroundColor: '#333',
           borderRadius: 12,
           padding: 16,
         }}
@@ -724,25 +719,25 @@ export default function SellerDashboardScreen() {
         <View style={{ marginBottom: 12 }}>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
               marginBottom: 12,
             }}
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               Total Sales
             </Text>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               {summary.formattedTotalSales}
@@ -751,25 +746,25 @@ export default function SellerDashboardScreen() {
 
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
               marginBottom: 12,
             }}
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               Current Balance
             </Text>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               {summary.formattedSellerBalance}
@@ -778,25 +773,25 @@ export default function SellerDashboardScreen() {
 
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
               marginBottom: 12,
             }}
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
             >
               Total Orders
             </Text>
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 14,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               {summary.totalOrders}
@@ -807,31 +802,31 @@ export default function SellerDashboardScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#555",
+            backgroundColor: '#555',
             marginVertical: 12,
           }}
         />
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             Active Orders
           </Text>
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             {summary.processingOrders + summary.pendingOrders}
@@ -843,16 +838,16 @@ export default function SellerDashboardScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -868,8 +863,8 @@ export default function SellerDashboardScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Seller Dashboard
@@ -879,8 +874,8 @@ export default function SellerDashboardScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -891,16 +886,16 @@ export default function SellerDashboardScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -916,8 +911,8 @@ export default function SellerDashboardScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Seller Dashboard
@@ -927,17 +922,17 @@ export default function SellerDashboardScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             padding: 16,
           }}
         >
           <Feather name="alert-circle" color="#ff4444" size={48} />
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginTop: 16,
               marginBottom: 8,
             }}
@@ -946,10 +941,10 @@ export default function SellerDashboardScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
-              textAlign: "center",
+              fontFamily: 'Poppins-Regular',
+              textAlign: 'center',
               marginBottom: 16,
             }}
           >
@@ -958,7 +953,7 @@ export default function SellerDashboardScreen() {
           <TouchableOpacity
             onPress={loadDashboardData}
             style={{
-              backgroundColor: "#007AFF",
+              backgroundColor: '#007AFF',
               borderRadius: 8,
               paddingVertical: 12,
               paddingHorizontal: 24,
@@ -966,9 +961,9 @@ export default function SellerDashboardScreen() {
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Retry
@@ -980,17 +975,17 @@ export default function SellerDashboardScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -1006,8 +1001,8 @@ export default function SellerDashboardScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Seller Dashboard
@@ -1016,8 +1011,8 @@ export default function SellerDashboardScreen() {
         <TouchableOpacity
           onPress={() => {
             Alert.alert(
-              "Select Period",
-              "Choose a time period",
+              'Select Period',
+              'Choose a time period',
               periodOptions.map((option) => ({
                 text: option.label,
                 onPress: () => changePeriod(option.value),
@@ -1056,16 +1051,16 @@ export default function SellerDashboardScreen() {
           {/* Period Selector */}
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               marginBottom: 16,
             }}
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginRight: 8,
               }}
             >
@@ -1073,7 +1068,7 @@ export default function SellerDashboardScreen() {
             </Text>
             <View
               style={{
-                backgroundColor: "#555",
+                backgroundColor: '#555',
                 borderRadius: 6,
                 paddingHorizontal: 12,
                 paddingVertical: 6,
@@ -1081,9 +1076,9 @@ export default function SellerDashboardScreen() {
             >
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 14,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                 }}
               >
                 {periodOptions.find((p) => p.value === selectedPeriod)?.label}
@@ -1094,35 +1089,35 @@ export default function SellerDashboardScreen() {
           {/* Quick Stats */}
           <View
             style={{
-              flexDirection: "row",
+              flexDirection: 'row',
               marginBottom: 12,
             }}
           >
             <StatsCard
               title="Total Sales"
-              value={reportsData?.summary?.formattedTotalSales || "£0.00"}
+              value={reportsData?.summary?.formattedTotalSales || '£0.00'}
             />
             <View style={{ width: 12 }} />
             <StatsCard
               title="Total Orders"
-              value={reportsData?.summary?.totalOrders?.toString() || "0"}
+              value={reportsData?.summary?.totalOrders?.toString() || '0'}
             />
           </View>
 
           <View
             style={{
-              flexDirection: "row",
+              flexDirection: 'row',
               marginBottom: 24,
             }}
           >
             <StatsCard
               title="Page Views"
-              value={reportsData?.summary?.pageviews?.toString() || "0"}
+              value={reportsData?.summary?.pageviews?.toString() || '0'}
             />
             <View style={{ width: 12 }} />
             <StatsCard
               title="Balance"
-              value={reportsData?.summary?.formattedSellerBalance || "£0.00"}
+              value={reportsData?.summary?.formattedSellerBalance || '£0.00'}
             />
           </View>
 
@@ -1131,9 +1126,9 @@ export default function SellerDashboardScreen() {
             <>
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 18,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 12,
                 }}
               >
@@ -1147,9 +1142,9 @@ export default function SellerDashboardScreen() {
           {/* Quick Actions */}
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 12,
             }}
           >
@@ -1157,7 +1152,7 @@ export default function SellerDashboardScreen() {
           </Text>
           <View
             style={{
-              backgroundColor: "#333",
+              backgroundColor: '#333',
               borderRadius: 12,
               padding: 16,
               marginBottom: 24,
@@ -1165,10 +1160,10 @@ export default function SellerDashboardScreen() {
           >
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
-                textAlign: "center",
+                fontFamily: 'Poppins-Regular',
+                textAlign: 'center',
               }}
             >
               Quick actions would be implemented here
@@ -1180,34 +1175,31 @@ export default function SellerDashboardScreen() {
             <>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 12,
                 }}
               >
                 <Text
                   style={{
-                    color: "#fff",
+                    color: '#fff',
                     fontSize: 18,
-                    fontFamily: "Poppins-Bold",
+                    fontFamily: 'Poppins-Bold',
                   }}
                 >
                   Store Profile
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    Alert.alert(
-                      "Edit Profile",
-                      "This would navigate to profile editing"
-                    );
+                    Alert.alert('Edit Profile', 'This would navigate to profile editing');
                   }}
                 >
                   <Text
                     style={{
-                      color: "#007AFF",
+                      color: '#007AFF',
                       fontSize: 16,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: 'Poppins-Regular',
                     }}
                   >
                     Edit Profile
@@ -1224,31 +1216,31 @@ export default function SellerDashboardScreen() {
             <>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 12,
                 }}
               >
                 <Text
                   style={{
-                    color: "#fff",
+                    color: '#fff',
                     fontSize: 18,
-                    fontFamily: "Poppins-Bold",
+                    fontFamily: 'Poppins-Bold',
                   }}
                 >
                   Top Selling Products
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    Alert.alert("View All", "This would navigate to inventory");
+                    Alert.alert('View All', 'This would navigate to inventory');
                   }}
                 >
                   <Text
                     style={{
-                      color: "#007AFF",
+                      color: '#007AFF',
                       fontSize: 16,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: 'Poppins-Regular',
                     }}
                   >
                     View All
@@ -1263,31 +1255,31 @@ export default function SellerDashboardScreen() {
           {/* Recent Orders */}
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               marginBottom: 12,
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Recent Orders
             </Text>
             <TouchableOpacity
               onPress={() => {
-                Alert.alert("View All", "This would navigate to orders");
+                Alert.alert('View All', 'This would navigate to orders');
               }}
             >
               <Text
                 style={{
-                  color: "#007AFF",
+                  color: '#007AFF',
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 View All
@@ -1302,9 +1294,9 @@ export default function SellerDashboardScreen() {
               <View style={{ height: 24 }} />
               <Text
                 style={{
-                  color: "#fff",
+                  color: '#fff',
                   fontSize: 18,
-                  fontFamily: "Poppins-Bold",
+                  fontFamily: 'Poppins-Bold',
                   marginBottom: 12,
                 }}
               >

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { VintStreetListing } from "@/api/types/product.types";
+import { VintStreetListing } from '@/api/types/product.types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface RecentlyViewedState {
   items: VintStreetListing[];
@@ -18,7 +18,7 @@ const initialState: RecentlyViewedState = {
 };
 
 const recentlyViewedSlice = createSlice({
-  name: "recentlyViewed",
+  name: 'recentlyViewed',
   initialState,
   reducers: {
     // Initialize recently viewed items (called when loading from storage)
@@ -33,13 +33,13 @@ const recentlyViewedSlice = createSlice({
     // Add product to recently viewed
     addProduct: (state, action: PayloadAction<VintStreetListing>) => {
       const product = action.payload;
-      
+
       // Remove the product if it already exists (to move it to the front)
       const filtered = state.items.filter((item) => item.id !== product.id);
-      
+
       // Add the new product at the beginning
       const newItems = [product, ...filtered];
-      
+
       // Limit to MAX_ITEMS
       state.items = newItems.slice(0, MAX_ITEMS);
       state.error = null;

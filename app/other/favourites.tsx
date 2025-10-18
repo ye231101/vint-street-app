@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -10,8 +10,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface FavouriteItem {
   id: string;
@@ -42,47 +42,47 @@ export default function FavouritesScreen() {
       // Mock data - replace with actual data fetching
       setFavourites([]);
     } catch (err) {
-      setError("Error loading favourites");
+      setError('Error loading favourites');
     } finally {
       setIsLoading(false);
     }
   };
 
   const navigateToLogin = () => {
-    Alert.alert("Login Required", "Please log in to view your favourites", [
+    Alert.alert('Login Required', 'Please log in to view your favourites', [
       {
-        text: "Cancel",
-        style: "cancel",
+        text: 'Cancel',
+        style: 'cancel',
       },
       {
-        text: "Log In",
+        text: 'Log In',
         onPress: () => {
           // Navigate to login screen
-          router.push("/(auth)");
+          router.push('/(auth)');
         },
       },
     ]);
   };
 
   const navigateToDiscovery = () => {
-    router.push("/(tabs)/discovery");
+    router.push('/(tabs)/discovery');
   };
 
   const removeFromFavourites = (itemId: string) => {
     Alert.alert(
-      "Remove from Favourites",
-      "Are you sure you want to remove this item from your favourites?",
+      'Remove from Favourites',
+      'Are you sure you want to remove this item from your favourites?',
       [
         {
-          text: "Cancel",
-          style: "cancel",
+          text: 'Cancel',
+          style: 'cancel',
         },
         {
-          text: "Remove",
-          style: "destructive",
+          text: 'Remove',
+          style: 'destructive',
           onPress: () => {
             setFavourites((prev) => prev.filter((item) => item.id !== itemId));
-            Alert.alert("Success", "Item removed from favourites");
+            Alert.alert('Success', 'Item removed from favourites');
           },
         },
       ]
@@ -97,11 +97,11 @@ export default function FavouritesScreen() {
     <TouchableOpacity
       onPress={() => navigateToProduct(item.id)}
       style={{
-        backgroundColor: "#333",
+        backgroundColor: '#333',
         borderRadius: 12,
         marginBottom: 16,
-        overflow: "hidden",
-        shadowColor: "#000",
+        overflow: 'hidden',
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 10,
@@ -111,25 +111,25 @@ export default function FavouritesScreen() {
       {/* Product Image */}
       <View
         style={{
-          width: "100%",
+          width: '100%',
           height: 200,
-          backgroundColor: "#555",
+          backgroundColor: '#555',
         }}
       >
         {item.imageUrl ? (
           <Image
             source={{ uri: item.imageUrl }}
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: '100%', height: '100%' }}
             resizeMode="cover"
           />
         ) : (
           <View
             style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#555",
-              justifyContent: "center",
-              alignItems: "center",
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#555',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Feather name="image" color="#999" size={48} />
@@ -141,9 +141,9 @@ export default function FavouritesScreen() {
       <View style={{ padding: 12 }}>
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
+            fontFamily: 'Poppins-Bold',
             marginBottom: 4,
           }}
           numberOfLines={2}
@@ -154,9 +154,9 @@ export default function FavouritesScreen() {
         {item.brand && (
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
               marginBottom: 4,
             }}
           >
@@ -166,17 +166,17 @@ export default function FavouritesScreen() {
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginTop: 8,
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             £{item.price.toFixed(2)}
@@ -202,17 +202,17 @@ export default function FavouritesScreen() {
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingHorizontal: 32,
       }}
     >
       <Feather name="heart" color="#999" size={64} />
       <Text
         style={{
-          color: "#999",
+          color: '#999',
           fontSize: 18,
-          fontFamily: "Poppins-Medium",
+          fontFamily: 'Poppins-Medium',
           marginTop: 16,
           marginBottom: 8,
         }}
@@ -222,7 +222,7 @@ export default function FavouritesScreen() {
       <TouchableOpacity
         onPress={navigateToDiscovery}
         style={{
-          backgroundColor: "#007AFF",
+          backgroundColor: '#007AFF',
           borderRadius: 8,
           paddingVertical: 12,
           paddingHorizontal: 24,
@@ -231,9 +231,9 @@ export default function FavouritesScreen() {
       >
         <Text
           style={{
-            color: "#fff",
+            color: '#fff',
             fontSize: 16,
-            fontFamily: "Poppins-Bold",
+            fontFamily: 'Poppins-Bold',
           }}
         >
           Discover Items
@@ -246,17 +246,17 @@ export default function FavouritesScreen() {
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingHorizontal: 32,
       }}
     >
       <Feather name="alert-circle" color="#ff4444" size={64} />
       <Text
         style={{
-          color: "#fff",
+          color: '#fff',
           fontSize: 18,
-          fontFamily: "Poppins-Bold",
+          fontFamily: 'Poppins-Bold',
           marginTop: 16,
           marginBottom: 8,
         }}
@@ -265,20 +265,20 @@ export default function FavouritesScreen() {
       </Text>
       <Text
         style={{
-          color: "#999",
+          color: '#999',
           fontSize: 14,
-          fontFamily: "Poppins-Regular",
-          textAlign: "center",
+          fontFamily: 'Poppins-Regular',
+          textAlign: 'center',
           marginBottom: 16,
         }}
       >
         {error}
       </Text>
-      {error?.includes("log in") ? (
+      {error?.includes('log in') ? (
         <TouchableOpacity
           onPress={navigateToLogin}
           style={{
-            backgroundColor: "#007AFF",
+            backgroundColor: '#007AFF',
             borderRadius: 8,
             paddingVertical: 12,
             paddingHorizontal: 24,
@@ -286,9 +286,9 @@ export default function FavouritesScreen() {
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             Log In
@@ -298,7 +298,7 @@ export default function FavouritesScreen() {
         <TouchableOpacity
           onPress={loadFavourites}
           style={{
-            backgroundColor: "#007AFF",
+            backgroundColor: '#007AFF',
             borderRadius: 8,
             paddingVertical: 12,
             paddingHorizontal: 24,
@@ -306,9 +306,9 @@ export default function FavouritesScreen() {
         >
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
             }}
           >
             Try Again
@@ -320,16 +320,16 @@ export default function FavouritesScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -345,8 +345,8 @@ export default function FavouritesScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Favourites
@@ -356,8 +356,8 @@ export default function FavouritesScreen() {
         <View
           style={{
             flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <ActivityIndicator size="large" color="#007AFF" />
@@ -368,16 +368,16 @@ export default function FavouritesScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            backgroundColor: "#000",
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#000',
             paddingHorizontal: 16,
             paddingVertical: 12,
             borderBottomWidth: 1,
-            borderBottomColor: "#333",
+            borderBottomColor: '#333',
           }}
         >
           <TouchableOpacity
@@ -393,8 +393,8 @@ export default function FavouritesScreen() {
             style={{
               flex: 1,
               fontSize: 18,
-              fontFamily: "Poppins-Bold",
-              color: "#fff",
+              fontFamily: 'Poppins-Bold',
+              color: '#fff',
             }}
           >
             Favourites
@@ -407,17 +407,17 @@ export default function FavouritesScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
         <TouchableOpacity
@@ -433,8 +433,8 @@ export default function FavouritesScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Favourites
@@ -454,14 +454,10 @@ export default function FavouritesScreen() {
             padding: 16,
           }}
           columnWrapperStyle={{
-            justifyContent: "space-between",
+            justifyContent: 'space-between',
           }}
           refreshControl={
-            <RefreshControl
-              refreshing={isLoading}
-              onRefresh={loadFavourites}
-              tintColor="#007AFF"
-            />
+            <RefreshControl refreshing={isLoading} onRefresh={loadFavourites} tintColor="#007AFF" />
           }
           showsVerticalScrollIndicator={false}
         />

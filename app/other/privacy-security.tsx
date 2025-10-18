@@ -1,6 +1,6 @@
-import Feather from "@expo/vector-icons/Feather";
-import { router } from "expo-router";
-import React, { useState } from "react";
+import Feather from '@expo/vector-icons/Feather';
+import { router } from 'expo-router';
+import React, { useState } from 'react';
 import {
   Alert,
   Modal,
@@ -10,8 +10,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PrivacySecurityScreen() {
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
@@ -27,9 +27,9 @@ export default function PrivacySecurityScreen() {
   const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
 
   // Form states
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleTwoFactorToggle = (value: boolean) => {
     setTwoFactorAuth(value);
@@ -52,36 +52,33 @@ export default function PrivacySecurityScreen() {
 
   const confirmChangePassword = () => {
     if (newPassword !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+      Alert.alert('Error', 'Passwords do not match');
       return;
     }
     if (newPassword.length < 6) {
-      Alert.alert("Error", "Password must be at least 6 characters");
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
-    Alert.alert("Success", "Password changed successfully");
+    Alert.alert('Success', 'Password changed successfully');
     setShowChangePasswordModal(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
   };
 
   const confirmDownloadData = () => {
     Alert.alert(
-      "Success",
+      'Success',
       "Data download request submitted. You'll receive an email within 48 hours."
     );
     setShowDownloadDataModal(false);
   };
 
   const confirmDeleteAccount = () => {
-    Alert.alert(
-      "Account Deleted",
-      "Your account has been permanently deleted."
-    );
+    Alert.alert('Account Deleted', 'Your account has been permanently deleted.');
     setShowDeleteAccountModal(false);
     // Navigate back to login or home
-    router.replace("/(auth)");
+    router.replace('/(auth)');
   };
 
   const SettingsSwitch = ({
@@ -103,17 +100,17 @@ export default function PrivacySecurityScreen() {
     >
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
         <View style={{ flex: 1, marginRight: 16 }}>
           <Text
             style={{
-              color: "#fff",
+              color: '#fff',
               fontSize: 16,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginBottom: 4,
             }}
           >
@@ -121,9 +118,9 @@ export default function PrivacySecurityScreen() {
           </Text>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 14,
-              fontFamily: "Poppins-Regular",
+              fontFamily: 'Poppins-Regular',
             }}
           >
             {subtitle}
@@ -132,35 +129,29 @@ export default function PrivacySecurityScreen() {
         <Switch
           value={value}
           onValueChange={onValueChange}
-          trackColor={{ false: "#333", true: "#007AFF" }}
-          thumbColor={value ? "#fff" : "#999"}
+          trackColor={{ false: '#333', true: '#007AFF' }}
+          thumbColor={value ? '#fff' : '#999'}
         />
       </View>
     </View>
   );
 
-  const SettingsItem = ({
-    title,
-    onPress,
-  }: {
-    title: string;
-    onPress: () => void;
-  }) => (
+  const SettingsItem = ({ title, onPress }: { title: string; onPress: () => void }) => (
     <TouchableOpacity
       onPress={onPress}
       style={{
         paddingHorizontal: 16,
         paddingVertical: 16,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       }}
     >
       <Text
         style={{
-          color: "#fff",
+          color: '#fff',
           fontSize: 16,
-          fontFamily: "Poppins-Bold",
+          fontFamily: 'Poppins-Bold',
         }}
       >
         {title}
@@ -170,23 +161,20 @@ export default function PrivacySecurityScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
       {/* Header */}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#000",
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#000',
           paddingHorizontal: 16,
           paddingVertical: 12,
           borderBottomWidth: 1,
-          borderBottomColor: "#333",
+          borderBottomColor: '#333',
         }}
       >
-        <TouchableOpacity
-          onPress={() => router.back()}
-          style={{ marginRight: 16 }}
-        >
+        <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 16 }}>
           <Feather name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
 
@@ -194,8 +182,8 @@ export default function PrivacySecurityScreen() {
           style={{
             flex: 1,
             fontSize: 18,
-            fontFamily: "Poppins-Bold",
-            color: "#fff",
+            fontFamily: 'Poppins-Bold',
+            color: '#fff',
           }}
         >
           Privacy & Security
@@ -207,12 +195,12 @@ export default function PrivacySecurityScreen() {
         <View style={{ marginTop: 16 }}>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             SECURITY
@@ -232,17 +220,14 @@ export default function PrivacySecurityScreen() {
             onValueChange={setBiometricLogin}
           />
 
-          <SettingsItem
-            title="Change Password"
-            onPress={handleChangePassword}
-          />
+          <SettingsItem title="Change Password" onPress={handleChangePassword} />
         </View>
 
         {/* Divider */}
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -252,12 +237,12 @@ export default function PrivacySecurityScreen() {
         <View>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             PRIVACY
@@ -289,7 +274,7 @@ export default function PrivacySecurityScreen() {
         <View
           style={{
             height: 1,
-            backgroundColor: "#333",
+            backgroundColor: '#333',
             marginHorizontal: 16,
             marginVertical: 16,
           }}
@@ -299,12 +284,12 @@ export default function PrivacySecurityScreen() {
         <View>
           <Text
             style={{
-              color: "#999",
+              color: '#999',
               fontSize: 12,
-              fontFamily: "Poppins-Bold",
+              fontFamily: 'Poppins-Bold',
               marginLeft: 16,
               marginBottom: 8,
-              textTransform: "uppercase",
+              textTransform: 'uppercase',
             }}
           >
             DATA & PRIVACY
@@ -312,16 +297,12 @@ export default function PrivacySecurityScreen() {
 
           <SettingsItem
             title="Privacy Policy"
-            onPress={() =>
-              Alert.alert("Privacy Policy", "Privacy policy content")
-            }
+            onPress={() => Alert.alert('Privacy Policy', 'Privacy policy content')}
           />
 
           <SettingsItem
             title="Terms of Service"
-            onPress={() =>
-              Alert.alert("Terms of Service", "Terms of service content")
-            }
+            onPress={() => Alert.alert('Terms of Service', 'Terms of service content')}
           />
 
           <SettingsItem title="Download My Data" onPress={handleDownloadData} />
@@ -332,18 +313,18 @@ export default function PrivacySecurityScreen() {
           <TouchableOpacity
             onPress={handleDeleteAccount}
             style={{
-              backgroundColor: "#FF3B30",
+              backgroundColor: '#FF3B30',
               paddingVertical: 16,
               paddingHorizontal: 24,
               borderRadius: 12,
-              alignItems: "center",
+              alignItems: 'center',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 16,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
               }}
             >
               Delete Account
@@ -362,25 +343,25 @@ export default function PrivacySecurityScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <View
             style={{
-              backgroundColor: "#1C1C1E",
+              backgroundColor: '#1C1C1E',
               borderRadius: 12,
               padding: 20,
               margin: 20,
-              width: "90%",
+              width: '90%',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 12,
               }}
             >
@@ -388,16 +369,15 @@ export default function PrivacySecurityScreen() {
             </Text>
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginBottom: 20,
               }}
             >
-              We'll send you a verification code via SMS when you log in from a
-              new device.
+              We'll send you a verification code via SMS when you log in from a new device.
             </Text>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
               <TouchableOpacity
                 onPress={() => {
                   setTwoFactorAuth(false);
@@ -405,10 +385,10 @@ export default function PrivacySecurityScreen() {
                 }}
                 style={{ marginRight: 16 }}
               >
-                <Text style={{ color: "#999", fontSize: 16 }}>Cancel</Text>
+                <Text style={{ color: '#999', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowTwoFactorModal(false)}>
-                <Text style={{ color: "#007AFF", fontSize: 16 }}>Continue</Text>
+                <Text style={{ color: '#007AFF', fontSize: 16 }}>Continue</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -425,25 +405,25 @@ export default function PrivacySecurityScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <View
             style={{
-              backgroundColor: "#1C1C1E",
+              backgroundColor: '#1C1C1E',
               borderRadius: 12,
               padding: 20,
               margin: 20,
-              width: "90%",
+              width: '90%',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 20,
               }}
             >
@@ -452,12 +432,12 @@ export default function PrivacySecurityScreen() {
 
             <TextInput
               style={{
-                backgroundColor: "#333",
+                backgroundColor: '#333',
                 borderRadius: 8,
                 padding: 12,
-                color: "#fff",
+                color: '#fff',
                 marginBottom: 12,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
               placeholder="Current Password"
               placeholderTextColor="#999"
@@ -468,12 +448,12 @@ export default function PrivacySecurityScreen() {
 
             <TextInput
               style={{
-                backgroundColor: "#333",
+                backgroundColor: '#333',
                 borderRadius: 8,
                 padding: 12,
-                color: "#fff",
+                color: '#fff',
                 marginBottom: 12,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
               placeholder="New Password"
               placeholderTextColor="#999"
@@ -484,12 +464,12 @@ export default function PrivacySecurityScreen() {
 
             <TextInput
               style={{
-                backgroundColor: "#333",
+                backgroundColor: '#333',
                 borderRadius: 8,
                 padding: 12,
-                color: "#fff",
+                color: '#fff',
                 marginBottom: 20,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
               }}
               placeholder="Confirm New Password"
               placeholderTextColor="#999"
@@ -498,17 +478,15 @@ export default function PrivacySecurityScreen() {
               secureTextEntry
             />
 
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
               <TouchableOpacity
                 onPress={() => setShowChangePasswordModal(false)}
                 style={{ marginRight: 16 }}
               >
-                <Text style={{ color: "#999", fontSize: 16 }}>Cancel</Text>
+                <Text style={{ color: '#999', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmChangePassword}>
-                <Text style={{ color: "#007AFF", fontSize: 16 }}>
-                  Change Password
-                </Text>
+                <Text style={{ color: '#007AFF', fontSize: 16 }}>Change Password</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -525,25 +503,25 @@ export default function PrivacySecurityScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <View
             style={{
-              backgroundColor: "#1C1C1E",
+              backgroundColor: '#1C1C1E',
               borderRadius: 12,
               padding: 20,
               margin: 20,
-              width: "90%",
+              width: '90%',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 12,
               }}
             >
@@ -551,26 +529,24 @@ export default function PrivacySecurityScreen() {
             </Text>
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginBottom: 20,
               }}
             >
-              We'll prepare your data and send it to your registered email
-              address. This may take up to 48 hours.
+              We'll prepare your data and send it to your registered email address. This may take up
+              to 48 hours.
             </Text>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
               <TouchableOpacity
                 onPress={() => setShowDownloadDataModal(false)}
                 style={{ marginRight: 16 }}
               >
-                <Text style={{ color: "#999", fontSize: 16 }}>Cancel</Text>
+                <Text style={{ color: '#999', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmDownloadData}>
-                <Text style={{ color: "#007AFF", fontSize: 16 }}>
-                  Request Data
-                </Text>
+                <Text style={{ color: '#007AFF', fontSize: 16 }}>Request Data</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -587,25 +563,25 @@ export default function PrivacySecurityScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <View
             style={{
-              backgroundColor: "#1C1C1E",
+              backgroundColor: '#1C1C1E',
               borderRadius: 12,
               padding: 20,
               margin: 20,
-              width: "90%",
+              width: '90%',
             }}
           >
             <Text
               style={{
-                color: "#fff",
+                color: '#fff',
                 fontSize: 18,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 marginBottom: 12,
               }}
             >
@@ -613,24 +589,23 @@ export default function PrivacySecurityScreen() {
             </Text>
             <Text
               style={{
-                color: "#999",
+                color: '#999',
                 fontSize: 14,
-                fontFamily: "Poppins-Regular",
+                fontFamily: 'Poppins-Regular',
                 marginBottom: 20,
               }}
             >
-              This action cannot be undone. All your data will be permanently
-              deleted.
+              This action cannot be undone. All your data will be permanently deleted.
             </Text>
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
               <TouchableOpacity
                 onPress={() => setShowDeleteAccountModal(false)}
                 style={{ marginRight: 16 }}
               >
-                <Text style={{ color: "#999", fontSize: 16 }}>Cancel</Text>
+                <Text style={{ color: '#999', fontSize: 16 }}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmDeleteAccount}>
-                <Text style={{ color: "#FF3B30", fontSize: 16 }}>Delete</Text>
+                <Text style={{ color: '#FF3B30', fontSize: 16 }}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>

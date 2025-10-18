@@ -1,28 +1,21 @@
-import { useAuth } from "@/hooks/useAuth";
-import Feather from "@expo/vector-icons/Feather";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from '@/hooks/use-auth';
+import Feather from '@expo/vector-icons/Feather';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
   const { resetPassword, loading, error } = useAuth();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | undefined>();
   const [isSuccess, setIsSuccess] = useState(false);
 
   const validateEmail = (email: string): string | undefined => {
-    if (!email) return "Email is required";
+    if (!email) return 'Email is required';
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!emailRegex.test(email)) return "Please enter a valid email";
+    if (!emailRegex.test(email)) return 'Please enter a valid email';
     return undefined;
   };
 
@@ -50,17 +43,13 @@ export default function ForgotPasswordScreen() {
 
   if (isSuccess) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, padding: 24 }}
           showsVerticalScrollIndicator={false}
         >
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <View
-              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
-            >
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: '100%', maxWidth: 520, alignItems: 'center' }}>
               {/* Success Icon */}
               <View style={{ marginBottom: 24 }}>
                 <Feather name="check-circle" size={80} color="#4CAF50" />
@@ -70,8 +59,8 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 24,
-                  fontFamily: "Poppins-Bold",
-                  textAlign: "center",
+                  fontFamily: 'Poppins-Bold',
+                  textAlign: 'center',
                   marginBottom: 16,
                 }}
               >
@@ -82,9 +71,9 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
-                  textAlign: "center",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  textAlign: 'center',
+                  color: '#666',
                   lineHeight: 24,
                   marginBottom: 8,
                 }}
@@ -95,9 +84,9 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 17,
-                  fontFamily: "Poppins-SemiBold",
-                  textAlign: "center",
-                  color: "#000",
+                  fontFamily: 'Poppins-SemiBold',
+                  textAlign: 'center',
+                  color: '#000',
                   marginBottom: 24,
                 }}
               >
@@ -107,15 +96,15 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 14,
-                  fontFamily: "Poppins-Regular",
-                  textAlign: "center",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  textAlign: 'center',
+                  color: '#666',
                   lineHeight: 20,
                   marginBottom: 32,
                 }}
               >
-                Please check your inbox and spam folder. Click the link in the
-                email to reset your password.
+                Please check your inbox and spam folder. Click the link in the email to reset your
+                password.
               </Text>
 
               {/* Return to Login Button */}
@@ -124,16 +113,16 @@ export default function ForgotPasswordScreen() {
                 style={{
                   height: 50,
                   borderRadius: 8,
-                  backgroundColor: "#000",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
+                  backgroundColor: '#000',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
                 }}
               >
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#fff",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#fff',
                     fontSize: 16,
                   }}
                 >
@@ -148,7 +137,7 @@ export default function ForgotPasswordScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ flexGrow: 1, padding: 24 }}
@@ -158,10 +147,10 @@ export default function ForgotPasswordScreen() {
           {/* Header */}
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
               marginBottom: 20,
-              width: "100%",
+              width: '100%',
               paddingTop: 10,
             }}
           >
@@ -171,9 +160,9 @@ export default function ForgotPasswordScreen() {
             <Text
               style={{
                 fontSize: 20,
-                fontFamily: "Poppins-Bold",
+                fontFamily: 'Poppins-Bold',
                 flex: 1,
-                textAlign: "center",
+                textAlign: 'center',
                 marginRight: 24, // Offset for the back button
               }}
             >
@@ -181,17 +170,13 @@ export default function ForgotPasswordScreen() {
             </Text>
           </View>
 
-          <View
-            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-          >
-            <View
-              style={{ width: "100%", maxWidth: 520, alignItems: "center" }}
-            >
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: '100%', maxWidth: 520, alignItems: 'center' }}>
               {/* Logo */}
-              <View style={{ alignItems: "center", marginBottom: 30 }}>
+              <View style={{ alignItems: 'center', marginBottom: 30 }}>
                 <Image
-                  source={require("@/assets/images/splash-logo.png")}
-                  style={{ width: 160, height: 160, resizeMode: "contain" }}
+                  source={require('@/assets/images/splash-logo.png')}
+                  style={{ width: 160, height: 160, resizeMode: 'contain' }}
                 />
               </View>
 
@@ -199,8 +184,8 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 24,
-                  fontFamily: "Poppins-Bold",
-                  textAlign: "center",
+                  fontFamily: 'Poppins-Bold',
+                  textAlign: 'center',
                   marginBottom: 16,
                 }}
               >
@@ -211,50 +196,45 @@ export default function ForgotPasswordScreen() {
               <Text
                 style={{
                   fontSize: 16,
-                  fontFamily: "Poppins-Regular",
-                  textAlign: "center",
-                  color: "#666",
+                  fontFamily: 'Poppins-Regular',
+                  textAlign: 'center',
+                  color: '#666',
                   lineHeight: 24,
                   marginBottom: 32,
                 }}
               >
-                Enter your email address and we'll send you instructions to
-                reset your password.
+                Enter your email address and we'll send you instructions to reset your password.
               </Text>
 
               {/* Error message */}
               {error && (
                 <View
                   style={{
-                    backgroundColor: "#ffe5e5",
-                    borderColor: "#ff9c9c",
+                    backgroundColor: '#ffe5e5',
+                    borderColor: '#ff9c9c',
                     borderWidth: 1,
                     padding: 10,
                     borderRadius: 8,
                     marginBottom: 16,
-                    width: "100%",
+                    width: '100%',
                   }}
                 >
-                  <Text
-                    style={{ fontFamily: "Poppins-Regular", color: "#b00020" }}
-                  >
-                    {error}
-                  </Text>
+                  <Text style={{ fontFamily: 'Poppins-Regular', color: '#b00020' }}>{error}</Text>
                 </View>
               )}
 
               {/* Email Input Field */}
-              <View style={{ width: "100%", marginBottom: 24 }}>
+              <View style={{ width: '100%', marginBottom: 24 }}>
                 <View
                   style={{
                     borderWidth: 1,
                     borderRadius: 8,
-                    borderColor: emailError ? "#ff6b6b" : "#e0e0e0",
-                    flexDirection: "row",
-                    alignItems: "center",
+                    borderColor: emailError ? '#ff6b6b' : '#e0e0e0',
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     paddingHorizontal: 12,
                     height: 52,
-                    backgroundColor: "#fff",
+                    backgroundColor: '#fff',
                   }}
                 >
                   <Text style={{ marginRight: 8 }}>
@@ -269,20 +249,20 @@ export default function ForgotPasswordScreen() {
                     autoCorrect={false}
                     style={{
                       flex: 1,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: 'Poppins-Regular',
                       fontSize: 16,
                       height: 52,
-                      textAlignVertical: "center",
+                      textAlignVertical: 'center',
                     }}
                   />
                 </View>
                 {emailError && (
                   <Text
                     style={{
-                      color: "#ff6b6b",
+                      color: '#ff6b6b',
                       fontSize: 12,
                       marginTop: 4,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: 'Poppins-Regular',
                     }}
                   >
                     {emailError}
@@ -297,20 +277,20 @@ export default function ForgotPasswordScreen() {
                 style={{
                   height: 50,
                   borderRadius: 8,
-                  backgroundColor: loading ? "#9e9e9e" : "#000",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
+                  backgroundColor: loading ? '#9e9e9e' : '#000',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
                 }}
               >
                 <Text
                   style={{
-                    fontFamily: "Poppins-Regular",
-                    color: "#fff",
+                    fontFamily: 'Poppins-Regular',
+                    color: '#fff',
                     fontSize: 16,
                   }}
                 >
-                  {loading ? "Sending..." : "Reset Password"}
+                  {loading ? 'Sending...' : 'Reset Password'}
                 </Text>
               </Pressable>
             </View>

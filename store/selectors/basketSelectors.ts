@@ -1,5 +1,5 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../index";
+import { createSelector } from '@reduxjs/toolkit';
+import { RootState } from '../index';
 
 // Basic selectors
 export const selectBasketState = (state: RootState) => state.basket;
@@ -9,20 +9,13 @@ export const selectBasketLoading = (state: RootState) => state.basket.isLoading;
 export const selectBasketError = (state: RootState) => state.basket.error;
 
 // Computed selectors
-export const selectBasketItemCount = createSelector(
-  [selectBasketItems],
-  (items) => items.reduce((total, item) => total + item.quantity, 0)
+export const selectBasketItemCount = createSelector([selectBasketItems], (items) =>
+  items.reduce((total, item) => total + item.quantity, 0)
 );
 
-export const selectBasketTotal = createSelector(
-  [selectBasket],
-  (basket) => basket.total
-);
+export const selectBasketTotal = createSelector([selectBasket], (basket) => basket.total);
 
-export const selectBasketSubtotal = createSelector(
-  [selectBasket],
-  (basket) => basket.subtotal
-);
+export const selectBasketSubtotal = createSelector([selectBasket], (basket) => basket.subtotal);
 
 export const selectBasketProtectionFee = createSelector(
   [selectBasket],
@@ -44,15 +37,9 @@ export const selectBasketFormattedProtectionFee = createSelector(
   (basket) => basket.formattedTotalProtectionFee
 );
 
-export const selectBasketVendors = createSelector(
-  [selectBasket],
-  (basket) => basket.vendors
-);
+export const selectBasketVendors = createSelector([selectBasket], (basket) => basket.vendors);
 
-export const selectBasketVendorIds = createSelector(
-  [selectBasket],
-  (basket) => basket.vendorIds
-);
+export const selectBasketVendorIds = createSelector([selectBasket], (basket) => basket.vendorIds);
 
 export const selectBasketVendorItems = createSelector(
   [selectBasket],
@@ -68,35 +55,26 @@ export const selectVendorItems = (vendorId: number) =>
 export const selectVendorTotals = (vendorId: number) =>
   createSelector([selectBasketItems], (items) => {
     const vendorItems = items.filter((item) => item.vendorId === vendorId);
-    const subtotal = vendorItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    const protectionFee = vendorItems.reduce(
-      (sum, item) => sum + item.protectionFee,
-      0
-    );
+    const subtotal = vendorItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const protectionFee = vendorItems.reduce((sum, item) => sum + item.protectionFee, 0);
     const total = subtotal + protectionFee;
 
     return { subtotal, protectionFee, total };
   });
 
 export const selectVendorShopName = (vendorId: number) =>
-  createSelector([selectBasketVendors], (vendors) =>
-    vendors[vendorId]?.name || `Vendor ${vendorId}`
+  createSelector(
+    [selectBasketVendors],
+    (vendors) => vendors[vendorId]?.name || `Vendor ${vendorId}`
   );
 
 // Item-specific selectors
 export const selectBasketItemById = (itemId: string) =>
-  createSelector([selectBasketItems], (items) =>
-    items.find((item) => item.id === itemId)
-  );
+  createSelector([selectBasketItems], (items) => items.find((item) => item.id === itemId));
 
 export const selectBasketItemByProductId = (productId: number, vendorId: number) =>
   createSelector([selectBasketItems], (items) =>
-    items.find(
-      (item) => item.productId === productId && item.vendorId === vendorId
-    )
+    items.find((item) => item.productId === productId && item.vendorId === vendorId)
   );
 
 // Utility selectors
@@ -107,14 +85,10 @@ export const selectIsBasketEmpty = createSelector(
 
 export const selectBasketItemCountByProduct = (productId: number, vendorId: number) =>
   createSelector([selectBasketItems], (items) => {
-    const item = items.find(
-      (item) => item.productId === productId && item.vendorId === vendorId
-    );
+    const item = items.find((item) => item.productId === productId && item.vendorId === vendorId);
     return item ? item.quantity : 0;
   });
 
 // Check if basket has items from specific vendor
 export const selectHasVendorItems = (vendorId: number) =>
-  createSelector([selectBasketItems], (items) =>
-    items.some((item) => item.vendorId === vendorId)
-  );
+  createSelector([selectBasketItems], (items) => items.some((item) => item.vendorId === vendorId));
