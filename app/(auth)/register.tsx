@@ -1,4 +1,4 @@
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/hooks/useAuth";
 import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
@@ -85,6 +85,26 @@ export default function RegisterScreen() {
     return undefined;
   };
 
+  const validateEmailUniqueness = async (email: string): Promise<string | undefined> => {
+    if (!email) return "Email is required";
+    
+    try {
+      // Import authService dynamically to avoid circular dependencies
+      const { authService } = await import("@/api/services/auth.service");
+      const emailExists = await authService.checkEmailExists(email);
+      
+      if (emailExists) {
+        return "An account with this email already exists.";
+      }
+      
+      return undefined;
+    } catch (error) {
+      // If there's an error checking email uniqueness, don't block the form
+      // The server-side validation will catch it
+      return undefined;
+    }
+  };
+
   const validatePassword = (password: string): string | undefined => {
     if (!password) return "Password is required";
     if (password.length < 6) return "Password must be at least 6 characters";
@@ -107,7 +127,7 @@ export default function RegisterScreen() {
     return undefined;
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = async (): Promise<boolean> => {
     const newErrors: FormErrors = {};
 
     newErrors.username = validateUsername(formData.username);
@@ -125,6 +145,14 @@ export default function RegisterScreen() {
     newErrors.country = validateRequired(formData.country, "Country");
     newErrors.phone = validateRequired(formData.phone, "Phone Number");
 
+    // Check email uniqueness if email is valid
+    if (!newErrors.email && formData.email) {
+      const emailUniquenessError = await validateEmailUniqueness(formData.email);
+      if (emailUniquenessError) {
+        newErrors.email = emailUniquenessError;
+      }
+    }
+
     setErrors(newErrors);
     return !Object.values(newErrors).some((error) => error !== undefined);
   };
@@ -135,7 +163,7 @@ export default function RegisterScreen() {
       return;
     }
 
-    if (validateForm()) {
+    if (await validateForm()) {
       const result = await register(
         formData.username,
         formData.email,

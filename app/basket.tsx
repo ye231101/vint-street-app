@@ -1,4 +1,11 @@
-import { useBasket } from "@/providers/basket-provider";
+import { useBasket } from "@/hooks/useBasket";
+import { useAppSelector } from "@/store/hooks";
+import {
+  selectBasketVendorIds,
+  selectBasketVendors,
+  selectBasketVendorItems,
+  selectVendorTotals,
+} from "@/store/selectors/basketSelectors";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -14,18 +21,22 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// Use the interfaces from the basket provider
-import { Basket, BasketItem, Vendor } from "@/providers/basket-provider";
+// Use the interfaces from the basket slice
+import { Basket, BasketItem, Vendor } from "@/store/slices/basketSlice";
 
 export default function BasketScreen() {
   const {
     basket,
     isLoading,
     error,
-    removeFromBasket,
-    updateQuantity,
-    clearBasket,
+    removeItem,
+    updateItemQuantity,
+    clearAll,
   } = useBasket();
+  const vendorIds = useAppSelector(selectBasketVendorIds);
+  const vendors = useAppSelector(selectBasketVendors);
+  const vendorItems = useAppSelector(selectBasketVendorItems);
+  
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
 
@@ -43,16 +54,16 @@ export default function BasketScreen() {
   };
 
   const handleClearBasket = () => {
-    clearBasket();
+    clearAll();
     setShowClearModal(false);
   };
 
   const handleUpdateQuantity = (itemId: string, quantity: number) => {
-    updateQuantity(itemId, quantity);
+    updateItemQuantity(itemId, quantity);
   };
 
   const handleRemoveItem = (itemId: string) => {
-    removeFromBasket(itemId);
+    removeItem(itemId);
   };
 
   const proceedToCheckout = () => {
@@ -69,7 +80,10 @@ export default function BasketScreen() {
     items: BasketItem[];
     onQuantityChanged: (item: BasketItem, quantity: number) => void;
     onRemove: (item: BasketItem) => void;
-  }) => (
+  }) => {
+    const vendorTotals = useAppSelector(selectVendorTotals(vendor.id));
+    
+    return (
     <View
       style={{
         backgroundColor: "#fff",
@@ -287,7 +301,7 @@ export default function BasketScreen() {
               color: "#333",
             }}
           >
-            £0.00
+            £{vendorTotals.subtotal.toFixed(2)}
           </Text>
         </View>
 
@@ -314,7 +328,7 @@ export default function BasketScreen() {
               color: "#333",
             }}
           >
-            £0.00
+            £{vendorTotals.protectionFee.toFixed(2)}
           </Text>
         </View>
 
@@ -349,7 +363,7 @@ export default function BasketScreen() {
               color: "#333",
             }}
           >
-            £0.00
+            £{vendorTotals.total.toFixed(2)}
           </Text>
         </View>
 
@@ -374,7 +388,8 @@ export default function BasketScreen() {
         </TouchableOpacity>
       </View>
     </View>
-  );
+    );
+  };
 
   const BasketSummary = ({ basket }: { basket: Basket }) => (
     <View
@@ -756,11 +771,11 @@ export default function BasketScreen() {
         >
           <View style={{ padding: 16 }}>
             {/* Display items by vendor */}
-            {basket.vendorIds.map((vendorId) => (
+            {vendorIds.map((vendorId) => (
               <VendorItemsSection
                 key={vendorId}
-                vendor={basket.vendors[vendorId]}
-                items={basket.vendorItems[vendorId] || []}
+                vendor={vendors[vendorId]}
+                items={vendorItems[vendorId] || []}
                 onQuantityChanged={(item, quantity) =>
                   handleUpdateQuantity(item.id, quantity)
                 }

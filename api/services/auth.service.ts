@@ -24,6 +24,16 @@ class AuthService {
     try {
       const { email, password, username, full_name, ...additionalData } = data;
 
+      // Check if email already exists before attempting signup
+      const emailExists = await this.checkEmailExists(email);
+      if (emailExists) {
+        return {
+          user: null,
+          session: null,
+          error: "An account with this email already exists. Please use a different email or try logging in.",
+        };
+      }
+
       const { data: authData, error } = await supabase.auth.signUp({
         email,
         password,
@@ -37,10 +47,33 @@ class AuthService {
       });
 
       if (error) {
+        // Handle specific Supabase errors for duplicate emails
+        if (error.message.includes("already registered") || 
+            error.message.includes("User already registered") ||
+            error.message.includes("already exists") ||
+            error.message.includes("duplicate key") ||
+            error.message.includes("email already exists") ||
+            error.message.includes("User with this email already exists")) {
+          return {
+            user: null,
+            session: null,
+            error: "An account with this email already exists. Please use a different email or try logging in.",
+          };
+        }
+        
         return {
           user: null,
           session: null,
           error: error.message,
+        };
+      }
+
+      // Additional check: if user is null but no error, it might mean email already exists
+      if (!authData.user) {
+        return {
+          user: null,
+          session: null,
+          error: "An account with this email already exists. Please use a different email or try logging in.",
         };
       }
 
@@ -261,6 +294,27 @@ class AuthService {
         error: error instanceof Error ? error.message : "Failed to resend OTP",
         success: false,
       };
+    }
+  }
+
+  /**
+   * Check if an email already exists in the system
+   * @param email - Email to check
+   * @returns Boolean indicating if email exists
+   */
+  async checkEmailExists(email: string): Promise<boolean> {
+    try {
+      // Try to reset password for the email - if it succeeds, the email exists
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'dummy://redirect' // This won't be used, just to satisfy the API
+      });
+      
+      // If no error, the email exists (even if password reset fails for other reasons)
+      // If error contains "not found" or similar, email doesn't exist
+      return !error || !error.message.toLowerCase().includes('not found');
+    } catch (error) {
+      // If there's an error, assume email doesn't exist
+      return false;
     }
   }
 

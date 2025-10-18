@@ -1,7 +1,7 @@
 import { typesenseService } from "@/api/services";
 import { VintStreetListing } from "@/api/types/product.types";
-import { useBasket } from "@/providers/basket-provider";
-import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
+import { useBasket } from "@/hooks/useBasket";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import Feather from "@expo/vector-icons/Feather";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
@@ -71,7 +71,7 @@ export default function ProductDetailsScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const { addProduct } = useRecentlyViewed();
-  const { addToBasket } = useBasket();
+  const { addItem } = useBasket();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
@@ -204,7 +204,7 @@ export default function ProductDetailsScreen() {
       protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072, // 7.2% protection fee for non-official products
     };
 
-    addToBasket(productData);
+    addItem(productData);
   };
 
   const handleBuyNow = () => {
@@ -222,7 +222,7 @@ export default function ProductDetailsScreen() {
       protectionFeePercentage: productListing.vendorId === 42 ? 0 : 0.072,
     };
 
-    addToBasket(productData);
+    addItem(productData);
 
     // Navigate to checkout
     router.push("/checkout");
