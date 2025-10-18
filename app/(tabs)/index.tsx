@@ -4,7 +4,7 @@ import FilterSortBar from "@/components/filter-sort-bar";
 import PopularProductsCarousel from "@/components/popular-products-carousel";
 import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
-import { useRecentlyViewed } from "@/providers/recently-viewed-provider";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";

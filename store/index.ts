@@ -11,18 +11,22 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import authReducer from "./slices/authSlice";
+import basketReducer from "./slices/basketSlice";
+import recentlyViewedReducer from "./slices/recentlyViewedSlice";
 
 // Redux Persist configuration
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["auth"], // Only persist auth state
+  whitelist: ["auth", "basket", "recentlyViewed"], // Persist auth, basket, and recently viewed state
   blacklist: [], // Don't persist these reducers
 };
 
 // Combine reducers
 const rootReducer = combineReducers({
   auth: authReducer,
+  basket: basketReducer,
+  recentlyViewed: recentlyViewedReducer,
 });
 
 // Create persisted reducer
@@ -33,9 +37,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     }),
   devTools: __DEV__, // Enable Redux DevTools in development
 });
